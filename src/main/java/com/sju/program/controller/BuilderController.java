@@ -26,7 +26,8 @@ import com.sju.program.service.IBuilderService;
  */
 @RestController
 @RequestMapping("/program/builder")
-public class BuilderController extends BaseController
+public class
+BuilderController extends BaseController
 {
     @Autowired
     private IBuilderService builderService;
