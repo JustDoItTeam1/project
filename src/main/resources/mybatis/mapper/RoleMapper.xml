@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.RoleMapper">
+    
+    <resultMap type="Role" id="RoleResult">
+        <result property="roleId"    column="role_id"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="roleDeleteFlag"    column="role_delete_flag"    />
+        <result property="roleUpdateFlag"    column="role_update_flag"    />
+    </resultMap>
+
+    <sql id="selectRoleVo">
+        select role_id, role_name, role_delete_flag, role_update_flag from role
+    </sql>
+
+    <select id="selectRoleList" parameterType="Role" resultMap="RoleResult">
+        <include refid="selectRoleVo"/>
+        <where>  
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="roleDeleteFlag != null  and roleDeleteFlag != ''"> and role_delete_flag = #{roleDeleteFlag}</if>
+            <if test="roleUpdateFlag != null "> and role_update_flag = #{roleUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectRoleById" parameterType="Long" resultMap="RoleResult">
+        <include refid="selectRoleVo"/>
+        where role_id = #{roleId}
+    </select>
+        
+    <insert id="insertRole" parameterType="Role" useGeneratedKeys="true" keyProperty="roleId">
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">role_name,</if>
+            <if test="roleDeleteFlag != null">role_delete_flag,</if>
+            <if test="roleUpdateFlag != null">role_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">#{roleName},</if>
+            <if test="roleDeleteFlag != null">#{roleDeleteFlag},</if>
+            <if test="roleUpdateFlag != null">#{roleUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRole" parameterType="Role">
+        update role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="roleDeleteFlag != null">role_delete_flag = #{roleDeleteFlag},</if>
+            <if test="roleUpdateFlag != null">role_update_flag = #{roleUpdateFlag},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteRoleById" parameterType="Long">
+        delete from role where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteRoleByIds" parameterType="String">
+        delete from role where role_id in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+    
+</mapper>

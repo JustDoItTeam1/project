@@ -2,6 +2,7 @@ package com.sju.program.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sju.program.domain.model.BaseUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -12,7 +13,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class TrafficeStaff extends BaseEntity
+public class TrafficeStaff extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +37,20 @@ public class TrafficeStaff extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date trafficUpdateFlag;
 
+    private int authenticate;
+
+    public int getAuthenticate() {
+        return authenticate;
+    }
+
+    public void setAuthenticate(int authenticate) {
+        this.authenticate = authenticate;
+    }
+
+    @Override
+    public String getUserPassword(){
+        return  trafficPassword;
+    }
     public void setTrafficId(Long trafficId) 
     {
         this.trafficId = trafficId;

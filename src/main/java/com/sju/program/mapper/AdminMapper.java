@@ -20,6 +20,15 @@ public interface AdminMapper
     public Admin selectAdminById(Long adminId);
 
     /**
+     * 查询管理员账户
+     *
+     * @param adminUsername 管理员账户名
+     * @return 管理员账户
+     */
+    public Admin selectAdminByUsername(String adminUsername);
+
+
+    /**
      * 查询管理员账户列表
      * 
      * @param admin 管理员账户

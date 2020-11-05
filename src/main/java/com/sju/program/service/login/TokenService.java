@@ -2,6 +2,9 @@ package com.sju.program.service.login;
 
 import com.sju.program.constant.Constants;
 import com.sju.program.domain.Admin;
+import com.sju.program.domain.Builder;
+import com.sju.program.domain.Police;
+import com.sju.program.domain.TrafficeStaff;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.utils.JwtUtils;
 import com.sju.program.utils.ServletUtils;
@@ -69,11 +72,58 @@ public class TokenService
             // 解析用户信息
             Object userId=(claims.get("userId"));
             String userName=(String)claims.get("userName");
-            Admin user=new Admin();
-            user.setAdminId(Long.valueOf(String.valueOf(userId)) );
-            user.setAdminUsername(userName);
-            LoginUser loginUser=new LoginUser(user);
-            return loginUser;
+            String delete_flag=(String)claims.get("delete_flag");
+            Object authenticate=claims.get("authenticate");
+            if(Integer.valueOf(String.valueOf(authenticate))==1){
+                Admin user=new Admin();
+                user.setAdminId(Long.valueOf(String.valueOf(userId)) );
+                user.setAdminUsername(userName);
+                user.setAdminDeleteFlag(delete_flag);
+                user.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+                LoginUser loginUser=new LoginUser(user);
+                return loginUser;
+            }
+            if(Integer.valueOf(String.valueOf(authenticate))==2){
+                Police police=new Police();
+                police.setPoliceId(Long.valueOf(String.valueOf(userId)) );
+                police.setPoliceName(userName);
+                police.setPoliceDeleteFlag(delete_flag);
+                police.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+                LoginUser loginUser=new LoginUser(police);
+                return loginUser;
+            }
+            if(Integer.valueOf(String.valueOf(authenticate))==3){
+                TrafficeStaff trafficeStaff=new TrafficeStaff();
+                trafficeStaff.setTrafficId(Long.valueOf(String.valueOf(userId)) );
+                trafficeStaff.setTrafficName(userName);
+                trafficeStaff.setTrafficDeleteFlag(delete_flag);
+                trafficeStaff.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+                LoginUser loginUser=new LoginUser(trafficeStaff);
+                return loginUser;
+            }
+            if(Integer.valueOf(String.valueOf(authenticate))==4){
+                String builder_username=(String) claims.get("builder_username");
+                String builder_corporate=(String) claims.get("builder_corporate");
+                String builder_phone=(String) claims.get("builder_phone");
+                String builder_address=(String) claims.get("builder_address");
+                String builder_enterprise_number=(String) claims.get("builder_enterprise_number");
+                //String builder_update_flag=(String) claims.get("builder_update_flag");
+                Builder builder=new Builder();
+                builder.setBuilderId(Long.valueOf(String.valueOf(userId)) );
+                builder.setBuilderUsername(builder_username);
+                builder.setBuilderName(userName);
+                builder.setBuilderDeleteFlag(delete_flag);
+                builder.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+                builder.setUserName(builder_username);
+                builder.setBuilderCorporate(builder_corporate);
+                builder.setBuilderPhone(builder_phone);
+                builder.setBuilderAddress(builder_address);
+                builder.setBuilderEnterpriseNumber(builder_enterprise_number);
+               // builder.getBuilderUpdateFlag(builder_update_flag);
+                LoginUser loginUser=new LoginUser(builder);
+                return loginUser;
+            }
+
         }
         return null;
     }

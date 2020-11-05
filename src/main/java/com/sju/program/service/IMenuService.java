@@ -1,6 +1,8 @@
 package com.sju.program.service;
 
 import java.util.List;
+import java.util.Set;
+
 import com.sju.program.domain.Menu;
 
 /**
@@ -26,6 +28,18 @@ public interface IMenuService
      * @return 菜单集合
      */
     public List<Menu> selectMenuList(Menu menu);
+
+    /**
+     * 查询菜单列表
+     *
+     *
+     * @return 菜单集合
+     */
+    public List<Menu> selectAllMenu();
+
+    public Set<String> selectMenuPermsByAuthenticate(int auth);
+
+    public List<Menu> selectMenusByAuthenticate(int auth);
 
     /**
      * 新增菜单

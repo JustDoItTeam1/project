@@ -1,10 +1,7 @@
 package com.sju.program.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sju.program.domain.Builder;
-import com.sju.program.domain.Menu;
-import com.sju.program.domain.Police;
-import com.sju.program.domain.Admin;
+import com.sju.program.domain.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -113,6 +110,20 @@ public class LoginUser implements UserDetails
         this.user=user;
     }
 
+    public LoginUser(Police user)
+    {
+        this.user=user;
+    }
+
+    public LoginUser(Builder user)
+    {
+        this.user=user;
+    }
+    public LoginUser(TrafficeStaff user)
+    {
+        this.user=user;
+    }
+
     public LoginUser(Admin user, List<Menu> menus)
     {
         this.user = user;
@@ -132,6 +143,11 @@ public class LoginUser implements UserDetails
 
     public LoginUser(Builder builder, Set<String> permissions){
         this.user=builder;
+        this.permissions=permissions;
+    }
+
+    public LoginUser(TrafficeStaff trafficeStaff, Set<String> permissions){
+        this.user=trafficeStaff;
         this.permissions=permissions;
     }
 

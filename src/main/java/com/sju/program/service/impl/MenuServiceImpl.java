@@ -1,6 +1,8 @@
 package com.sju.program.service.impl;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.MenuMapper;
@@ -41,6 +43,21 @@ public class MenuServiceImpl implements IMenuService
     public List<Menu> selectMenuList(Menu menu)
     {
         return menuMapper.selectMenuList(menu);
+    }
+
+    @Override
+    public List<Menu> selectAllMenu() {
+        return menuMapper.selectAllMenu();
+    }
+
+    @Override
+    public Set<String> selectMenuPermsByAuthenticate(int auth) {
+        return menuMapper.selectMenuPermsByAuthenticate(auth);
+    }
+
+    @Override
+    public List<Menu> selectMenusByAuthenticate(int auth) {
+        return menuMapper.selectMenusByAuthenticate(auth);
     }
 
     /**

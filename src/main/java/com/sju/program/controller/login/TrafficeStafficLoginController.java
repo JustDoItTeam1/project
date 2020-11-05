@@ -1,13 +1,13 @@
 package com.sju.program.controller.login;
 
 import com.sju.program.constant.Constants;
-import com.sju.program.domain.Admin;
-import com.sju.program.domain.Menu;
-import com.sju.program.domain.Role;
+import com.sju.program.domain.*;
 import com.sju.program.domain.Admin;
 import com.sju.program.domain.model.LoginBody;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
+import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
+import com.sju.program.security.token.TrafficStaffUsernamePasswordAuthticationToekn;
 import com.sju.program.service.*;
 import com.sju.program.service.login.LoginService;
 import com.sju.program.service.IMenuService;
@@ -17,6 +17,7 @@ import com.sju.program.utils.JwtUtils;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +40,7 @@ import java.util.Set;
  */
 @Api(tags = "登录接口")
 @RestController
-public class AdminLoginController
+public class TrafficeStafficLoginController
 {
     @Autowired
     private LoginService loginService;
@@ -69,63 +70,53 @@ public class AdminLoginController
      * @return 结果
      */
     @ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
-    @PostMapping("/login/admin")
-    public AjaxResult login(@RequestBody LoginBody loginBody)
-    {
-        AjaxResult ajax=AjaxResult.success();
-        Map<String,Object> playload=new HashMap<>();
+    @PostMapping("/login/traffic")
+    public AjaxResult login(@RequestBody LoginBody loginBody) {
+        AjaxResult ajax = AjaxResult.success();
+        Map<String, Object> playload = new HashMap<>();
         Authentication authentication = null;
-        try
-        {
+        try {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginBody.getUsername(), loginBody.getPassword()));
-        }
-        catch (Exception e)
-        {
-            return AjaxResult.error("认证出错");
+                    .authenticate(new TrafficStaffUsernamePasswordAuthticationToekn(loginBody.getUsername(), loginBody.getPassword()));
+        } catch (Exception e) {
+            return AjaxResult.error("用户验证失败");
         }
         //LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //System.out.println(authentication);
-        LoginUser loginUser=(LoginUser) authentication.getPrincipal();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         try {
-        Admin admin=(Admin) loginUser.getUser();
-        if (admin==null||admin.getAdminDeleteFlag().equals("del")){
-             return AjaxResult.error("用户不存在");
-        }
-        playload.put("userId",admin.getAdminId());
-        playload.put("userName",admin.getAdminUsername());
-        playload.put("delete_flag",admin.getAdminDeleteFlag());
+            TrafficeStaff trafficeStaff = (TrafficeStaff) loginUser.getUser();
+            if (trafficeStaff == null || trafficeStaff.getTrafficDeleteFlag().equals("del")) {
+                return AjaxResult.error("用户不存在");
+            }
+            playload.put("userId", trafficeStaff.getTrafficId());
+            playload.put("userName", trafficeStaff.getTrafficName());
+            playload.put("delete_flag", trafficeStaff.getTrafficDeleteFlag());
         }catch (ClassCastException e){
             return AjaxResult.error("用户验证失败");
         }
-        playload.put("authenticate",1);//管理员权限标识为1
+        playload.put("authenticate",3);
         String token=JwtUtils.getToken(playload);
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
-
-//    @GetMapping("/login/info")
-//    public User getLoginInfo(Authentication authentication){
-//        return (User)authentication.getPrincipal();
-//    }
-
     /**
      * 获取用户信息
      *
      * @return 用户信息
      */
-    @GetMapping("/login/getAdminInfo")
+    @GetMapping("/login/getTrafficInfo")
     public AjaxResult getInfo()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        Admin admin=(Admin) loginUser.getUser();
+        TrafficeStaff trafficeStaff=(TrafficeStaff) loginUser.getUser();
         // 权限集合
-        String permissions = "*:*:";
+        Set<String> permissions = permissionService.getMenuPermission(trafficeStaff.getAuthenticate());
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", admin);
+        ajax.put("user", trafficeStaff);
         ajax.put("permissions",permissions);
-      //  ajax.put("roles", roles);
+        //  ajax.put("roles", roles);
         //ajax.put("departments", departments);
         return ajax;
     }
@@ -135,16 +126,18 @@ public class AdminLoginController
      *
      * @return 菜单路由信息
      */
-   // @PreAuthorize("@ss.hasPermi()")
-    @GetMapping("/login/getAdminRouters")
+    // @PreAuthorize("@ss.hasPermi()")
+    @GetMapping("/login/getTrafficRouters")
     public AjaxResult getRouters()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         if(loginUser==null){
             return AjaxResult.error("用户不存在");
         }
-        List<Menu> menus = menuService.selectAllMenu();
+        List<Menu> menus = menuService.selectMenusByAuthenticate(((TrafficeStaff)loginUser.getUser()).getAuthenticate());
         return AjaxResult.success(menus);
     }
 }
+
+
 

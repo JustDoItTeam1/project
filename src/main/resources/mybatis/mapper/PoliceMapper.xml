@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.PoliceMapper">
+    
+    <resultMap type="Police" id="PoliceResult">
+        <result property="policeId"    column="police_id"    />
+        <result property="policeName"    column="police_name"    />
+        <result property="policePassword"    column="police_password"    />
+        <result property="policeDeleteFlag"    column="police_delete_flag"    />
+        <result property="policeUpdateFlag"    column="police_update_flag"    />
+    </resultMap>
+
+    <sql id="selectPoliceVo">
+        select police_id, police_name, police_password, police_delete_flag, police_update_flag from police
+    </sql>
+
+    <select id="selectPoliceList" parameterType="Police" resultMap="PoliceResult">
+        <include refid="selectPoliceVo"/>
+        <where>  
+            <if test="policeName != null  and policeName != ''"> and police_name like concat('%', #{policeName}, '%')</if>
+            <if test="policePassword != null  and policePassword != ''"> and police_password = #{policePassword}</if>
+            <if test="policeDeleteFlag != null  and policeDeleteFlag != ''"> and police_delete_flag = #{policeDeleteFlag}</if>
+            <if test="policeUpdateFlag != null "> and police_update_flag = #{policeUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectPoliceById" parameterType="Long" resultMap="PoliceResult">
+        <include refid="selectPoliceVo"/>
+        where police_id = #{policeId}
+    </select>
+
+    <select id="selectUserByUserName" parameterType="String" resultMap="PoliceResult">
+        <include refid="selectPoliceVo"></include>
+        WHERE police_name=#{username}
+    </select>
+        
+    <insert id="insertPolice" parameterType="Police" useGeneratedKeys="true" keyProperty="policeId">
+        insert into police
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="policeName != null">police_name,</if>
+            <if test="policePassword != null">police_password,</if>
+            <if test="policeDeleteFlag != null">police_delete_flag,</if>
+            <if test="policeUpdateFlag != null">police_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="policeName != null">#{policeName},</if>
+            <if test="policePassword != null">#{policePassword},</if>
+            <if test="policeDeleteFlag != null">#{policeDeleteFlag},</if>
+            <if test="policeUpdateFlag != null">#{policeUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePolice" parameterType="Police">
+        update police
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="policeName != null">police_name = #{policeName},</if>
+            <if test="policePassword != null">police_password = #{policePassword},</if>
+            <if test="policeDeleteFlag != null">police_delete_flag = #{policeDeleteFlag},</if>
+            <if test="policeUpdateFlag != null">police_update_flag = #{policeUpdateFlag},</if>
+        </trim>
+        where police_id = #{policeId}
+    </update>
+
+    <delete id="deletePoliceById" parameterType="Long">
+        delete from police where police_id = #{policeId}
+    </delete>
+
+    <delete id="deletePoliceByIds" parameterType="String">
+        delete from police where police_id in 
+        <foreach item="policeId" collection="array" open="(" separator="," close=")">
+            #{policeId}
+        </foreach>
+    </delete>
+    
+</mapper>

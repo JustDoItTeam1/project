@@ -19,6 +19,8 @@ public interface PoliceMapper
      */
     public Police selectPoliceById(Long policeId);
 
+    public Police selectUserByUserName(String username);
+
     /**
      * 查询交警人员列表
      * 

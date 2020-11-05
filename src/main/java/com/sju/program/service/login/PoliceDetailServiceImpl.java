@@ -34,8 +34,8 @@ public class PoliceDetailServiceImpl implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        //Police user = iPoliceService.selectUserByUserName(username);
-        Police police=null;
+        Police police = iPoliceService.selectUserByUserName(username);
+        //Police police=null;
         if (StringUtils.isNull(police))
         {
             log.info("登录用户：{} 不存在.", username);
@@ -57,6 +57,6 @@ public class PoliceDetailServiceImpl implements UserDetailsService
 
     public UserDetails createLoginUser(Police police)
     {
-        return new LoginUser(police, permissionService.getMenuPermission(police));
+        return new LoginUser(police, permissionService.getMenuPermission(2));
     }
 }

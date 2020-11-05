@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.TrafficeStaffMapper">
+    
+    <resultMap type="TrafficeStaff" id="TrafficeStaffResult">
+        <result property="trafficId"    column="traffic_id"    />
+        <result property="trafficName"    column="traffic_name"    />
+        <result property="trafficPassword"    column="traffic_password"    />
+        <result property="trafficDeleteFlag"    column="traffic_delete_flag"    />
+        <result property="trafficUpdateFlag"    column="traffic_update_flag"    />
+    </resultMap>
+
+    <sql id="selectTrafficeStaffVo">
+        select traffic_id, traffic_name, traffic_password, traffic_delete_flag, traffic_update_flag from traffice_staff
+    </sql>
+
+    <select id="selectTrafficeStaffList" parameterType="TrafficeStaff" resultMap="TrafficeStaffResult">
+        <include refid="selectTrafficeStaffVo"/>
+        <where>  
+            <if test="trafficName != null  and trafficName != ''"> and traffic_name like concat('%', #{trafficName}, '%')</if>
+            <if test="trafficPassword != null  and trafficPassword != ''"> and traffic_password = #{trafficPassword}</if>
+            <if test="trafficDeleteFlag != null  and trafficDeleteFlag != ''"> and traffic_delete_flag = #{trafficDeleteFlag}</if>
+            <if test="trafficUpdateFlag != null "> and traffic_update_flag = #{trafficUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectTrafficeStaffById" parameterType="Long" resultMap="TrafficeStaffResult">
+        <include refid="selectTrafficeStaffVo"/>
+        where traffic_id = #{trafficId}
+    </select>
+
+    <select id="selectTrafficeStaffByUsername" parameterType="String" resultMap="TrafficeStaffResult">
+        <include refid="selectTrafficeStaffVo"></include>
+        WHERE traffic_name=#{trafficName}
+    </select>
+        
+    <insert id="insertTrafficeStaff" parameterType="TrafficeStaff" useGeneratedKeys="true" keyProperty="trafficId">
+        insert into traffice_staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="trafficName != null">traffic_name,</if>
+            <if test="trafficPassword != null">traffic_password,</if>
+            <if test="trafficDeleteFlag != null">traffic_delete_flag,</if>
+            <if test="trafficUpdateFlag != null">traffic_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="trafficName != null">#{trafficName},</if>
+            <if test="trafficPassword != null">#{trafficPassword},</if>
+            <if test="trafficDeleteFlag != null">#{trafficDeleteFlag},</if>
+            <if test="trafficUpdateFlag != null">#{trafficUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTrafficeStaff" parameterType="TrafficeStaff">
+        update traffice_staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trafficName != null">traffic_name = #{trafficName},</if>
+            <if test="trafficPassword != null">traffic_password = #{trafficPassword},</if>
+            <if test="trafficDeleteFlag != null">traffic_delete_flag = #{trafficDeleteFlag},</if>
+            <if test="trafficUpdateFlag != null">traffic_update_flag = #{trafficUpdateFlag},</if>
+        </trim>
+        where traffic_id = #{trafficId}
+    </update>
+
+    <delete id="deleteTrafficeStaffById" parameterType="Long">
+        delete from traffice_staff where traffic_id = #{trafficId}
+    </delete>
+
+    <delete id="deleteTrafficeStaffByIds" parameterType="String">
+        delete from traffice_staff where traffic_id in 
+        <foreach item="trafficId" collection="array" open="(" separator="," close=")">
+            #{trafficId}
+        </foreach>
+    </delete>
+    
+</mapper>

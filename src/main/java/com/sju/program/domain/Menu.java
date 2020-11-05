@@ -11,7 +11,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class Menu extends BaseEntity
+public class Menu
 {
     private static final long serialVersionUID = 1L;
 

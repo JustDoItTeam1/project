@@ -33,8 +33,8 @@ public class AdminDetailsServiceImpl implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        //Admin admin = iAdminService.selectUserByUserName(username);
-        Admin admin =null;
+        Admin admin = iAdminService.selectAdminByUsername(username);
+        //Admin admin =null;
         if (StringUtils.isNull(admin))
         {
             log.info("登录用户：{} 不存在.", username);
@@ -56,6 +56,6 @@ public class AdminDetailsServiceImpl implements UserDetailsService
 
     public UserDetails createLoginUser(Admin user)
     {
-        return new LoginUser(user, permissionService.getMenuPermission(user));
+        return new LoginUser(user, permissionService.getMenuPermission(1));
     }
 }

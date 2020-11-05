@@ -18,6 +18,15 @@ public interface BuilderMapper
      * @return 施工单位
      */
     public Builder selectBuilderById(Long builderId);
+    /**
+     * 查询施工单位
+     *
+     * @param builderName 施工单位ID
+     * @return 施工单位
+     */
+
+    public Builder selectBuilderByUsername(String builderName);
+
 
     /**
      * 查询施工单位列表

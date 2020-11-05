@@ -2,6 +2,7 @@ package com.sju.program.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sju.program.domain.model.BaseUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -12,7 +13,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class Builder extends BaseEntity
+public class Builder extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
@@ -56,6 +57,20 @@ public class Builder extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date builderUpdateFlag;
 
+    private int authenticate;
+
+    public int getAuthenticate() {
+        return authenticate;
+    }
+
+    public void setAuthenticate(int authenticate) {
+        this.authenticate = authenticate;
+    }
+
+    @Override
+    public String getUserPassword(){
+        return  builderPassword;
+    }
     public void setBuilderId(Long builderId) 
     {
         this.builderId = builderId;

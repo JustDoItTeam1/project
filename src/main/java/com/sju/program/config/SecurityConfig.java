@@ -2,7 +2,9 @@ package com.sju.program.config;
 
 
 import com.sju.program.security.JwtAuthenticationTokenFilter;
+import com.sju.program.security.provider.BuilderUsernamePasswordAuthrnticationProvider;
 import com.sju.program.security.provider.PoliceUsernamePasswordAuthenticationProvider;
+import com.sju.program.security.provider.TrafficStaffUsernamePasswordAuthrnticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("PoliceDetailServiceImpl")
     private UserDetailsService policeDetailsServiceImpl;
 
+    @Autowired
+    @Qualifier("BuilderDetailServiceImpl")
+    private UserDetailsService builderDetailServiceImpl;
+
+    @Autowired
+    @Qualifier("TrafficStaffDetailsServiceImpl")
+    private UserDetailsService trafficStaffDetailsServiceImpl;
+
    // @Autowired
    // private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
@@ -51,7 +61,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         http.authorizeRequests()
                 // 对于登录login 允许匿名访问
-                .antMatchers("/login/test").anonymous()
+                .antMatchers("/login/admin").anonymous()
+                .antMatchers("/login/police").anonymous()
+                .antMatchers("/login/builder").anonymous()
+                .antMatchers("/login/traffic").anonymous()
                 .antMatchers("/policelogin/test").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
@@ -97,7 +110,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        auth.authenticationProvider(getPoliceUsernamePasswordAuthenticationProvider()).userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(getPoliceUsernamePasswordAuthenticationProvider()).userDetailsService(policeDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(getBuilderUsernamePasswordAuthrnticationProvider()).userDetailsService(builderDetailServiceImpl).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(getTrafficStaffUsernamePasswordAuthrnticationProvider()).userDetailsService(trafficStaffDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
+
     }
 
     protected PoliceUsernamePasswordAuthenticationProvider getPoliceUsernamePasswordAuthenticationProvider(){
@@ -105,6 +122,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         policeUsernamePasswordAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         policeUsernamePasswordAuthenticationProvider.setUserDetailsService(policeDetailsServiceImpl);
         return policeUsernamePasswordAuthenticationProvider;
+    }
+
+
+    protected BuilderUsernamePasswordAuthrnticationProvider getBuilderUsernamePasswordAuthrnticationProvider(){
+        BuilderUsernamePasswordAuthrnticationProvider builderUsernamePasswordAuthrnticationProvider=new BuilderUsernamePasswordAuthrnticationProvider();
+        builderUsernamePasswordAuthrnticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        builderUsernamePasswordAuthrnticationProvider.setUserDetailsService(builderDetailServiceImpl);
+        return builderUsernamePasswordAuthrnticationProvider;
+    }
+
+    protected TrafficStaffUsernamePasswordAuthrnticationProvider getTrafficStaffUsernamePasswordAuthrnticationProvider(){
+        TrafficStaffUsernamePasswordAuthrnticationProvider trafficStaffUsernamePasswordAuthrnticationProvider=new TrafficStaffUsernamePasswordAuthrnticationProvider();
+        trafficStaffUsernamePasswordAuthrnticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        trafficStaffUsernamePasswordAuthrnticationProvider.setUserDetailsService(trafficStaffDetailsServiceImpl);
+        return trafficStaffUsernamePasswordAuthrnticationProvider;
     }
 
 }

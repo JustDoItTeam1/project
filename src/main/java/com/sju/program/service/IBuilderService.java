@@ -19,6 +19,9 @@ public interface IBuilderService
      */
     public Builder selectBuilderById(Long builderId);
 
+
+    public Builder selectBuilderByUsername(String username);
+
     /**
      * 查询施工单位列表
      * 
