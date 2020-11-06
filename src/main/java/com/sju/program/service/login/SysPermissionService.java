@@ -6,6 +6,7 @@ import com.sju.program.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,15 +49,15 @@ public class SysPermissionService {
          * @param user 用户信息
          * @return 菜单权限信息
          */
-        public Set<String> getMenuPermission(int auth)
+        public ArrayList<String> getMenuPermission(int auth)
         {
-            Set<String> perms = new HashSet<String>();
+            ArrayList<String> perms = new ArrayList<>();
             //管理员拥有所有权限
-//            if (user.isAdmin()) {
-//                perms.add("*:*:*");
-//            } else {
-               perms.addAll(menuService.selectMenuPermsByAuthenticate(auth));
-//            }
+                if (auth==1) {
+                    perms.add("*:*:*");
+                } else {
+                   perms.addAll(menuService.selectMenuPermsByAuthenticate(auth));
+                }
             return perms;
         }
     }

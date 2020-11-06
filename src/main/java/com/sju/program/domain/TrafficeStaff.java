@@ -1,6 +1,9 @@
 package com.sju.program.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -39,10 +42,23 @@ public class TrafficeStaff extends BaseUser
 
     private int authenticate;
 
+    private ArrayList<String> permissions;
+
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(ArrayList<String> permissions) {
+        this.permissions = permissions;
+    }
+
+
+    @Override
     public int getAuthenticate() {
         return authenticate;
     }
 
+    @Override
     public void setAuthenticate(int authenticate) {
         this.authenticate = authenticate;
     }
@@ -95,6 +111,11 @@ public class TrafficeStaff extends BaseUser
     public Date getTrafficUpdateFlag() 
     {
         return trafficUpdateFlag;
+    }
+
+    @Override
+    public Long getId() {
+        return trafficId;
     }
 
     @Override

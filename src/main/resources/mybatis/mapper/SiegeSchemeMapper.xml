@@ -54,6 +54,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSiegeSchemeVo"/>
         where ss_id = #{ssId}
     </select>
+
+    <select id="selectSiegeSchemeByBuilderId" parameterType="Long" resultMap="SiegeSchemeResult">
+   <include refid="selectSiegeSchemeVo"></include>
+    WHERE ss_builder_id=#{builderId}
+    </select>
+
+    <select id="selectPassSiegeScheme" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"></include>
+        WHERE ss_verify_flag="pass"
+    </select>
+
+    <select id="selectAllSiegeSchemeList" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"></include>
+    </select>
         
     <insert id="insertSiegeScheme" parameterType="SiegeScheme" useGeneratedKeys="true" keyProperty="ssId">
         insert into siege_scheme

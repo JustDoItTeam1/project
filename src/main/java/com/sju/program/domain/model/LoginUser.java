@@ -5,6 +5,8 @@ import com.sju.program.domain.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +69,7 @@ public class LoginUser implements UserDetails
     /**
      * 权限列表
      */
-    private Set<String> permissions;
+    private ArrayList<String> permissions;
 
     private String role;
 
@@ -79,11 +81,11 @@ public class LoginUser implements UserDetails
         this.role = role;
     }
 
-    public Set<String> getPermissions() {
+    public ArrayList<String> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<String> permissions) {
+    public void setPermissions(ArrayList<String> permissions) {
         this.permissions = permissions;
     }
 
@@ -130,23 +132,23 @@ public class LoginUser implements UserDetails
         this.menus = menus;
     }
 
-    public LoginUser(Admin user, Set<String> permissions)
+    public LoginUser(Admin user, ArrayList<String> permissions)
     {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Police police,Set<String> permissions){
+    public LoginUser(Police police,ArrayList<String> permissions){
         this.user=police;
         this.permissions=permissions;
     }
 
-    public LoginUser(Builder builder, Set<String> permissions){
+    public LoginUser(Builder builder, ArrayList<String> permissions){
         this.user=builder;
         this.permissions=permissions;
     }
 
-    public LoginUser(TrafficeStaff trafficeStaff, Set<String> permissions){
+    public LoginUser(TrafficeStaff trafficeStaff, ArrayList<String> permissions){
         this.user=trafficeStaff;
         this.permissions=permissions;
     }

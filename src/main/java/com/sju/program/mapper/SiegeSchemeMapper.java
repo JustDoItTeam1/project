@@ -1,7 +1,10 @@
 package com.sju.program.mapper;
 
 import java.util.List;
+import java.util.prefs.BackingStoreException;
+
 import com.sju.program.domain.SiegeScheme;
+import com.sju.program.domain.model.BaseUser;
 
 /**
  * 围蔽方案Mapper接口
@@ -26,6 +29,17 @@ public interface SiegeSchemeMapper
      * @return 围蔽方案集合
      */
     public List<SiegeScheme> selectSiegeSchemeList(SiegeScheme siegeScheme);
+
+
+    public List<SiegeScheme> selectSiegeSchemeByBuilderId(Long BuilderId);
+
+    public List<SiegeScheme> selectPassSiegeScheme();
+
+    public List<SiegeScheme> selectAllSiegeSchemeList();
+
+
+
+
 
     /**
      * 新增围蔽方案

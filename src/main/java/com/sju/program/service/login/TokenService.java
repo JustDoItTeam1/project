@@ -1,11 +1,10 @@
 package com.sju.program.service.login;
 
 import com.sju.program.constant.Constants;
-import com.sju.program.domain.Admin;
-import com.sju.program.domain.Builder;
-import com.sju.program.domain.Police;
-import com.sju.program.domain.TrafficeStaff;
+import com.sju.program.domain.*;
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.ISiegeSchemeService;
 import com.sju.program.utils.JwtUtils;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
@@ -19,8 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 //import com.qhw.demo.utils.ip.AddressUtils;
@@ -46,11 +44,34 @@ public class TokenService
     @Value("${token.expireTime}")
     private int expireTime;
 
+
     protected static final long MILLIS_SECOND = 1000;
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
+
+    @Autowired
+    ISiegeSchemeService siegeSchemeService;
+
+    public List<SiegeScheme> getLoginUserIdAndauthenticate(LoginUser loginUser){
+        List<SiegeScheme> list=null;
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
+        switch (baseUser.getAuthenticate()){
+            case 1:
+            case 3:
+                list=siegeSchemeService.selectAllSiegeSchemeList();
+                break;
+            case 4:
+                list= siegeSchemeService.selectSiegeSchemeByBuilderId(baseUser.getId());
+                break;
+            case 2:
+                list=siegeSchemeService.selectPassSiegeScheme();
+                break;
+
+        }
+        return list;
+    }
 
 
     /**
@@ -74,13 +95,18 @@ public class TokenService
             String userName=(String)claims.get("userName");
             String delete_flag=(String)claims.get("delete_flag");
             Object authenticate=claims.get("authenticate");
+            System.out.println(claims.get("permissions").getClass());
+            ArrayList<String> permissions=(ArrayList<String>)claims.get("permissions");
+            System.out.println(permissions.toString());
             if(Integer.valueOf(String.valueOf(authenticate))==1){
                 Admin user=new Admin();
                 user.setAdminId(Long.valueOf(String.valueOf(userId)) );
                 user.setAdminUsername(userName);
                 user.setAdminDeleteFlag(delete_flag);
                 user.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+               // user.setPermissions(permissions);
                 LoginUser loginUser=new LoginUser(user);
+                loginUser.setPermissions(permissions);
                 return loginUser;
             }
             if(Integer.valueOf(String.valueOf(authenticate))==2){
@@ -89,7 +115,9 @@ public class TokenService
                 police.setPoliceName(userName);
                 police.setPoliceDeleteFlag(delete_flag);
                 police.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
+                police.setPermissions(permissions);
                 LoginUser loginUser=new LoginUser(police);
+                loginUser.setPermissions(permissions);
                 return loginUser;
             }
             if(Integer.valueOf(String.valueOf(authenticate))==3){
@@ -97,8 +125,10 @@ public class TokenService
                 trafficeStaff.setTrafficId(Long.valueOf(String.valueOf(userId)) );
                 trafficeStaff.setTrafficName(userName);
                 trafficeStaff.setTrafficDeleteFlag(delete_flag);
+                trafficeStaff.setPermissions(permissions);
                 trafficeStaff.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
                 LoginUser loginUser=new LoginUser(trafficeStaff);
+                loginUser.setPermissions(permissions);
                 return loginUser;
             }
             if(Integer.valueOf(String.valueOf(authenticate))==4){
@@ -119,8 +149,10 @@ public class TokenService
                 builder.setBuilderPhone(builder_phone);
                 builder.setBuilderAddress(builder_address);
                 builder.setBuilderEnterpriseNumber(builder_enterprise_number);
+                builder.setPermissions(permissions);
                // builder.getBuilderUpdateFlag(builder_update_flag);
                 LoginUser loginUser=new LoginUser(builder);
+                loginUser.setPermissions(permissions);
                 return loginUser;
             }
 

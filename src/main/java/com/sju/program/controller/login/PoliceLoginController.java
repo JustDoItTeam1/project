@@ -27,10 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户1登录验证
@@ -91,6 +88,7 @@ public class PoliceLoginController
         playload.put("userId", police.getPoliceId());
         playload.put("userName", police.getPoliceName());
         playload.put("delete_flag", police.getPoliceDeleteFlag());
+        playload.put("permissions", loginUser.getPermissions());
     }catch (ClassCastException e){
         return AjaxResult.error("用户验证失败");
     }
@@ -110,7 +108,7 @@ public class PoliceLoginController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         Police police=(Police) loginUser.getUser();
         // 权限集合
-        Set<String> permissions = permissionService.getMenuPermission(police.getAuthenticate());
+        ArrayList<String> permissions = permissionService.getMenuPermission(police.getAuthenticate());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", police);
         ajax.put("permissions",permissions);

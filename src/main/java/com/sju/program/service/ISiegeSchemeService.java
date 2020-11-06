@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.SiegeScheme;
+import com.sju.program.domain.model.BaseUser;
 
 /**
  * 围蔽方案Service接口
@@ -19,13 +20,24 @@ public interface ISiegeSchemeService
      */
     public SiegeScheme selectSiegeSchemeById(Long ssId);
 
+
+    public List<SiegeScheme> selectSiegeSchemeByBuilderId(Long ssId);
+
+
+    public List<SiegeScheme> selectAllSiegeSchemeList();
+
+
+    public List<SiegeScheme> selectPassSiegeScheme();
+
+
+
     /**
      * 查询围蔽方案列表
      * 
      * @param siegeScheme 围蔽方案
      * @return 围蔽方案集合
      */
-    public List<SiegeScheme> selectSiegeSchemeList(SiegeScheme siegeScheme);
+    public List<SiegeScheme> selectSiegeSchemeList(BaseUser baseUser);
 
     /**
      * 新增围蔽方案

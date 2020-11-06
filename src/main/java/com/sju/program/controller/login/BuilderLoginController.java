@@ -29,10 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户1登录验证
@@ -101,6 +98,7 @@ public class BuilderLoginController
             playload.put("builder_enterprise_number", builder.getBuilderEnterpriseNumber());
             playload.put("builder_update_flag", builder.getBuilderUpdateFlag());
             playload.put("delete_flag", builder.getBuilderDeleteFlag());
+            playload.put("permissions", loginUser.getPermissions());
         }catch (ClassCastException e){
             return AjaxResult.error("用户验证失败");
 }
@@ -120,7 +118,7 @@ public class BuilderLoginController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         Builder builder=(Builder) loginUser.getUser();
         // 权限集合
-        Set<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
+        ArrayList<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", builder);
         ajax.put("permissions",permissions);

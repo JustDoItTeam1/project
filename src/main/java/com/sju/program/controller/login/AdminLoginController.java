@@ -28,10 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户1登录验证
@@ -87,6 +84,8 @@ public class AdminLoginController
         }
         //LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //System.out.println(authentication);
+        ArrayList<String> arrayList=new ArrayList<String>();
+        arrayList.add("*:*:*");
         LoginUser loginUser=(LoginUser) authentication.getPrincipal();
         try {
         Admin admin=(Admin) loginUser.getUser();
@@ -96,6 +95,7 @@ public class AdminLoginController
         playload.put("userId",admin.getAdminId());
         playload.put("userName",admin.getAdminUsername());
         playload.put("delete_flag",admin.getAdminDeleteFlag());
+        playload.put("permissions",arrayList);
         }catch (ClassCastException e){
             return AjaxResult.error("用户验证失败");
         }
@@ -121,7 +121,9 @@ public class AdminLoginController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         Admin admin=(Admin) loginUser.getUser();
         // 权限集合
-        String permissions = "*:*:";
+        ArrayList<String> permissions=new ArrayList<>();
+        permissions.add("*:*:*");
+        admin.setPermissions(permissions);
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", admin);
         ajax.put("permissions",permissions);
