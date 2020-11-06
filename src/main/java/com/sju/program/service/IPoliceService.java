@@ -18,6 +18,15 @@ public interface IPoliceService
      * @return 交警人员
      */
     public Police selectPoliceById(Long policeId);
+    /**
+     * 查询交警人员
+     *
+     * @param username 交警人员名称
+     * @return 交警人员
+     */
+    public Police selectUserByUserName(String username);
+
+
 
     /**
      * 查询交警人员列表

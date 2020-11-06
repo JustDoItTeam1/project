@@ -20,6 +20,15 @@ public interface TrafficeStaffMapper
     public TrafficeStaff selectTrafficeStaffById(Long trafficId);
 
     /**
+     * 查询交管人员
+     *
+     * @param trafficUsername 交管人员名称
+     * @return 交管人员
+     */
+    public TrafficeStaff selectTrafficeStaffByUsername(String trafficUsername);
+
+
+    /**
      * 查询交管人员列表
      * 
      * @param trafficeStaff 交管人员

@@ -31,6 +31,11 @@ public class PoliceServiceImpl implements IPoliceService
         return policeMapper.selectPoliceById(policeId);
     }
 
+    @Override
+    public Police selectUserByUserName(String username) {
+        return policeMapper.selectUserByUserName(username);
+    }
+
     /**
      * 查询交警人员列表
      * 

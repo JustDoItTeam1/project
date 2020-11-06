@@ -1,13 +1,14 @@
 package com.sju.program.controller.login;
 
+
 import com.sju.program.constant.Constants;
-import com.sju.program.domain.Admin;
-import com.sju.program.domain.Menu;
-import com.sju.program.domain.Role;
+import com.sju.program.domain.*;
 import com.sju.program.domain.Admin;
 import com.sju.program.domain.model.LoginBody;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
+import com.sju.program.security.token.BuilderUsernamePasswordAuthticationToekn;
+import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
 import com.sju.program.service.*;
 import com.sju.program.service.login.LoginService;
 import com.sju.program.service.IMenuService;
@@ -36,7 +37,7 @@ import java.util.*;
  */
 @Api(tags = "登录接口")
 @RestController
-public class AdminLoginController
+public class BuilderLoginController
 {
     @Autowired
     private LoginService loginService;
@@ -66,7 +67,7 @@ public class AdminLoginController
      * @return 结果
      */
     @ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
-    @PostMapping("/login/admin")
+    @PostMapping("/login/builder")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
         AjaxResult ajax=AjaxResult.success();
@@ -76,58 +77,52 @@ public class AdminLoginController
         {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginBody.getUsername(), loginBody.getPassword()));
+                    .authenticate(new BuilderUsernamePasswordAuthticationToekn(loginBody.getUsername(), loginBody.getPassword()));
         }
         catch (Exception e)
         {
-            return AjaxResult.error("认证出错");
-        }
-        //LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        //System.out.println(authentication);
-        ArrayList<String> arrayList=new ArrayList<String>();
-        arrayList.add("*:*:*");
-        LoginUser loginUser=(LoginUser) authentication.getPrincipal();
-        try {
-        Admin admin=(Admin) loginUser.getUser();
-        if (admin==null||admin.getAdminDeleteFlag().equals("del")){
-             return AjaxResult.error("用户不存在");
-        }
-        playload.put("userId",admin.getAdminId());
-        playload.put("userName",admin.getAdminUsername());
-        playload.put("delete_flag",admin.getAdminDeleteFlag());
-        playload.put("permissions",arrayList);
-        }catch (ClassCastException e){
             return AjaxResult.error("用户验证失败");
         }
-        playload.put("authenticate",1);//管理员权限标识为1
+        try {
+            LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+            Builder builder = (Builder) loginUser.getUser();
+            if (builder == null || builder.getBuilderDeleteFlag().equals("del")) {
+                return AjaxResult.error("用户不存在");
+            }
+            playload.put("userId", builder.getBuilderId());
+            playload.put("userName", builder.getBuilderName());
+            playload.put("builder_username", builder.getBuilderUsername());
+            playload.put("builder_corporate", builder.getBuilderCorporate());
+            playload.put("builder_phone", builder.getBuilderPhone());
+            playload.put("builder_address", builder.getBuilderAddress());
+            playload.put("builder_enterprise_number", builder.getBuilderEnterpriseNumber());
+            playload.put("builder_update_flag", builder.getBuilderUpdateFlag());
+            playload.put("delete_flag", builder.getBuilderDeleteFlag());
+            playload.put("permissions", loginUser.getPermissions());
+        }catch (ClassCastException e){
+            return AjaxResult.error("用户验证失败");
+}
+        playload.put("authenticate",4);
         String token=JwtUtils.getToken(playload);
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
-
-//    @GetMapping("/login/info")
-//    public User getLoginInfo(Authentication authentication){
-//        return (User)authentication.getPrincipal();
-//    }
-
     /**
      * 获取用户信息
      *
      * @return 用户信息
      */
-    @GetMapping("/login/getAdminInfo")
+    @GetMapping("/login/getBuilderInfo")
     public AjaxResult getInfo()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        Admin admin=(Admin) loginUser.getUser();
+        Builder builder=(Builder) loginUser.getUser();
         // 权限集合
-        ArrayList<String> permissions=new ArrayList<>();
-        permissions.add("*:*:*");
-        admin.setPermissions(permissions);
+        ArrayList<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", admin);
+        ajax.put("user", builder);
         ajax.put("permissions",permissions);
-      //  ajax.put("roles", roles);
+        //  ajax.put("roles", roles);
         //ajax.put("departments", departments);
         return ajax;
     }
@@ -137,16 +132,18 @@ public class AdminLoginController
      *
      * @return 菜单路由信息
      */
-   // @PreAuthorize("@ss.hasPermi()")
-    @GetMapping("/login/getAdminRouters")
+    // @PreAuthorize("@ss.hasPermi()")
+    @GetMapping("/login/getBuilderRouters")
     public AjaxResult getRouters()
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         if(loginUser==null){
             return AjaxResult.error("用户不存在");
         }
-        List<Menu> menus = menuService.selectAllMenu();
+        List<Menu> menus = menuService.selectMenusByAuthenticate(((Builder)loginUser.getUser()).getAuthenticate());
         return AjaxResult.success(menus);
     }
 }
+
+
 

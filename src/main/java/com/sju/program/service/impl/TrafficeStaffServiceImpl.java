@@ -31,6 +31,11 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
         return trafficeStaffMapper.selectTrafficeStaffById(trafficId);
     }
 
+    @Override
+    public TrafficeStaff selectTrafficeStaffByUsername(String trafficUseranme) {
+        return trafficeStaffMapper.selectTrafficeStaffByUsername(trafficUseranme);
+    }
+
     /**
      * 查询交管人员列表
      * 

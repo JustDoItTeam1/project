@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.SiegeSchemeMapper">
+    
+    <resultMap type="SiegeScheme" id="SiegeSchemeResult">
+        <result property="ssId"    column="ss_id"    />
+        <result property="ssStatus"    column="ss_status"    />
+        <result property="ssLane"    column="ss_lane"    />
+        <result property="ssStage"    column="ss_stage"    />
+        <result property="ssStartTime"    column="ss_start_time"    />
+        <result property="ssEndTime"    column="ss_end_time"    />
+        <result property="ssRange"    column="ss_range"    />
+        <result property="ssProjectId"    column="ss_project_id"    />
+        <result property="ssProperties"    column="ss_properties"    />
+        <result property="ssSuggessions"    column="ss_suggessions"    />
+        <result property="ssFilePath"    column="ss_file_path"    />
+        <result property="ssBuilderId"    column="ss_builder_id"    />
+        <result property="ssTrafficStaffId"    column="ss_traffic_staff_id"    />
+        <result property="ssDeleteFlag"    column="ss_delete_flag"    />
+        <result property="ssVerifyFlag"    column="ss_verify_flag"    />
+        <result property="ssVerifyDate"    column="ss_verify_date"    />
+        <result property="ssUpdateFlag"    column="ss_update_flag"    />
+    </resultMap>
+
+    <sql id="selectSiegeSchemeVo">
+        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date, ss_update_flag from siege_scheme
+    </sql>
+
+    <select id="selectSiegeSchemeList" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"/>
+        <where>  
+            <if test="ssStatus != null  and ssStatus != ''"> and ss_status = #{ssStatus}</if>
+            <if test="ssLane != null  and ssLane != ''"> and ss_lane = #{ssLane}</if>
+            <if test="ssStage != null  and ssStage != ''"> and ss_stage = #{ssStage}</if>
+            <if test="ssStartTime != null "> and ss_start_time = #{ssStartTime}</if>
+            <if test="ssEndTime != null "> and ss_end_time = #{ssEndTime}</if>
+            <if test="ssRange != null  and ssRange != ''"> and ss_range = #{ssRange}</if>
+            <if test="ssProjectId != null "> and ss_project_id = #{ssProjectId}</if>
+            <if test="ssProperties != null  and ssProperties != ''"> and ss_properties = #{ssProperties}</if>
+            <if test="ssSuggessions != null  and ssSuggessions != ''"> and ss_suggessions = #{ssSuggessions}</if>
+            <if test="ssFilePath != null  and ssFilePath != ''"> and ss_file_path = #{ssFilePath}</if>
+            <if test="ssBuilderId != null "> and ss_builder_id = #{ssBuilderId}</if>
+            <if test="ssTrafficStaffId != null "> and ss_traffic_staff_id = #{ssTrafficStaffId}</if>
+            <if test="ssDeleteFlag != null  and ssDeleteFlag != ''"> and ss_delete_flag = #{ssDeleteFlag}</if>
+            <if test="ssVerifyFlag != null  and ssVerifyFlag != ''"> and ss_verify_flag = #{ssVerifyFlag}</if>
+            <if test="ssVerifyDate != null "> and ss_verify_date = #{ssVerifyDate}</if>
+            <if test="ssUpdateFlag != null "> and ss_update_flag = #{ssUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectSiegeSchemeById" parameterType="Long" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"/>
+        where ss_id = #{ssId}
+    </select>
+
+    <select id="selectSiegeSchemeByBuilderId" parameterType="Long" resultMap="SiegeSchemeResult">
+   <include refid="selectSiegeSchemeVo"></include>
+    WHERE ss_builder_id=#{builderId}
+    </select>
+
+    <select id="selectPassSiegeScheme" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"></include>
+        WHERE ss_verify_flag="pass"
+    </select>
+
+    <select id="selectAllSiegeSchemeList" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo"></include>
+    </select>
+        
+    <insert id="insertSiegeScheme" parameterType="SiegeScheme" useGeneratedKeys="true" keyProperty="ssId">
+        insert into siege_scheme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ssStatus != null">ss_status,</if>
+            <if test="ssLane != null">ss_lane,</if>
+            <if test="ssStage != null">ss_stage,</if>
+            <if test="ssStartTime != null">ss_start_time,</if>
+            <if test="ssEndTime != null">ss_end_time,</if>
+            <if test="ssRange != null">ss_range,</if>
+            <if test="ssProjectId != null">ss_project_id,</if>
+            <if test="ssProperties != null">ss_properties,</if>
+            <if test="ssSuggessions != null">ss_suggessions,</if>
+            <if test="ssFilePath != null">ss_file_path,</if>
+            <if test="ssBuilderId != null">ss_builder_id,</if>
+            <if test="ssTrafficStaffId != null">ss_traffic_staff_id,</if>
+            <if test="ssDeleteFlag != null">ss_delete_flag,</if>
+            <if test="ssVerifyFlag != null">ss_verify_flag,</if>
+            <if test="ssVerifyDate != null">ss_verify_date,</if>
+            <if test="ssUpdateFlag != null">ss_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ssStatus != null">#{ssStatus},</if>
+            <if test="ssLane != null">#{ssLane},</if>
+            <if test="ssStage != null">#{ssStage},</if>
+            <if test="ssStartTime != null">#{ssStartTime},</if>
+            <if test="ssEndTime != null">#{ssEndTime},</if>
+            <if test="ssRange != null">#{ssRange},</if>
+            <if test="ssProjectId != null">#{ssProjectId},</if>
+            <if test="ssProperties != null">#{ssProperties},</if>
+            <if test="ssSuggessions != null">#{ssSuggessions},</if>
+            <if test="ssFilePath != null">#{ssFilePath},</if>
+            <if test="ssBuilderId != null">#{ssBuilderId},</if>
+            <if test="ssTrafficStaffId != null">#{ssTrafficStaffId},</if>
+            <if test="ssDeleteFlag != null">#{ssDeleteFlag},</if>
+            <if test="ssVerifyFlag != null">#{ssVerifyFlag},</if>
+            <if test="ssVerifyDate != null">#{ssVerifyDate},</if>
+            <if test="ssUpdateFlag != null">#{ssUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSiegeScheme" parameterType="SiegeScheme">
+        update siege_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ssStatus != null">ss_status = #{ssStatus},</if>
+            <if test="ssLane != null">ss_lane = #{ssLane},</if>
+            <if test="ssStage != null">ss_stage = #{ssStage},</if>
+            <if test="ssStartTime != null">ss_start_time = #{ssStartTime},</if>
+            <if test="ssEndTime != null">ss_end_time = #{ssEndTime},</if>
+            <if test="ssRange != null">ss_range = #{ssRange},</if>
+            <if test="ssProjectId != null">ss_project_id = #{ssProjectId},</if>
+            <if test="ssProperties != null">ss_properties = #{ssProperties},</if>
+            <if test="ssSuggessions != null">ss_suggessions = #{ssSuggessions},</if>
+            <if test="ssFilePath != null">ss_file_path = #{ssFilePath},</if>
+            <if test="ssBuilderId != null">ss_builder_id = #{ssBuilderId},</if>
+            <if test="ssTrafficStaffId != null">ss_traffic_staff_id = #{ssTrafficStaffId},</if>
+            <if test="ssDeleteFlag != null">ss_delete_flag = #{ssDeleteFlag},</if>
+            <if test="ssVerifyFlag != null">ss_verify_flag = #{ssVerifyFlag},</if>
+            <if test="ssVerifyDate != null">ss_verify_date = #{ssVerifyDate},</if>
+            <if test="ssUpdateFlag != null">ss_update_flag = #{ssUpdateFlag},</if>
+        </trim>
+        where ss_id = #{ssId}
+    </update>
+
+    <delete id="deleteSiegeSchemeById" parameterType="Long">
+        delete from siege_scheme where ss_id = #{ssId}
+    </delete>
+
+    <delete id="deleteSiegeSchemeByIds" parameterType="String">
+        delete from siege_scheme where ss_id in 
+        <foreach item="ssId" collection="array" open="(" separator="," close=")">
+            #{ssId}
+        </foreach>
+    </delete>
+    
+</mapper>

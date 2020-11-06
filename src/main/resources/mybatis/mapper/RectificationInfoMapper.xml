@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.RectificationInfoMapper">
+    
+    <resultMap type="RectificationInfo" id="RectificationInfoResult">
+        <result property="riId"    column="ri_id"    />
+        <result property="riProjectId"    column="ri_project_id"    />
+        <result property="riDate"    column="ri_date"    />
+        <result property="riRequirements"    column="ri_requirements"    />
+        <result property="riPoliceId"    column="ri_police_id"    />
+        <result property="riPhotoPath"    column="ri_photo_path"    />
+        <result property="riStatus"    column="ri_status"    />
+        <result property="riDeleteFlag"    column="ri_delete_flag"    />
+        <result property="riUpdateFlag"    column="ri_update_flag"    />
+    </resultMap>
+
+    <sql id="selectRectificationInfoVo">
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+    </sql>
+
+    <select id="selectRectificationInfoList" parameterType="RectificationInfo" resultMap="RectificationInfoResult">
+        <include refid="selectRectificationInfoVo"/>
+        <where>  
+            <if test="riProjectId != null "> and ri_project_id = #{riProjectId}</if>
+            <if test="riDate != null "> and ri_date = #{riDate}</if>
+            <if test="riRequirements != null  and riRequirements != ''"> and ri_requirements = #{riRequirements}</if>
+            <if test="riPoliceId != null "> and ri_police_id = #{riPoliceId}</if>
+            <if test="riPhotoPath != null  and riPhotoPath != ''"> and ri_photo_path = #{riPhotoPath}</if>
+            <if test="riStatus != null  and riStatus != ''"> and ri_status = #{riStatus}</if>
+            <if test="riDeleteFlag != null  and riDeleteFlag != ''"> and ri_delete_flag = #{riDeleteFlag}</if>
+            <if test="riUpdateFlag != null "> and ri_update_flag = #{riUpdateFlag}</if>
+        </where>
+    </select>
+
+    <!--<select id="selectRectificationInfoList" resultMap="RectificationInfoResult">-->
+        <!--<include refid="selectRectificationInfoVo"></include>-->
+    <!--</select>-->
+
+    <select id="selectRectificationInfoByBuilderId" parameterType="Long" resultMap="RectificationInfoResult">
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+        LEFT JOIN project p on p.project_id=rectification_info.ri_project_id
+        LEFT JOIN builder b ON p.project_builder_id = b.builder_id
+        WHERE b.builder_id=#{builderId}
+    </select>
+    
+    <select id="selectRectificationInfoById" parameterType="Long" resultMap="RectificationInfoResult">
+        <include refid="selectRectificationInfoVo"/>
+        where ri_id = #{riId}
+    </select>
+        
+    <insert id="insertRectificationInfo" parameterType="RectificationInfo" useGeneratedKeys="true" keyProperty="riId">
+        insert into rectification_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="riProjectId != null">ri_project_id,</if>
+            <if test="riDate != null">ri_date,</if>
+            <if test="riRequirements != null">ri_requirements,</if>
+            <if test="riPoliceId != null">ri_police_id,</if>
+            <if test="riPhotoPath != null">ri_photo_path,</if>
+            <if test="riStatus != null">ri_status,</if>
+            <if test="riDeleteFlag != null">ri_delete_flag,</if>
+            <if test="riUpdateFlag != null">ri_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="riProjectId != null">#{riProjectId},</if>
+            <if test="riDate != null">#{riDate},</if>
+            <if test="riRequirements != null">#{riRequirements},</if>
+            <if test="riPoliceId != null">#{riPoliceId},</if>
+            <if test="riPhotoPath != null">#{riPhotoPath},</if>
+            <if test="riStatus != null">#{riStatus},</if>
+            <if test="riDeleteFlag != null">#{riDeleteFlag},</if>
+            <if test="riUpdateFlag != null">#{riUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRectificationInfo" parameterType="RectificationInfo">
+        update rectification_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="riProjectId != null">ri_project_id = #{riProjectId},</if>
+            <if test="riDate != null">ri_date = #{riDate},</if>
+            <if test="riRequirements != null">ri_requirements = #{riRequirements},</if>
+            <if test="riPoliceId != null">ri_police_id = #{riPoliceId},</if>
+            <if test="riPhotoPath != null">ri_photo_path = #{riPhotoPath},</if>
+            <if test="riStatus != null">ri_status = #{riStatus},</if>
+            <if test="riDeleteFlag != null">ri_delete_flag = #{riDeleteFlag},</if>
+            <if test="riUpdateFlag != null">ri_update_flag = #{riUpdateFlag},</if>
+        </trim>
+        where ri_id = #{riId}
+    </update>
+
+    <delete id="deleteRectificationInfoById" parameterType="Long">
+        delete from rectification_info where ri_id = #{riId}
+    </delete>
+
+    <delete id="deleteRectificationInfoByIds" parameterType="String">
+        delete from rectification_info where ri_id in 
+        <foreach item="riId" collection="array" open="(" separator="," close=")">
+            #{riId}
+        </foreach>
+    </delete>
+    
+</mapper>

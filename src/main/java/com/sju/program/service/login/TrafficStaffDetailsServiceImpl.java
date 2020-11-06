@@ -1,13 +1,11 @@
 package com.sju.program.service.login;
 
-import com.sju.program.domain.Admin;
 import com.sju.program.domain.Builder;
+import com.sju.program.domain.TrafficeStaff;
 import com.sju.program.domain.model.LoginUser;
-import com.sju.program.enums.UserStatus;
-import com.sju.program.exception.BaseException;
 import com.sju.program.service.IBuilderService;
+import com.sju.program.service.ITrafficeStaffService;
 import com.sju.program.utils.StringUtils;
-import com.sju.program.service.IAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * 用户验证处理
- *
- * @author ruoyi
- */
-@Service("BuilderDetailServiceImpl")
-public class BuilderDetailServiceImpl implements UserDetailsService
+@Service("TrafficStaffDetailsServiceImpl")
+public class TrafficStaffDetailsServiceImpl implements UserDetailsService
 {
     private static final Logger log = LoggerFactory.getLogger(AdminDetailsServiceImpl.class);
 
     @Autowired
-    private IBuilderService iBuilderService;
+    private ITrafficeStaffService iTrafficeStaffService;
 
     @Autowired
     private SysPermissionService permissionService;
@@ -36,8 +29,8 @@ public class BuilderDetailServiceImpl implements UserDetailsService
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
         //Admin admin = iAdminService.selectUserByUserName(username);
-        Builder builder =iBuilderService.selectBuilderByUsername(username);
-        if (StringUtils.isNull(builder))
+        TrafficeStaff trafficeStaff =iTrafficeStaffService.selectTrafficeStaffByUsername(username);
+        if (StringUtils.isNull(trafficeStaff))
         {
             log.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
@@ -53,12 +46,11 @@ public class BuilderDetailServiceImpl implements UserDetailsService
 //            throw new BaseException("对不起，您的账号：" + username + " 已停用");
 //        }
 
-        return createLoginUser(builder);
+        return createLoginUser(trafficeStaff);
     }
 
-    public UserDetails createLoginUser(Builder builder)
+    public UserDetails createLoginUser(TrafficeStaff trafficeStaff)
     {
-        return new LoginUser(builder, permissionService.getMenuPermission(4));
+        return new LoginUser(trafficeStaff, permissionService.getMenuPermission(3));
     }
 }
-

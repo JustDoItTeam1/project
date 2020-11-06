@@ -31,6 +31,11 @@ public class BuilderServiceImpl implements IBuilderService
         return builderMapper.selectBuilderById(builderId);
     }
 
+    @Override
+    public Builder selectBuilderByUsername(String username) {
+        return builderMapper.selectBuilderByUsername(username);
+    }
+
     /**
      * 查询施工单位列表
      * 

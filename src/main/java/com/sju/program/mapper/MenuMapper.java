@@ -1,6 +1,8 @@
 package com.sju.program.mapper;
 
 import java.util.List;
+import java.util.Set;
+
 import com.sju.program.domain.Menu;
 
 /**
@@ -27,6 +29,11 @@ public interface MenuMapper
      */
     public List<Menu> selectMenuList(Menu menu);
 
+    public List<Menu> selectAllMenu();
+
+    public Set<String> selectMenuPermsByAuthenticate(int auth);
+
+    public List<Menu> selectMenusByAuthenticate(int auth);
     /**
      * 新增菜单
      * 

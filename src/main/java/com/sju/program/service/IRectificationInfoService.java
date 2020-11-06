@@ -19,6 +19,10 @@ public interface IRectificationInfoService
      */
     public RectificationInfo selectRectificationInfoById(Long riId);
 
+    public List<RectificationInfo> selectRectificationInfoByBuilderId(Long riId);
+
+
+
     /**
      * 查询整改信息列表
      * 
@@ -26,6 +30,8 @@ public interface IRectificationInfoService
      * @return 整改信息集合
      */
     public List<RectificationInfo> selectRectificationInfoList(RectificationInfo rectificationInfo);
+
+    public List<RectificationInfo> selectRectificationInfoList();
 
     /**
      * 新增整改信息

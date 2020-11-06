@@ -1,7 +1,11 @@
 package com.sju.program.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sju.program.domain.model.BaseUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -12,7 +16,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class Police extends BaseEntity
+public class Police  extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +40,32 @@ public class Police extends BaseEntity
     @Excel(name = "更新标识", width = 30, dateFormat = "yyyy-MM-dd")
     private Date policeUpdateFlag;
 
+    private int authenticate;
+
+    private ArrayList<String> permissions;
+
+    public ArrayList<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(ArrayList<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    @Override
+    public int getAuthenticate() {
+        return authenticate;
+    }
+
+    @Override
+    public void setAuthenticate(int authenticate) {
+        this.authenticate = authenticate;
+    }
+
+    @Override
+    public String getUserPassword(){
+        return  policePassword;
+    }
     public void setPoliceId(Long policeId) 
     {
         this.policeId = policeId;
@@ -80,6 +110,11 @@ public class Police extends BaseEntity
     public Date getPoliceUpdateFlag() 
     {
         return policeUpdateFlag;
+    }
+
+    @Override
+    public Long getId() {
+        return policeId;
     }
 
     @Override

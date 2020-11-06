@@ -14,7 +14,7 @@ public class JwtUtils {
      */
     public static String  getToken(Map<String,Object> claims){
         Calendar calendar=Calendar.getInstance();
-        calendar.add(Calendar.DATE,1);
+        calendar.add(Calendar.DATE,3);
         String token = Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, sing).compact();

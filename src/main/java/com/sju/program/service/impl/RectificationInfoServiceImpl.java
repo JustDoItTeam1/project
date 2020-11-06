@@ -43,6 +43,16 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
         return rectificationInfoMapper.selectRectificationInfoList(rectificationInfo);
     }
 
+    @Override
+    public List<RectificationInfo> selectRectificationInfoByBuilderId(Long riId) {
+        return rectificationInfoMapper.selectRectificationInfoByBuilderId(riId);
+    }
+
+    @Override
+    public List<RectificationInfo> selectRectificationInfoList() {
+        return rectificationInfoMapper.selectRectificationInfoList();
+    }
+
     /**
      * 新增整改信息
      * 

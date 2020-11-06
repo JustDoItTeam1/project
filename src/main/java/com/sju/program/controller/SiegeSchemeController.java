@@ -1,6 +1,11 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.domain.model.BaseUser;
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +36,9 @@ public class SiegeSchemeController extends BaseController
     @Autowired
     private ISiegeSchemeService siegeSchemeService;
 
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * 查询围蔽方案列表
      */
@@ -39,7 +47,8 @@ public class SiegeSchemeController extends BaseController
     public TableDataInfo list(SiegeScheme siegeScheme)
     {
         startPage();
-        List<SiegeScheme> list = siegeSchemeService.selectSiegeSchemeList(siegeScheme);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
         return getDataTable(list);
     }
 
@@ -59,7 +68,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 获取围蔽方案详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:scheme:query')")
+    //@PreAuthorize("@ss.hasPermi('program:scheme:query')")
     @GetMapping(value = "/{ssId}")
     public AjaxResult getInfo(@PathVariable("ssId") Long ssId)
     {

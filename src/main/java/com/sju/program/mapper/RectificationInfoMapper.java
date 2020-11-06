@@ -27,6 +27,13 @@ public interface RectificationInfoMapper
      */
     public List<RectificationInfo> selectRectificationInfoList(RectificationInfo rectificationInfo);
 
+    public List<RectificationInfo> selectRectificationInfoList();
+
+    public List<RectificationInfo> selectRectificationInfoByBuilderId(Long builderId);
+
+
+
+
     /**
      * 新增整改信息
      * 

@@ -31,6 +31,11 @@ public class AdminServiceImpl implements IAdminService
         return adminMapper.selectAdminById(adminId);
     }
 
+    @Override
+    public Admin selectAdminByUsername(String adminUsername) {
+        return adminMapper.selectAdminByUsername(adminUsername);
+    }
+
     /**
      * 查询管理员账户列表
      * 

@@ -49,10 +49,10 @@ public class TrafficeStaffController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('program:staff:export')")
 //    @Log(title = "交管人员", businessType = BusinessType.EXPORT)
 //    @GetMapping("/export")
-//    public AjaxResult export(TrafficeStaff trafficeStaff)
+//    public AjaxResult export(TrafficeStaffLoginController trafficeStaff)
 //    {
-//        List<TrafficeStaff> list = trafficeStaffService.selectTrafficeStaffList(trafficeStaff);
-//        ExcelUtil<TrafficeStaff> util = new ExcelUtil<TrafficeStaff>(TrafficeStaff.class);
+//        List<TrafficeStaffLoginController> list = trafficeStaffService.selectTrafficeStaffList(trafficeStaff);
+//        ExcelUtil<TrafficeStaffLoginController> util = new ExcelUtil<TrafficeStaffLoginController>(TrafficeStaffLoginController.class);
 //        return util.exportExcel(list, "staff");
 //    }
 

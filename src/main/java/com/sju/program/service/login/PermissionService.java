@@ -5,6 +5,8 @@ import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Set;
 import org.springframework.util.CollectionUtils;
 
@@ -42,6 +44,7 @@ public class PermissionService
             return false;
         }
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        System.out.println(loginUser.getPermissions());
         if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getPermissions()))
         {
             return false;
@@ -77,7 +80,7 @@ public class PermissionService
         {
             return false;
         }
-        Set<String> authorities = loginUser.getPermissions();
+        ArrayList<String> authorities = loginUser.getPermissions();
         for (String permission : permissions.split(PERMISSION_DELIMETER))
         {
             if (permission != null && hasPermissions(authorities, permission))
@@ -163,7 +166,7 @@ public class PermissionService
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
-    private boolean hasPermissions(Set<String> permissions, String permission)
+    private boolean hasPermissions(ArrayList<String> permissions, String permission)
     {
         return permissions.contains(ALL_PERMISSION) || permissions.contains(StringUtils.trim(permission));
     }
