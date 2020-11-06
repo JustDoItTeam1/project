@@ -25,7 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectList" parameterType="Project" resultMap="ProjectResult">
         <include refid="selectProjectVo"/>
-        <where>  
+        where project_delete_flag!=1
+        <!--<where>
+        <where>
             <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
             <if test="projectLocation != null  and projectLocation != ''"> and project_location = #{projectLocation}</if>
             <if test="projectLongLat != null  and projectLongLat != ''"> and project_long_lat = #{projectLongLat}</if>
@@ -37,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectFinishedFlag != null  and projectFinishedFlag != ''"> and project_finished_flag = #{projectFinishedFlag}</if>
             <if test="projectDeleteFlag != null  and projectDeleteFlag != ''"> and project_delete_flag = #{projectDeleteFlag}</if>
             <if test="projectUpdateFlag != null "> and project_update_flag = #{projectUpdateFlag}</if>
-        </where>
+        </where>-->
     </select>
     
     <select id="selectProjectById" parameterType="Long" resultMap="ProjectResult">
@@ -93,15 +95,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_id = #{projectId}
     </update>
 
+    <update id="deleteProjectById" parameterType="Long">
+        update project SET project_delete_flag = 1
+        where project_id = #{projectId}
+    </update>
+<!--
+    <delete id="deleteProjectById" parameterType="Long">
+        delete from project where project_id = #{projectId}
+    </delete>-->
+
+    <update id="deleteProjectByIds" parameterType="String">
+        UPDATE project SET project_delete_flag = 1 where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </update>
     <delete id="deleteProjectById" parameterType="Long">
         delete from project where project_id = #{projectId}
     </delete>
 
     <delete id="deleteProjectByIds" parameterType="String">
-        delete from project where project_id in 
+        delete from project where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
     </delete>
-    
+
 </mapper>

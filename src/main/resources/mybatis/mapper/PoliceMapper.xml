@@ -18,12 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectPoliceList" parameterType="Police" resultMap="PoliceResult">
         <include refid="selectPoliceVo"/>
-        <where>  
+        where police_delete_flag != 1
+        <!--<where>
+        <where>
             <if test="policeName != null  and policeName != ''"> and police_name like concat('%', #{policeName}, '%')</if>
             <if test="policePassword != null  and policePassword != ''"> and police_password = #{policePassword}</if>
             <if test="policeDeleteFlag != null  and policeDeleteFlag != ''"> and police_delete_flag = #{policeDeleteFlag}</if>
             <if test="policeUpdateFlag != null "> and police_update_flag = #{policeUpdateFlag}</if>
-        </where>
+        </where>-->
     </select>
     
     <select id="selectPoliceById" parameterType="Long" resultMap="PoliceResult">
@@ -63,15 +65,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where police_id = #{policeId}
     </update>
 
-    <delete id="deletePoliceById" parameterType="Long">
-        delete from police where police_id = #{policeId}
-    </delete>
+    <update id="deletePoliceById" parameterType="Long">
+        update police SET police_delete_flag = 1
+        where police_id = #{policeId}
+    </update>
 
-    <delete id="deletePoliceByIds" parameterType="String">
-        delete from police where police_id in 
+    <!--<delete id="deletePoliceById" parameterType="Long">
+        delete from police where police_id = #{policeId}
+    </delete>-->
+
+    <update id="deletePoliceByIds" parameterType="String">
+        UPDATE police SET police_delete_flag = 1 where police_id in
         <foreach item="policeId" collection="array" open="(" separator="," close=")">
             #{policeId}
         </foreach>
-    </delete>
+    </update>
     
 </mapper>

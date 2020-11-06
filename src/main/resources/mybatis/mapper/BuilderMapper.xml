@@ -23,7 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBuilderList" parameterType="Builder" resultMap="BuilderResult">
         <include refid="selectBuilderVo"/>
-        <where>  
+        where builder_delete_flag!=1
+<!--        <where>
             <if test="builderUsername != null  and builderUsername != ''"> and builder_username like concat('%', #{builderUsername}, '%')</if>
             <if test="builderName != null  and builderName != ''"> and builder_name like concat('%', #{builderName}, '%')</if>
             <if test="builderPassword != null  and builderPassword != ''"> and builder_password = #{builderPassword}</if>
@@ -33,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderEnterpriseNumber != null  and builderEnterpriseNumber != ''"> and builder_enterprise_number = #{builderEnterpriseNumber}</if>
             <if test="builderDeleteFlag != null  and builderDeleteFlag != ''"> and builder_delete_flag = #{builderDeleteFlag}</if>
             <if test="builderUpdateFlag != null "> and builder_update_flag = #{builderUpdateFlag}</if>
-        </where>
+        </where>-->
     </select>
     
     <select id="selectBuilderById" parameterType="Long" resultMap="BuilderResult">
@@ -88,15 +89,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where builder_id = #{builderId}
     </update>
 
-    <delete id="deleteBuilderById" parameterType="Long">
-        delete from builder where builder_id = #{builderId}
-    </delete>
+    <update id="deleteBuilderById" parameterType="Long">
+        update builder SET builder_delete_flag = 1
+        where builder_id = #{builderId}
+    </update>
 
-    <delete id="deleteBuilderByIds" parameterType="String">
-        delete from builder where builder_id in 
+    <update id="deleteBuilderByIds" parameterType="String">
+        update builder SET builder_delete_flag = 1 where builder_id in
         <foreach item="builderId" collection="array" open="(" separator="," close=")">
             #{builderId}
         </foreach>
-    </delete>
+    </update>
+
+    <!--<delete id="deleteBuilderById" parameterType="Long">
+        delete from builder where builder_id = #{builderId}
+    </delete>-->
+
+    <!--<delete id="deleteBuilderByIds" parameterType="String">
+        delete from builder where builder_id in
+        <foreach item="builderId" collection="array" open="(" separator="," close=")">
+            #{builderId}
+        </foreach>
+    </delete>-->
     
 </mapper>

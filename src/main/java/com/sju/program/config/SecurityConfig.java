@@ -2,7 +2,6 @@ package com.sju.program.config;
 
 
 import com.sju.program.security.JwtAuthenticationTokenFilter;
-import com.sju.program.security.provider.BuilderUsernamePasswordAuthrnticationProvider;
 import com.sju.program.security.provider.PoliceUsernamePasswordAuthenticationProvider;
 import com.sju.program.security.provider.TrafficStaffUsernamePasswordAuthrnticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/builder").anonymous()
                 .antMatchers("/login/traffic").anonymous()
                 .antMatchers("/policelogin/test").anonymous()
+                .antMatchers("/login/test").anonymous()
+                .antMatchers("/policelogin/test","/program/**/*").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
