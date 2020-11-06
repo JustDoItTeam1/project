@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
         http.cors().and().csrf().disable();
         // 退出登录处理器
-        http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+        //http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         http.authorizeRequests()
                 // 对于登录login 允许匿名访问
                 .antMatchers("/login/admin").anonymous()
@@ -76,11 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
-//        // 开启登录认证流程过滤器
-//       http.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-        // 访问控制时登录状态检查过滤器
-        //http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-
     }
 
     /**

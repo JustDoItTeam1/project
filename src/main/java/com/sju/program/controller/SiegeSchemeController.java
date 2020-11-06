@@ -48,7 +48,7 @@ public class SiegeSchemeController extends BaseController
     {
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        List<SiegeScheme> list=tokenService.getLoginUserIdAndauthenticate(loginUser);
+        List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
         return getDataTable(list);
     }
 

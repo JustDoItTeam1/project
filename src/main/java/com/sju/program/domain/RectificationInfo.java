@@ -12,7 +12,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class RectificationInfo extends BaseEntity
+public class RectificationInfo
 {
     private static final long serialVersionUID = 1L;
 

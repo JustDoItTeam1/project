@@ -33,6 +33,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="riUpdateFlag != null "> and ri_update_flag = #{riUpdateFlag}</if>
         </where>
     </select>
+
+    <!--<select id="selectRectificationInfoList" resultMap="RectificationInfoResult">-->
+        <!--<include refid="selectRectificationInfoVo"></include>-->
+    <!--</select>-->
+
+    <select id="selectRectificationInfoByBuilderId" parameterType="Long" resultMap="RectificationInfoResult">
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+        LEFT JOIN project p on p.project_id=rectification_info.ri_project_id
+        LEFT JOIN builder b ON p.project_builder_id = b.builder_id
+        WHERE b.builder_id=#{builderId}
+    </select>
     
     <select id="selectRectificationInfoById" parameterType="Long" resultMap="RectificationInfoResult">
         <include refid="selectRectificationInfoVo"/>

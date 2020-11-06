@@ -1,6 +1,10 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +35,20 @@ public class RectificationInfoController extends BaseController
 {
     @Autowired
     private IRectificationInfoService rectificationInfoService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询整改信息列表
      */
-    @PreAuthorize("@ss.hasPermi('program:info:list')")
+    //@PreAuthorize("@ss.hasPermi('program:info:list')")
     @GetMapping("/list")
     public TableDataInfo list(RectificationInfo rectificationInfo)
     {
         startPage();
-        List<RectificationInfo> list = rectificationInfoService.selectRectificationInfoList(rectificationInfo);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<RectificationInfo> list =tokenService.getLoginUserRectificationInfo(loginUser);
+                //= rectificationInfoService.selectRectificationInfoList(rectificationInfo);
         return getDataTable(list);
     }
 
