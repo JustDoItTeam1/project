@@ -2,6 +2,7 @@ package com.sju.program.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sju.program.domain.model.BaseUser;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -13,7 +14,7 @@ import com.sju.program.domain.BaseEntity;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class Admin extends BaseEntity
+public class Admin extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 

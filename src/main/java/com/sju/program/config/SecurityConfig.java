@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // 对于登录login 允许匿名访问
                 .antMatchers("/login/test").anonymous()
-                .antMatchers("/policelogin/test").anonymous()
+                .antMatchers("/policelogin/test","/program/**/*").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",

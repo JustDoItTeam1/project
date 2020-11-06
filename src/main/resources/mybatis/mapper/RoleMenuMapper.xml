@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.RoleMenuMapper">
+    
+    <resultMap type="RoleMenu" id="RoleMenuResult">
+        <result property="roleId"    column="role_id"    />
+        <result property="menuId"    column="menu_id"    />
+        <result property="roleDeleteFlag"    column="role_delete_flag"    />
+        <result property="roleUpdateFlag"    column="role_update_flag"    />
+    </resultMap>
+
+    <sql id="selectRoleMenuVo">
+        select role_id, menu_id, role_delete_flag, role_update_flag from role_menu
+    </sql>
+
+    <select id="selectRoleMenuList" parameterType="RoleMenu" resultMap="RoleMenuResult">
+        <include refid="selectRoleMenuVo"/>
+        <where>  
+            <if test="roleDeleteFlag != null  and roleDeleteFlag != ''"> and role_delete_flag = #{roleDeleteFlag}</if>
+            <if test="roleUpdateFlag != null "> and role_update_flag = #{roleUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectRoleMenuById" parameterType="Long" resultMap="RoleMenuResult">
+        <include refid="selectRoleMenuVo"/>
+        where role_id = #{roleId}
+    </select>
+        
+    <insert id="insertRoleMenu" parameterType="RoleMenu">
+        insert into role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">role_id,</if>
+            <if test="menuId != null">menu_id,</if>
+            <if test="roleDeleteFlag != null">role_delete_flag,</if>
+            <if test="roleUpdateFlag != null">role_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">#{roleId},</if>
+            <if test="menuId != null">#{menuId},</if>
+            <if test="roleDeleteFlag != null">#{roleDeleteFlag},</if>
+            <if test="roleUpdateFlag != null">#{roleUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoleMenu" parameterType="RoleMenu">
+        update role_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="roleDeleteFlag != null">role_delete_flag = #{roleDeleteFlag},</if>
+            <if test="roleUpdateFlag != null">role_update_flag = #{roleUpdateFlag},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteRoleMenuById" parameterType="Long">
+        delete from role_menu where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteRoleMenuByIds" parameterType="String">
+        delete from role_menu where role_id in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+    
+</mapper>

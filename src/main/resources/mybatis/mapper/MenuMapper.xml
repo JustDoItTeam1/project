@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.MenuMapper">
+    
+    <resultMap type="Menu" id="MenuResult">
+        <result property="menuId"    column="menu_id"    />
+        <result property="menuName"    column="menu_name"    />
+        <result property="menuParentId"    column="menu_parent_id"    />
+        <result property="menuOrderNum"    column="menu_order_num"    />
+        <result property="menuPath"    column="menu_path"    />
+        <result property="menuComponent"    column="menu_component"    />
+        <result property="menuType"    column="menu_type"    />
+        <result property="menuPerms"    column="menu_perms"    />
+        <result property="menuIcon"    column="menu_icon"    />
+        <result property="menuDeleteFlag"    column="menu_delete_flag"    />
+        <result property="menuUpdateFlag"    column="menu_update_flag"    />
+    </resultMap>
+
+    <sql id="selectMenuVo">
+        select menu_id, menu_name, menu_parent_id, menu_order_num, menu_path, menu_component, menu_type, menu_perms, menu_icon, menu_delete_flag, menu_update_flag from menu
+    </sql>
+
+    <select id="selectMenuList" parameterType="Menu" resultMap="MenuResult">
+        <include refid="selectMenuVo"/>
+        <where>  
+            <if test="menuName != null  and menuName != ''"> and menu_name like concat('%', #{menuName}, '%')</if>
+            <if test="menuParentId != null "> and menu_parent_id = #{menuParentId}</if>
+            <if test="menuOrderNum != null "> and menu_order_num = #{menuOrderNum}</if>
+            <if test="menuPath != null  and menuPath != ''"> and menu_path = #{menuPath}</if>
+            <if test="menuComponent != null  and menuComponent != ''"> and menu_component = #{menuComponent}</if>
+            <if test="menuType != null  and menuType != ''"> and menu_type = #{menuType}</if>
+            <if test="menuPerms != null  and menuPerms != ''"> and menu_perms = #{menuPerms}</if>
+            <if test="menuIcon != null  and menuIcon != ''"> and menu_icon = #{menuIcon}</if>
+            <if test="menuDeleteFlag != null  and menuDeleteFlag != ''"> and menu_delete_flag = #{menuDeleteFlag}</if>
+            <if test="menuUpdateFlag != null "> and menu_update_flag = #{menuUpdateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectMenuById" parameterType="Long" resultMap="MenuResult">
+        <include refid="selectMenuVo"/>
+        where menu_id = #{menuId}
+    </select>
+        
+    <insert id="insertMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="menuId">
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuName != null">menu_name,</if>
+            <if test="menuParentId != null">menu_parent_id,</if>
+            <if test="menuOrderNum != null">menu_order_num,</if>
+            <if test="menuPath != null">menu_path,</if>
+            <if test="menuComponent != null">menu_component,</if>
+            <if test="menuType != null">menu_type,</if>
+            <if test="menuPerms != null">menu_perms,</if>
+            <if test="menuIcon != null">menu_icon,</if>
+            <if test="menuDeleteFlag != null">menu_delete_flag,</if>
+            <if test="menuUpdateFlag != null">menu_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuName != null">#{menuName},</if>
+            <if test="menuParentId != null">#{menuParentId},</if>
+            <if test="menuOrderNum != null">#{menuOrderNum},</if>
+            <if test="menuPath != null">#{menuPath},</if>
+            <if test="menuComponent != null">#{menuComponent},</if>
+            <if test="menuType != null">#{menuType},</if>
+            <if test="menuPerms != null">#{menuPerms},</if>
+            <if test="menuIcon != null">#{menuIcon},</if>
+            <if test="menuDeleteFlag != null">#{menuDeleteFlag},</if>
+            <if test="menuUpdateFlag != null">#{menuUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMenu" parameterType="Menu">
+        update menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuName != null">menu_name = #{menuName},</if>
+            <if test="menuParentId != null">menu_parent_id = #{menuParentId},</if>
+            <if test="menuOrderNum != null">menu_order_num = #{menuOrderNum},</if>
+            <if test="menuPath != null">menu_path = #{menuPath},</if>
+            <if test="menuComponent != null">menu_component = #{menuComponent},</if>
+            <if test="menuType != null">menu_type = #{menuType},</if>
+            <if test="menuPerms != null">menu_perms = #{menuPerms},</if>
+            <if test="menuIcon != null">menu_icon = #{menuIcon},</if>
+            <if test="menuDeleteFlag != null">menu_delete_flag = #{menuDeleteFlag},</if>
+            <if test="menuUpdateFlag != null">menu_update_flag = #{menuUpdateFlag},</if>
+        </trim>
+        where menu_id = #{menuId}
+    </update>
+
+    <delete id="deleteMenuById" parameterType="Long">
+        delete from menu where menu_id = #{menuId}
+    </delete>
+
+    <delete id="deleteMenuByIds" parameterType="String">
+        delete from menu where menu_id in 
+        <foreach item="menuId" collection="array" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </delete>
+    
+</mapper>

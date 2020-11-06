@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.BuilderMapper">
+    
+    <resultMap type="Builder" id="BuilderResult">
+        <result property="builderId"    column="builder_id"    />
+        <result property="builderUsername"    column="builder_username"    />
+        <result property="builderName"    column="builder_name"    />
+        <result property="builderPassword"    column="builder_password"    />
+        <result property="builderCorporate"    column="builder_corporate"    />
+        <result property="builderPhone"    column="builder_phone"    />
+        <result property="builderAddress"    column="builder_address"    />
+        <result property="builderEnterpriseNumber"    column="builder_enterprise_number"    />
+        <result property="builderDeleteFlag"    column="builder_delete_flag"    />
+        <result property="builderUpdateFlag"    column="builder_update_flag"    />
+    </resultMap>
+
+    <sql id="selectBuilderVo">
+        select builder_id, builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag, builder_update_flag from builder
+    </sql>
+
+    <select id="selectBuilderList" parameterType="Builder" resultMap="BuilderResult">
+        <include refid="selectBuilderVo"/>
+        where builder_delete_flag!=1
+<!--        <where>
+            <if test="builderUsername != null  and builderUsername != ''"> and builder_username like concat('%', #{builderUsername}, '%')</if>
+            <if test="builderName != null  and builderName != ''"> and builder_name like concat('%', #{builderName}, '%')</if>
+            <if test="builderPassword != null  and builderPassword != ''"> and builder_password = #{builderPassword}</if>
+            <if test="builderCorporate != null  and builderCorporate != ''"> and builder_corporate = #{builderCorporate}</if>
+            <if test="builderPhone != null  and builderPhone != ''"> and builder_phone = #{builderPhone}</if>
+            <if test="builderAddress != null  and builderAddress != ''"> and builder_address = #{builderAddress}</if>
+            <if test="builderEnterpriseNumber != null  and builderEnterpriseNumber != ''"> and builder_enterprise_number = #{builderEnterpriseNumber}</if>
+            <if test="builderDeleteFlag != null  and builderDeleteFlag != ''"> and builder_delete_flag = #{builderDeleteFlag}</if>
+            <if test="builderUpdateFlag != null "> and builder_update_flag = #{builderUpdateFlag}</if>
+        </where>-->
+    </select>
+    
+    <select id="selectBuilderById" parameterType="Long" resultMap="BuilderResult">
+        <include refid="selectBuilderVo"/>
+        where builder_id = #{builderId}
+    </select>
+        
+    <insert id="insertBuilder" parameterType="Builder" useGeneratedKeys="true" keyProperty="builderId">
+        insert into builder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="builderUsername != null">builder_username,</if>
+            <if test="builderName != null">builder_name,</if>
+            <if test="builderPassword != null">builder_password,</if>
+            <if test="builderCorporate != null">builder_corporate,</if>
+            <if test="builderPhone != null">builder_phone,</if>
+            <if test="builderAddress != null">builder_address,</if>
+            <if test="builderEnterpriseNumber != null">builder_enterprise_number,</if>
+            <if test="builderDeleteFlag != null">builder_delete_flag,</if>
+            <if test="builderUpdateFlag != null">builder_update_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="builderUsername != null">#{builderUsername},</if>
+            <if test="builderName != null">#{builderName},</if>
+            <if test="builderPassword != null">#{builderPassword},</if>
+            <if test="builderCorporate != null">#{builderCorporate},</if>
+            <if test="builderPhone != null">#{builderPhone},</if>
+            <if test="builderAddress != null">#{builderAddress},</if>
+            <if test="builderEnterpriseNumber != null">#{builderEnterpriseNumber},</if>
+            <if test="builderDeleteFlag != null">#{builderDeleteFlag},</if>
+            <if test="builderUpdateFlag != null">#{builderUpdateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBuilder" parameterType="Builder">
+        update builder
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="builderUsername != null">builder_username = #{builderUsername},</if>
+            <if test="builderName != null">builder_name = #{builderName},</if>
+            <if test="builderPassword != null">builder_password = #{builderPassword},</if>
+            <if test="builderCorporate != null">builder_corporate = #{builderCorporate},</if>
+            <if test="builderPhone != null">builder_phone = #{builderPhone},</if>
+            <if test="builderAddress != null">builder_address = #{builderAddress},</if>
+            <if test="builderEnterpriseNumber != null">builder_enterprise_number = #{builderEnterpriseNumber},</if>
+            <if test="builderDeleteFlag != null">builder_delete_flag = #{builderDeleteFlag},</if>
+            <if test="builderUpdateFlag != null">builder_update_flag = #{builderUpdateFlag},</if>
+        </trim>
+        where builder_id = #{builderId}
+    </update>
+
+    <update id="deleteBuilderById" parameterType="Long">
+        update builder SET builder_delete_flag = 1
+        where builder_id = #{builderId}
+    </update>
+
+    <update id="deleteBuilderByIds" parameterType="String">
+        update builder SET builder_delete_flag = 1 where builder_id in
+        <foreach item="builderId" collection="array" open="(" separator="," close=")">
+            #{builderId}
+        </foreach>
+    </update>
+
+    <!--<delete id="deleteBuilderById" parameterType="Long">
+        delete from builder where builder_id = #{builderId}
+    </delete>-->
+
+    <!--<delete id="deleteBuilderByIds" parameterType="String">
+        delete from builder where builder_id in
+        <foreach item="builderId" collection="array" open="(" separator="," close=")">
+            #{builderId}
+        </foreach>
+    </delete>-->
+    
+</mapper>
