@@ -1,6 +1,10 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +34,8 @@ public class ProjectController extends BaseController
 {
     @Autowired
     private IProjectService projectService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询施工项目列表
@@ -39,7 +45,8 @@ public class ProjectController extends BaseController
     public TableDataInfo list(Project project)
     {
         startPage();
-        List<Project> list = projectService.selectProjectList(project);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<Project> list = tokenService.getLoginUserProject(loginUser);
         return getDataTable(list);
     }
 
@@ -56,10 +63,7 @@ public class ProjectController extends BaseController
 //        return util.exportExcel(list, "project");
 //    }
 
-    /**
-     * 获取施工项目详细信息
-     */
-    @PreAuthorize("@ss.hasPermi('program:project:query')")
+    //@PreAuthorize("@ss.hasPermi('program:project:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {

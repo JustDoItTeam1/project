@@ -58,4 +58,9 @@ public interface ProjectMapper
      * @return 结果
      */
     public int deleteProjectByIds(Long[] projectIds);
+
+    public List<Object> selectProjectByName(String projectName);
+
+    List<Project> selectProjectByBuilderId(long builderId);
+    List<Project> selectAllProjectList();
 }

@@ -58,4 +58,14 @@ public interface IProjectService
      * @return 结果
      */
     public int deleteProjectById(Long projectId);
+
+    public List<Object> selectProjectByName(String projectName);
+
+    //public List<Object> searchProjectByLocation(String projectLocation);
+
+    //public List<Object> searchProjectByManager(String projectManager);
+
+    List<Project> selectProjectByBuilderId(Long id);
+
+    List<Project> selectAllProjectList();
 }

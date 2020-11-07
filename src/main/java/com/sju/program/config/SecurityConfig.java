@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/builder").anonymous()
                 .antMatchers("/login/traffic").anonymous()
                 .antMatchers("/policelogin/test").anonymous()
+                .antMatchers("/program/project/{projectId}").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",

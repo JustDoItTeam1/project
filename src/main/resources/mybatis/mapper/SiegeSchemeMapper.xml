@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSiegeSchemeVo">
-        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date, ss_update_flag from siege_scheme
+        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date, ss_update_flag from siege_scheme ss
     </sql>
 
     <select id="selectSiegeSchemeList" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">

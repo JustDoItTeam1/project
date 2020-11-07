@@ -68,7 +68,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 获取围蔽方案详细信息
      */
-    //@PreAuthorize("@ss.hasPermi('program:scheme:query')")
+    @PreAuthorize("@ss.hasPermi('program:scheme:query')")
     @GetMapping(value = "/{ssId}")
     public AjaxResult getInfo(@PathVariable("ssId") Long ssId)
     {
