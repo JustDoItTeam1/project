@@ -2,6 +2,7 @@ package com.sju.program.config;
 
 
 import com.sju.program.security.JwtAuthenticationTokenFilter;
+import com.sju.program.security.provider.BuilderUsernamePasswordAuthrnticationProvider;
 import com.sju.program.security.provider.PoliceUsernamePasswordAuthenticationProvider;
 import com.sju.program.security.provider.TrafficStaffUsernamePasswordAuthrnticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
