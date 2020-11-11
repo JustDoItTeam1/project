@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -16,29 +18,34 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@ApiModel(description = "交警")
 public class Police  extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
     /** 交警人员id */
+    @ApiModelProperty(name = "policeId",value = "交警人员id",example = "1")
     private Long policeId;
 
     /** 用户账户 */
     @Excel(name = "用户账户")
+    @ApiModelProperty(name = "policeName",value = "用户账户",example = "jj111111")
     private String policeName;
 
     /** 密码 */
     @Excel(name = "密码")
+    @ApiModelProperty(name = "policePassword",value = "密码")
     private String policePassword;
 
     /** 删除标识 */
     @Excel(name = "删除标识")
+    @ApiModelProperty(name = "policeDeleteFlag",value = "删除标识",example = "live | del")
     private String policeDeleteFlag;
 
-    /** 更新标识 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新标识", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date policeUpdateFlag;
+//    /** 更新标识 */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "更新标识", width = 30, dateFormat = "yyyy-MM-dd")
+//    private Date policeUpdateFlag;
 
     private int authenticate;
 
@@ -102,15 +109,15 @@ public class Police  extends BaseUser
     {
         return policeDeleteFlag;
     }
-    public void setPoliceUpdateFlag(Date policeUpdateFlag) 
-    {
-        this.policeUpdateFlag = policeUpdateFlag;
-    }
-
-    public Date getPoliceUpdateFlag() 
-    {
-        return policeUpdateFlag;
-    }
+//    public void setPoliceUpdateFlag(Date policeUpdateFlag)
+//    {
+//        this.policeUpdateFlag = policeUpdateFlag;
+//    }
+//
+//    public Date getPoliceUpdateFlag()
+//    {
+//        return policeUpdateFlag;
+//    }
 
     @Override
     public Long getId() {
@@ -124,7 +131,7 @@ public class Police  extends BaseUser
             .append("policeName", getPoliceName())
             .append("policePassword", getPolicePassword())
             .append("policeDeleteFlag", getPoliceDeleteFlag())
-            .append("policeUpdateFlag", getPoliceUpdateFlag())
+            //.append("policeUpdateFlag", getPoliceUpdateFlag())
             .toString();
     }
 }

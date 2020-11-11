@@ -35,7 +35,7 @@ import java.util.*;
  * 用户1登录验证
  *
  */
-@Api(tags = "登录接口")
+@Api(tags = "施工单位登录接口")
 @RestController
 public class BuilderLoginController
 {
@@ -66,7 +66,7 @@ public class BuilderLoginController
      * @param loginBody 登录信息
      * @return 结果
      */
-    @ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
+    @ApiOperation(value = "验证施工单位信息接口",notes = "验证用户信息,生成token")
     @PostMapping("/login/builder")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
@@ -96,7 +96,7 @@ public class BuilderLoginController
             playload.put("builder_phone", builder.getBuilderPhone());
             playload.put("builder_address", builder.getBuilderAddress());
             playload.put("builder_enterprise_number", builder.getBuilderEnterpriseNumber());
-            playload.put("builder_update_flag", builder.getBuilderUpdateFlag());
+            //playload.put("builder_update_flag", builder.getBuilderUpdateFlag());
             playload.put("delete_flag", builder.getBuilderDeleteFlag());
             playload.put("permissions", loginUser.getPermissions());
         }catch (ClassCastException e){
@@ -112,6 +112,7 @@ public class BuilderLoginController
      *
      * @return 用户信息
      */
+    @ApiOperation(value = "获取施工单位信息接口",notes = "获取权限和用户信息返回")
     @GetMapping("/login/getBuilderInfo")
     public AjaxResult getInfo()
     {
@@ -133,6 +134,7 @@ public class BuilderLoginController
      * @return 菜单路由信息
      */
     // @PreAuthorize("@ss.hasPermi()")
+    @ApiOperation(value = "获取施工单位路由信息接口",notes = "获取菜单信息返回")
     @GetMapping("/login/getBuilderRouters")
     public AjaxResult getRouters()
     {

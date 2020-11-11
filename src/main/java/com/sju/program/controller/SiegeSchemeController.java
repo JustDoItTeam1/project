@@ -6,6 +6,8 @@ import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.sju.program.service.ISiegeSchemeService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags = "围蔽方案管理接口")
 @RestController
 @RequestMapping("/program/scheme")
 public class SiegeSchemeController extends BaseController
@@ -42,13 +45,14 @@ public class SiegeSchemeController extends BaseController
     /**
      * 查询围蔽方案列表
      */
+    @ApiOperation(value = "查询围蔽方案接口",notes = "根据不同用户信息,查询其围蔽方案")
     @PreAuthorize("@ss.hasPermi('program:scheme:list')")
     @GetMapping("/list")
     public TableDataInfo list(SiegeScheme siegeScheme)
     {
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        List<SiegeScheme> list=tokenService.getLoginUserIdAndauthenticate(loginUser);
+        List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
         return getDataTable(list);
     }
 
@@ -68,7 +72,8 @@ public class SiegeSchemeController extends BaseController
     /**
      * 获取围蔽方案详细信息
      */
-    //@PreAuthorize("@ss.hasPermi('program:scheme:query')")
+    @ApiOperation(value = "查询单个围蔽方案接口")
+    @PreAuthorize("@ss.hasPermi('program:scheme:query')")
     @GetMapping(value = "/{ssId}")
     public AjaxResult getInfo(@PathVariable("ssId") Long ssId)
     {

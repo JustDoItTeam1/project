@@ -34,7 +34,7 @@ import java.util.*;
  * 用户1登录验证
  *
  */
-@Api(tags = "登录接口")
+@Api(tags = "管理员登录接口")
 @RestController
 public class AdminLoginController
 {
@@ -65,7 +65,7 @@ public class AdminLoginController
      * @param loginBody 登录信息
      * @return 结果
      */
-    @ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
+    @ApiOperation(value = "验证管理员用户信息接口",notes = "验证用户信息,生成token")
     @PostMapping("/login/admin")
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
@@ -115,6 +115,7 @@ public class AdminLoginController
      *
      * @return 用户信息
      */
+    @ApiOperation(value = "获取管理员用户信息接口",notes = "获取权限和用户信息返回")
     @GetMapping("/login/getAdminInfo")
     public AjaxResult getInfo()
     {
@@ -138,6 +139,7 @@ public class AdminLoginController
      * @return 菜单路由信息
      */
    // @PreAuthorize("@ss.hasPermi()")
+    @ApiOperation(value = "获取管理员路由信息接口",notes = "获取菜单信息返回")
     @GetMapping("/login/getAdminRouters")
     public AjaxResult getRouters()
     {

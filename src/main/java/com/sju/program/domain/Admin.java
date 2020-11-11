@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -17,29 +19,35 @@ import com.sju.program.domain.BaseEntity;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@ApiModel(description = "管理员")
 public class Admin extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
     /** 账号 */
+    @ApiModelProperty(name = "adminId",value = "id",example = "1")
     private Long adminId;
 
     /** 用户账户 */
     @Excel(name = "用户账户")
+    @ApiModelProperty(name = "adminUsername",value = "用户账户",example = "admin",required = true)
     private String adminUsername;
 
     /** 密码 */
     @Excel(name = "密码")
+    @ApiModelProperty(name = "adminPassword",value = "密码",example = "admin",required = true)
     private String adminPassword;
 
     /** 删除标志 */
     @Excel(name = "删除标志")
+    @ApiModelProperty(name = "adminDeleteFlag",value = "删除标志",example = "live|del")
     private String adminDeleteFlag;
 
-    /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date adminUpdateFlag;
+//    /** 更新时间 */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @ApiModelProperty(name = "adminDeleteFlag",value = "删除标志",example = "live|del")
+//    private Date adminUpdateFlag;
     /**权限标识**/
     private int authenticate;
 
@@ -102,15 +110,15 @@ public class Admin extends BaseUser
     {
         return adminDeleteFlag;
     }
-    public void setAdminUpdateFlag(Date adminUpdateFlag) 
-    {
-        this.adminUpdateFlag = adminUpdateFlag;
-    }
-
-    public Date getAdminUpdateFlag() 
-    {
-        return adminUpdateFlag;
-    }
+//    public void setAdminUpdateFlag(Date adminUpdateFlag)
+//    {
+//        this.adminUpdateFlag = adminUpdateFlag;
+//    }
+//
+//    public Date getAdminUpdateFlag()
+//    {
+//        return adminUpdateFlag;
+//    }
     @Override
     public Long getId() {
         return adminId;
@@ -123,7 +131,7 @@ public class Admin extends BaseUser
             .append("adminUsername", getAdminUsername())
             .append("adminPassword", getAdminPassword())
             .append("adminDeleteFlag", getAdminDeleteFlag())
-            .append("adminUpdateFlag", getAdminUpdateFlag())
+            //.append("adminUpdateFlag", getAdminUpdateFlag())
             .toString();
     }
 }

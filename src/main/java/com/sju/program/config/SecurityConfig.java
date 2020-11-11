@@ -61,11 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
         http.authorizeRequests()
                 // 对于登录login 允许匿名访问
-                .antMatchers("/login/admin").anonymous()
-                .antMatchers("/login/police").anonymous()
-                .antMatchers("/login/builder").anonymous()
-                .antMatchers("/login/traffic").anonymous()
-                .antMatchers("/policelogin/test").anonymous()
+                .antMatchers("/login/admin").permitAll()
+                .antMatchers("/login/police").permitAll()
+                .antMatchers("/login/builder").permitAll()
+                .antMatchers("/login/traffic").permitAll()
+                .antMatchers("/policelogin/test").permitAll()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
@@ -73,6 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                .antMatchers("/doc.hml").anonymous()
+                .antMatchers("/swagger-resources/**").anonymous()
+                .antMatchers("/webjars/**").anonymous()
+                .antMatchers("/*/api-docs").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);

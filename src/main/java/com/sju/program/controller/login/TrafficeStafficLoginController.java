@@ -35,7 +35,7 @@ import java.util.*;
  * 用户1登录验证
  *
  */
-@Api(tags = "登录接口")
+@Api(tags = "交管登录接口")
 @RestController
 public class TrafficeStafficLoginController
 {
@@ -66,7 +66,7 @@ public class TrafficeStafficLoginController
      * @param loginBody 登录信息
      * @return 结果
      */
-    @ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
+    @ApiOperation(value = "验证交管信息接口",notes = "验证用户信息,生成token")
     @PostMapping("/login/traffic")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
@@ -104,6 +104,7 @@ public class TrafficeStafficLoginController
      *
      * @return 用户信息
      */
+    @ApiOperation(value = "获取交管信息接口",notes = "获取权限和用户信息返回")
     @GetMapping("/login/getTrafficInfo")
     public AjaxResult getInfo()
     {
@@ -125,6 +126,7 @@ public class TrafficeStafficLoginController
      * @return 菜单路由信息
      */
     // @PreAuthorize("@ss.hasPermi()")
+    @ApiOperation(value = "获取路由信息接口",notes = "获取菜单信息返回")
     @GetMapping("/login/getTrafficRouters")
     public AjaxResult getRouters()
     {

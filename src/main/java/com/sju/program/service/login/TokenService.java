@@ -4,6 +4,7 @@ import com.sju.program.constant.Constants;
 import com.sju.program.domain.*;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.IRectificationInfoService;
 import com.sju.program.service.ISiegeSchemeService;
 import com.sju.program.utils.JwtUtils;
 import com.sju.program.utils.ServletUtils;
@@ -53,8 +54,10 @@ public class TokenService
 
     @Autowired
     ISiegeSchemeService siegeSchemeService;
+    @Autowired
+    IRectificationInfoService rectificationInfoService;
 
-    public List<SiegeScheme> getLoginUserIdAndauthenticate(LoginUser loginUser){
+    public List<SiegeScheme> getLoginUserSiegeScheme(LoginUser loginUser){
         List<SiegeScheme> list=null;
         BaseUser baseUser=(BaseUser) loginUser.getUser();
         switch (baseUser.getAuthenticate()){
@@ -73,6 +76,22 @@ public class TokenService
         return list;
     }
 
+     public List<RectificationInfo> getLoginUserRectificationInfo(LoginUser loginUser){
+         List<RectificationInfo> rectificationInfoList=null;
+         BaseUser baseUser=(BaseUser) loginUser.getUser();
+         switch (baseUser.getAuthenticate()){
+             case 1:
+             case 2:
+             case 3:
+                 rectificationInfoList=rectificationInfoService.selectRectificationInfoList();
+                 break;
+             case 4:
+                 rectificationInfoList= rectificationInfoService.selectRectificationInfoByBuilderId(baseUser.getId());
+                 break;
+         }
+        return rectificationInfoList;
+     }
+
 
     /**
      * 获取用户身份信息
@@ -82,7 +101,7 @@ public class TokenService
     public LoginUser getLoginUser(HttpServletRequest request)
     {
         // 获取请求携带的令牌
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         if (StringUtils.isNotEmpty(token))
         {
             Claims claims = JwtUtils.parseToken(token);
