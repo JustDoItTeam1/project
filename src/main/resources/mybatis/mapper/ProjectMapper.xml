@@ -20,7 +20,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectProjectVo">
         select project_id, project_name, project_location, project_long_lat, project_manger, project_phone, project_builder_name, project_builder_id, project_traffic_staff_id, project_finished_flag, project_delete_flag from project
-        select p.project_id, p.project_name, p.project_location, p.project_long_lat, p.project_manger, p.project_phone, p.project_builder_name, p.project_builder_id, p.project_traffic_staff_id, p.project_finished_flag, p.project_delete_flag, p.project_update_flag from project p
     </sql>
 
     <sql id="selectProjectPI">
@@ -123,25 +122,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_id = #{projectId}
     </update>
 
-    <update id="deleteProjectById" parameterType="Long">
+    <update id="updateProjectById" parameterType="Long">
         update project SET project_delete_flag = 1
         where project_id = #{projectId}
     </update>
-    <update id="deleteProjectByIds" parameterType="String">
+    <update id="updateProjectByIds" parameterType="String">
         UPDATE project SET project_delete_flag = 1 where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
     </update>
-    <!--<delete id="deleteProjectById" parameterType="Long">-->
-        <!--delete from project where project_id = #{projectId}-->
-    <!--</delete>-->
+    <delete id="deleteProjectById" parameterType="Long">
+        delete from project where project_id = #{projectId}
+    </delete>
 
-    <!--<delete id="deleteProjectByIds" parameterType="String">-->
-        <!--delete from project where project_id in-->
-        <!--<foreach item="projectId" collection="array" open="(" separator="," close=")">-->
-            <!--#{projectId}-->
-        <!--</foreach>-->
-    <!--</delete>-->
+    <delete id="deleteProjectByIds" parameterType="String">
+        delete from project where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
 
 </mapper>
