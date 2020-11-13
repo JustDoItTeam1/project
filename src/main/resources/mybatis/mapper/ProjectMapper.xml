@@ -69,6 +69,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_location = #{projectLocation}
     </select>
 
+    <select id="selectBuilderNameByprojectId" parameterType="Long" resultType="String">
+        SELECT builder_username FROM builder
+        LEFT JOIN project p ON builder.builder_id = p.project_builder_id
+        where project_id = #{projectId}
+    </select>
+
+    <select id="selectProjectNameById" parameterType="Long" resultType="String">
+        SELECT project_name FROM project
+        where project_id = #{projectId}
+    </select>
+
+
+
+
     <select id="searchProjectByManager" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
         where project_manager = #{projectManager}

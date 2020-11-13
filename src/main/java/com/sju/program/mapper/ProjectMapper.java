@@ -27,6 +27,15 @@ public interface ProjectMapper
      */
     public List<Project> selectProjectList(Project project);
 
+
+    public String selectBuilderNameByprojectId(Long projectId);
+
+    public String selectProjectNameById(Long projectId);
+
+
+
+
+
     /**
      * 新增施工项目
      * 

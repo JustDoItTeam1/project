@@ -41,6 +41,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where builder_id = #{builderId}
     </select>
 
+    <select id="selectBuilderNameById" parameterType="Long" resultMap="BuilderResult">
+        SELECT builder_name FROM builder
+        where builder_id = #{builderId}
+    </select>
+
+
     <select id="selectBuilderByUsername" parameterType="String" resultMap="BuilderResult">
         <include refid="selectBuilderVo"></include>
         WHERE builder_name=#{buildername}

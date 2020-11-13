@@ -101,7 +101,27 @@ public class SiegeScheme
     @ApiModelProperty(name = "ssVerifyDate",value = "审核时间",example = "2020-11-07")
     private Date ssVerifyDate;
 
-//    /** 更新时间 */
+    private boolean ss=false;
+
+    private boolean ssmap=true;
+
+    public boolean isSs() {
+        return ss;
+    }
+
+    public void setSs(boolean ss) {
+        this.ss = ss;
+    }
+
+    public boolean isSsmap() {
+        return ssmap;
+    }
+
+    public void setSsmap(boolean ssmap) {
+        this.ssmap = ssmap;
+    }
+
+    //    /** 更新时间 */
 //    @JsonFormat(pattern = "yyyy-MM-dd")
 //    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
 //    @ApiModelProperty(name = "ssUpdateFlag",value = "更新时间",example = "2020-11-07")

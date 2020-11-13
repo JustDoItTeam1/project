@@ -17,9 +17,7 @@ public class MetaVo
      */
     private String icon;
 
-    public MetaVo()
-    {
-    }
+
 
     public MetaVo(String title, String icon)
     {

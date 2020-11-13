@@ -1,8 +1,11 @@
 package com.sju.program.service.impl;
 
-import java.util.List;
+import java.util.*;
 
 import com.sju.program.domain.model.BaseUser;
+import com.sju.program.domain.vo.SieheSchemeParentVo;
+import com.sju.program.mapper.BuilderMapper;
+import com.sju.program.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.SiegeSchemeMapper;
@@ -20,6 +23,12 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 {
     @Autowired
     private SiegeSchemeMapper siegeSchemeMapper;
+
+    @Autowired
+    private BuilderMapper builderMapper;
+
+    @Autowired
+    private ProjectMapper projectMapper;
 
     /**
      * 查询围蔽方案
@@ -108,4 +117,58 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     {
         return siegeSchemeMapper.deleteSiegeSchemeById(ssId);
     }
+
+    @Override
+    public List<SieheSchemeParentVo> buildSiegeScheme(List<SiegeScheme> siegeSchemes){
+        Map<String,String> map=new HashMap<String, String>();
+        //List<Map<Long,List<SiegeScheme>>> mapList=new ArrayList<>();
+        Set<Long> set=new LinkedHashSet<>();
+        for(SiegeScheme siegeScheme:siegeSchemes){
+            set.add(siegeScheme.getSsProjectId());
+        }
+        int i=0;
+        List<SieheSchemeParentVo> list=new ArrayList<>();
+        for(Long projectId:set){
+            SieheSchemeParentVo sieheSchemeParentVo=new SieheSchemeParentVo();
+//            Map<String,String> map1=new HashMap<String, String>();
+//            Map<String,List<SiegeScheme>> map2=new HashMap<>();
+//            Map<String,Object> map3=new HashMap<>();
+            sieheSchemeParentVo.setChild(siegeSchemeMapper.selectSiegeSchemeByProjectId(projectId));
+            sieheSchemeParentVo.setId(i++);
+            sieheSchemeParentVo.setSsVerifyFlag(siegeSchemeMapper.getSsBySsVerifyFlagProjectId(projectId));
+            sieheSchemeParentVo.setSs(true);
+            sieheSchemeParentVo.setSsmap(false);
+            sieheSchemeParentVo.setChildrennum(siegeSchemeMapper.getChildNumberBySsProjectId(projectId));
+            sieheSchemeParentVo.setSsBuilderName(projectMapper.selectBuilderNameByprojectId(projectId));
+            sieheSchemeParentVo.setSsProjectId(projectId);
+            sieheSchemeParentVo.setSsProjectName(projectMapper.selectProjectNameById(projectId));
+
+            list.add(sieheSchemeParentVo);
+        }
+//           if(map.containsKey(siegeScheme.getSsProjectId())){
+//               List<SiegeScheme> list=map.get(siegeScheme.getSsProjectId());
+//               siegeScheme.setSs(true);
+//               siegeScheme.setSsmap(false);
+//               list.add(siegeScheme);
+//               map.put(siegeScheme.getSsProjectId(),list);
+//           }else {
+//
+//               Map<String,String> map2=new HashMap<String, String>();
+//               map1.put("ss","true");
+//               map1.put("ssmap","true");
+//               map1.put("childrennum","false");
+//               map1.put("ssBuilderName",String.valueOf(builderMapper.selectBuilderNameById(siegeScheme.getSsBuilderId())));
+//               map1.put("ssProjectId",String.valueOf(siegeScheme.getSsProjectId()));
+//               map1.put("ssProjectName",String.valueOf(siegeScheme.getSsProjectId()));
+//               map1.put("childrennum",String.valueOf(siegeSchemeMapper.getChildNumberBySsProjectId(siegeScheme.getSsProjectId())));
+//               List<SiegeScheme> list=new LinkedList<>();
+//               list.add(siegeScheme);
+//               map.put(siegeScheme.getSsProjectId(),list);
+//               map2.putAll(map,map1);
+//           }
+//
+//        }
+        return list;
+    }
 }
+

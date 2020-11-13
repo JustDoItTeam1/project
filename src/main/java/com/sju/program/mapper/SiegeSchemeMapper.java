@@ -37,6 +37,16 @@ public interface SiegeSchemeMapper
 
     public List<SiegeScheme> selectAllSiegeSchemeList();
 
+    public List<SiegeScheme> selectSiegeSchemeByProjectId(Long projectId);
+
+    public int getChildNumberBySsProjectId(Long projectId);
+
+    public String getSsBySsVerifyFlagProjectId(Long projectId);
+
+
+
+
+
 
 
 

@@ -1,9 +1,11 @@
 package com.sju.program.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.SieheSchemeParentVo;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
@@ -54,7 +56,8 @@ public class SiegeSchemeController extends BaseController
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
-        return getDataTable(list);
+        List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
+        return getDataTable(sieheSchemeParentVoList);
     }
 
 //    /**
