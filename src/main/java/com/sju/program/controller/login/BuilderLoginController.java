@@ -103,26 +103,26 @@ public class BuilderLoginController
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
-    /**
-     * 获取用户信息
-     *
-     * @return 用户信息
-     */
-    @ApiOperation(value = "获取施工单位信息接口",notes = "获取权限和用户信息返回")
-    @GetMapping("/login/getBuilderInfo")
-    public AjaxResult getInfo()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        Builder builder=(Builder) loginUser.getUser();
-        // 权限集合
-        ArrayList<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", builder);
-        ajax.put("permissions",permissions);
-        //  ajax.put("roles", roles);
-        //ajax.put("departments", departments);
-        return ajax;
-    }
+//    /**
+//     * 获取用户信息
+//     *
+//     * @return 用户信息
+//     */
+//    @ApiOperation(value = "获取施工单位信息接口",notes = "获取权限和用户信息返回")
+//    @GetMapping("/login/getBuilderInfo")
+//    public AjaxResult getInfo()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        Builder builder=(Builder) loginUser.getUser();
+//        // 权限集合
+//        ArrayList<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
+//        AjaxResult ajax = AjaxResult.success();
+//        ajax.put("user", builder);
+//        ajax.put("permissions",permissions);
+//        //  ajax.put("roles", roles);
+//        //ajax.put("departments", departments);
+//        return ajax;
+//    }
 
 //    /**
 //     * 获取菜单路由信息

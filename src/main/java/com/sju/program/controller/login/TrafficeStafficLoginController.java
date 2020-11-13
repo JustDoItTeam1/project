@@ -99,26 +99,26 @@ public class TrafficeStafficLoginController
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
-    /**
-     * 获取用户信息
-     *
-     * @return 用户信息
-     */
-    @ApiOperation(value = "获取交管信息接口",notes = "获取权限和用户信息返回")
-    @GetMapping("/login/getTrafficInfo")
-    public AjaxResult getInfo()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        TrafficeStaff trafficeStaff=(TrafficeStaff) loginUser.getUser();
-        // 权限集合
-        ArrayList<String> permissions = permissionService.getMenuPermission(trafficeStaff.getAuthenticate());
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", trafficeStaff);
-        ajax.put("permissions",permissions);
-        //  ajax.put("roles", roles);
-        //ajax.put("departments", departments);
-        return ajax;
-    }
+//    /**
+//     * 获取用户信息
+//     *
+//     * @return 用户信息
+//     */
+//    @ApiOperation(value = "获取交管信息接口",notes = "获取权限和用户信息返回")
+//    @GetMapping("/login/getTrafficInfo")
+//    public AjaxResult getInfo()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        TrafficeStaff trafficeStaff=(TrafficeStaff) loginUser.getUser();
+//        // 权限集合
+//        ArrayList<String> permissions = permissionService.getMenuPermission(trafficeStaff.getAuthenticate());
+//        AjaxResult ajax = AjaxResult.success();
+//        ajax.put("user", trafficeStaff);
+//        ajax.put("permissions",permissions);
+//        //  ajax.put("roles", roles);
+//        //ajax.put("departments", departments);
+//        return ajax;
+//    }
 
 //    /**
 //     * 获取菜单路由信息

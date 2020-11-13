@@ -127,26 +127,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update project SET project_delete_flag = 1
         where project_id = #{projectId}
     </update>
-<!--
-    <delete id="deleteProjectById" parameterType="Long">
-        delete from project where project_id = #{projectId}
-    </delete>-->
-
     <update id="deleteProjectByIds" parameterType="String">
         UPDATE project SET project_delete_flag = 1 where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
     </update>
-    <delete id="deleteProjectById" parameterType="Long">
-        delete from project where project_id = #{projectId}
-    </delete>
+    <!--<delete id="deleteProjectById" parameterType="Long">-->
+        <!--delete from project where project_id = #{projectId}-->
+    <!--</delete>-->
 
-    <delete id="deleteProjectByIds" parameterType="String">
-        delete from project where project_id in
-        <foreach item="projectId" collection="array" open="(" separator="," close=")">
-            #{projectId}
-        </foreach>
-    </delete>
+    <!--<delete id="deleteProjectByIds" parameterType="String">-->
+        <!--delete from project where project_id in-->
+        <!--<foreach item="projectId" collection="array" open="(" separator="," close=")">-->
+            <!--#{projectId}-->
+        <!--</foreach>-->
+    <!--</delete>-->
 
 </mapper>

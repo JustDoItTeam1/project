@@ -109,29 +109,29 @@ public class AdminLoginController
 //    public User getLoginInfo(Authentication authentication){
 //        return (User)authentication.getPrincipal();
 //    }
-
-    /**
-     * 获取用户信息
-     *
-     * @return 用户信息
-     */
-    @ApiOperation(value = "获取管理员用户信息接口",notes = "获取权限和用户信息返回")
-    @GetMapping("/login/getAdminInfo")
-    public AjaxResult getInfo()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        Admin admin=(Admin) loginUser.getUser();
-        // 权限集合
-        ArrayList<String> permissions=new ArrayList<>();
-        permissions.add("*:*:*");
-        admin.setPermissions(permissions);
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", admin);
-        ajax.put("permissions",permissions);
-      //  ajax.put("roles", roles);
-        //ajax.put("departments", departments);
-        return ajax;
-    }
+//
+//    /**
+//     * 获取用户信息
+//     *
+//     * @return 用户信息
+//     */
+//    @ApiOperation(value = "获取管理员用户信息接口",notes = "获取权限和用户信息返回")
+//    @GetMapping("/login/getAdminInfo")
+//    public AjaxResult getInfo()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        Admin admin=(Admin) loginUser.getUser();
+//        // 权限集合
+//        ArrayList<String> permissions=new ArrayList<>();
+//        permissions.add("*:*:*");
+//        admin.setPermissions(permissions);
+//        AjaxResult ajax = AjaxResult.success();
+//        ajax.put("user", admin);
+//        ajax.put("permissions",permissions);
+//      //  ajax.put("roles", roles);
+//        //ajax.put("departments", departments);
+//        return ajax;
+//    }
 
 //    /**
 //     * 获取菜单路由信息
