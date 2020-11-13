@@ -35,7 +35,7 @@ public class PoliceController extends BaseController
     /**
      * 查询交警人员列表
      */
-    @PreAuthorize("@ss.hasPermi('program:police:list')")
+    //@PreAuthorize("@ss.hasPermi('program:police:list')")
     @GetMapping("/list")
     public TableDataInfo list(Police police)
     {
@@ -60,7 +60,7 @@ public class PoliceController extends BaseController
     /**
      * 获取交警人员详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:police:query')")
+    //@PreAuthorize("@ss.hasPermi('program:police:query')")
     @GetMapping(value = "/{policeId}")
     public AjaxResult getInfo(@PathVariable("policeId") Long policeId)
     {
@@ -70,7 +70,7 @@ public class PoliceController extends BaseController
     /**
      * 新增交警人员
      */
-    @PreAuthorize("@ss.hasPermi('program:police:add')")
+    //@PreAuthorize("@ss.hasPermi('program:police:add')")
     @Log(title = "交警人员", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Police police)
@@ -81,7 +81,7 @@ public class PoliceController extends BaseController
     /**
      * 修改交警人员
      */
-    @PreAuthorize("@ss.hasPermi('program:police:edit')")
+    //@PreAuthorize("@ss.hasPermi('program:police:edit')")
     @Log(title = "交警人员", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Police police)
@@ -92,7 +92,7 @@ public class PoliceController extends BaseController
     /**
      * 删除交警人员
      */
-    @PreAuthorize("@ss.hasPermi('program:police:remove')")
+    //@PreAuthorize("@ss.hasPermi('program:police:remove')")
     @Log(title = "交警人员", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{policeIds}")
     public AjaxResult remove(@PathVariable Long[] policeIds)

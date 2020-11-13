@@ -34,7 +34,7 @@ public class AdminController extends BaseController
     /**
      * 查询管理员账户列表
      */
-    @PreAuthorize("@ss.hasPermi('program:admin:list')")
+    //@PreAuthorize("@ss.hasPermi('program:admin:list')")
     @GetMapping("/list")
     public TableDataInfo list(Admin admin)
     {
@@ -59,7 +59,7 @@ public class AdminController extends BaseController
     /**
      * 获取管理员账户详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:admin:query')")
+    //@PreAuthorize("@ss.hasPermi('program:admin:query')")
     @GetMapping(value = "/{adminId}")
     public AjaxResult getInfo(@PathVariable("adminId") Long adminId)
     {
@@ -69,7 +69,7 @@ public class AdminController extends BaseController
     /**
      * 新增管理员账户
      */
-    @PreAuthorize("@ss.hasPermi('program:admin:add')")
+    //@PreAuthorize("@ss.hasPermi('program:admin:add')")
     @Log(title = "管理员账户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Admin admin)
@@ -80,7 +80,7 @@ public class AdminController extends BaseController
     /**
      * 修改管理员账户
      */
-    @PreAuthorize("@ss.hasPermi('program:admin:edit')")
+    //@PreAuthorize("@ss.hasPermi('program:admin:edit')")
     @Log(title = "管理员账户", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Admin admin)
@@ -91,7 +91,7 @@ public class AdminController extends BaseController
     /**
      * 删除管理员账户
      */
-    @PreAuthorize("@ss.hasPermi('program:admin:remove')")
+    //@PreAuthorize("@ss.hasPermi('program:admin:remove')")
     @Log(title = "管理员账户", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{adminIds}")
     public AjaxResult remove(@PathVariable Long[] adminIds)

@@ -34,7 +34,7 @@ public class ProjectController extends BaseController
     /**
      * 查询施工项目列表
      */
-    @PreAuthorize("@ss.hasPermi('program:project:list')")
+    //@PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
     {
@@ -59,7 +59,7 @@ public class ProjectController extends BaseController
     /**
      * 获取施工项目详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:project:query')")
+    //@PreAuthorize("@ss.hasPermi('program:project:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
@@ -69,7 +69,7 @@ public class ProjectController extends BaseController
     /**
      * 新增施工项目
      */
-    @PreAuthorize("@ss.hasPermi('program:project:add')")
+    //@PreAuthorize("@ss.hasPermi('program:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Project project)
@@ -80,7 +80,7 @@ public class ProjectController extends BaseController
     /**
      * 修改施工项目
      */
-    @PreAuthorize("@ss.hasPermi('program:project:edit')")
+    //@PreAuthorize("@ss.hasPermi('program:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Project project)
@@ -91,7 +91,7 @@ public class ProjectController extends BaseController
     /**
      * 删除施工项目
      */
-    @PreAuthorize("@ss.hasPermi('program:project:remove')")
+    //@PreAuthorize("@ss.hasPermi('program:project:remove')")
     @Log(title = "施工项目", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{projectIds}")
     public AjaxResult remove(@PathVariable Long[] projectIds)

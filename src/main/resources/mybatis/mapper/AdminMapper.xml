@@ -17,11 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAdminList" parameterType="Admin" resultMap="AdminResult">
         <include refid="selectAdminVo"/>
-        <where>  
+        WHERE admin_delete_flag !=1
+        <!--<where>
             <if test="adminUsername != null  and adminUsername != ''"> and admin_username like concat('%', #{adminUsername}, '%')</if>
             <if test="adminPassword != null  and adminPassword != ''"> and admin_password = #{adminPassword}</if>
             <if test="adminDeleteFlag != null  and adminDeleteFlag != ''"> and admin_delete_flag = #{adminDeleteFlag}</if>
         </where>
+            <if test="adminUpdateFlag != null "> and admin_update_flag = #{adminUpdateFlag}</if>
+        </where>-->
     </select>
     
     <select id="selectAdminById" parameterType="Long" resultMap="AdminResult">
@@ -60,6 +63,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where admin_id = #{adminId}
     </update>
 
+    <update id="deleteAdminById" parameterType="Long">
+        update admin SET admin_delete_flag = 1
+        where admin_id = #{adminId}
+    </update>
+
+    <update id="deleteAdminByIds" parameterType="String">
+        update admin SET admin_delete_flag = 1 where admin_id in
+        <foreach item="adminId" collection="array" open="(" separator="," close=")">
+            #{adminId}
+        </foreach>
+    </update>
+
+    <!--<delete id="deleteAdminById" parameterType="Long">
     <delete id="deleteAdminById" parameterType="Long">
         delete from admin where admin_id = #{adminId}
     </delete>
@@ -69,6 +85,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <foreach item="adminId" collection="array" open="(" separator="," close=")">
             #{adminId}
         </foreach>
-    </delete>
-    
+    </delete>-->
 </mapper>

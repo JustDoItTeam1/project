@@ -73,7 +73,7 @@ public class Police  extends BaseUser
     public String getUserPassword(){
         return  policePassword;
     }
-    public void setPoliceId(Long policeId) 
+    public void setPoliceId(Long policeId)
     {
         this.policeId = policeId;
     }
