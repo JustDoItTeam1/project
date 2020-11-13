@@ -1,6 +1,10 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,21 +34,24 @@ public class ProjectController extends BaseController
 {
     @Autowired
     private IProjectService projectService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询施工项目列表
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:list')")
+    @PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
     {
         startPage();
-        List<Project> list = projectService.selectProjectList(project);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<Project> list = tokenService.getLoginUserProject(loginUser);
         return getDataTable(list);
     }
 
     /**
-     * 导出施工项目列表1
+     * 导出施工项目列表
      */
 //    @PreAuthorize("@ss.hasPermi('program:project:export')")
 //    @Log(title = "施工项目", businessType = BusinessType.EXPORT)
@@ -56,6 +63,7 @@ public class ProjectController extends BaseController
 //        return util.exportExcel(list, "project");
 //    }
 
+    //@PreAuthorize("@ss.hasPermi('program:project:query')")
     /**
      * 获取施工项目详细信息
      */
@@ -69,7 +77,7 @@ public class ProjectController extends BaseController
     /**
      * 新增施工项目
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:add')")
+    @PreAuthorize("@ss.hasPermi('program:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Project project)
@@ -80,7 +88,7 @@ public class ProjectController extends BaseController
     /**
      * 修改施工项目
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:edit')")
+    @PreAuthorize("@ss.hasPermi('program:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Project project)
@@ -91,7 +99,7 @@ public class ProjectController extends BaseController
     /**
      * 删除施工项目
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:remove')")
+    @PreAuthorize("@ss.hasPermi('program:project:remove')")
     @Log(title = "施工项目", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{projectIds}")
     public AjaxResult remove(@PathVariable Long[] projectIds)

@@ -20,6 +20,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectProjectVo">
         select project_id, project_name, project_location, project_long_lat, project_manger, project_phone, project_builder_name, project_builder_id, project_traffic_staff_id, project_finished_flag, project_delete_flag from project
+        select p.project_id, p.project_name, p.project_location, p.project_long_lat, p.project_manger, p.project_phone, p.project_builder_name, p.project_builder_id, p.project_traffic_staff_id, p.project_finished_flag, p.project_delete_flag, p.project_update_flag from project p
+    </sql>
+
+    <sql id="selectProjectPI">
+        select project_id, project_name, project_location, project_long_lat, project_manger, project_phone, project_builder_name, project_builder_id, project_traffic_staff_id from project
     </sql>
 
     <select id="selectProjectList" parameterType="Project" resultMap="ProjectResult">
@@ -42,8 +47,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectProjectById" parameterType="Long" resultMap="ProjectResult">
-        <include refid="selectProjectVo"/>
-        where project_id = #{projectId}
+        <include refid="selectProjectVo"></include>
+        WHERE project_id = #{projectId}
+    </select>
+
+    <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
+        <include refid="selectProjectPI"/>
+        where project_name = #{projectName}
+    </select>
+
+    <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
+        <include refid="selectProjectVo"></include>
+        where p.project_builder_id = #{projectBuilderId}
+    </select>
+
+    <select id="selectAllProjectList"  resultMap="ProjectResult">
+        <include refid="selectProjectVo"></include>
+    </select>
+
+    <select id="selectProjectByLocation" parameterType="String" resultMap="ProjectResult">
+        <include refid="selectProjectPI"/>
+        where project_location = #{projectLocation}
+    </select>
+
+    <select id="searchProjectByManager" parameterType="String" resultMap="ProjectResult">
+        <include refid="selectProjectPI"/>
+        where project_manager = #{projectManager}
     </select>
         
     <insert id="insertProject" parameterType="Project" useGeneratedKeys="true" keyProperty="projectId">
