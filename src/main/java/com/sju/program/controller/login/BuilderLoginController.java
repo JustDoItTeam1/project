@@ -118,7 +118,8 @@ public class BuilderLoginController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         Builder builder=(Builder) loginUser.getUser();
         // 权限集合
-        ArrayList<String> permissions = permissionService.getMenuPermission(builder.getAuthenticate());
+        ArrayList<String> menuPermission = permissionService.getMenuPermission(builder.getAuthenticate());
+        ArrayList<String> permissions = menuPermission;
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", builder);
         ajax.put("permissions",permissions);
