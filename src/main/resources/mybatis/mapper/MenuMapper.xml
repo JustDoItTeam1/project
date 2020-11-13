@@ -15,11 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="menuPerms"    column="menu_perms"    />
         <result property="menuIcon"    column="menu_icon"    />
         <result property="menuDeleteFlag"    column="menu_delete_flag"    />
-        <result property="menuUpdateFlag"    column="menu_update_flag"    />
     </resultMap>
 
     <sql id="selectMenuVo">
-        select menu_id, menu_name, menu_parent_id, menu_order_num, menu_path, menu_component, menu_type, menu_perms, menu_icon, menu_delete_flag, menu_update_flag from menu
+        select menu_id, menu_name, menu_parent_id, menu_order_num, menu_path, menu_component, menu_type, menu_perms, menu_icon, menu_delete_flag from menu
     </sql>
 
     <select id="selectMenuList" parameterType="Menu" resultMap="MenuResult">
@@ -34,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="menuPerms != null  and menuPerms != ''"> and menu_perms = #{menuPerms}</if>
             <if test="menuIcon != null  and menuIcon != ''"> and menu_icon = #{menuIcon}</if>
             <if test="menuDeleteFlag != null  and menuDeleteFlag != ''"> and menu_delete_flag = #{menuDeleteFlag}</if>
-            <if test="menuUpdateFlag != null "> and menu_update_flag = #{menuUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -54,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectMenusByAuthenticate" parameterType="Integer" resultMap="MenuResult">
-        SELECT m.menu_id, menu_name, menu_parent_id, menu_order_num, menu_path, menu_component, menu_type, menu_perms, menu_icon, menu_delete_flag, menu_update_flag FROM menu
+        SELECT m.menu_id, menu_name, menu_parent_id, menu_order_num, menu_path, menu_component, menu_type, menu_perms, menu_icon, menu_delete_flag FROM menu
         LEFT JOIN role_menu m ON menu.menu_id = m.menu_id
         WHERE m.role_id=#{auth}
     </select>
@@ -72,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="menuPerms != null">menu_perms,</if>
             <if test="menuIcon != null">menu_icon,</if>
             <if test="menuDeleteFlag != null">menu_delete_flag,</if>
-            <if test="menuUpdateFlag != null">menu_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="menuName != null">#{menuName},</if>
@@ -84,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="menuPerms != null">#{menuPerms},</if>
             <if test="menuIcon != null">#{menuIcon},</if>
             <if test="menuDeleteFlag != null">#{menuDeleteFlag},</if>
-            <if test="menuUpdateFlag != null">#{menuUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -100,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="menuPerms != null">menu_perms = #{menuPerms},</if>
             <if test="menuIcon != null">menu_icon = #{menuIcon},</if>
             <if test="menuDeleteFlag != null">menu_delete_flag = #{menuDeleteFlag},</if>
-            <if test="menuUpdateFlag != null">menu_update_flag = #{menuUpdateFlag},</if>
+
         </trim>
         where menu_id = #{menuId}
     </update>

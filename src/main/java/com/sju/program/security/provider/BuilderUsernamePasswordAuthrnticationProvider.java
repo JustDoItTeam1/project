@@ -1,5 +1,6 @@
 package com.sju.program.security.provider;
 
+import com.sju.program.security.token.BuilderUsernamePasswordAuthticationToken;
 import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
@@ -8,7 +9,7 @@ public class BuilderUsernamePasswordAuthrnticationProvider extends DaoAuthentica
 
         @Override
         public boolean supports(Class<?> authentication) {
-        return (PoliceUsernamePasswordAuthenticationToken.class
+        return (BuilderUsernamePasswordAuthticationToken.class
                 .isAssignableFrom(authentication));
     }
 }

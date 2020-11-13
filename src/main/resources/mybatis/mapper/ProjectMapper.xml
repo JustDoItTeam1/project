@@ -16,11 +16,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="projectTrafficStaffId"    column="project_traffic_staff_id"    />
         <result property="projectFinishedFlag"    column="project_finished_flag"    />
         <result property="projectDeleteFlag"    column="project_delete_flag"    />
-        <result property="projectUpdateFlag"    column="project_update_flag"    />
     </resultMap>
 
     <sql id="selectProjectVo">
-        select project_id, project_name, project_location, project_long_lat, project_manger, project_phone, project_builder_name, project_builder_id, project_traffic_staff_id, project_finished_flag, project_delete_flag, project_update_flag from project
+        select project_id, project_name, project_location, project_long_lat, project_manger, project_phone, project_builder_name, project_builder_id, project_traffic_staff_id, project_finished_flag, project_delete_flag from project
     </sql>
 
     <select id="selectProjectList" parameterType="Project" resultMap="ProjectResult">
@@ -36,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectTrafficStaffId != null "> and project_traffic_staff_id = #{projectTrafficStaffId}</if>
             <if test="projectFinishedFlag != null  and projectFinishedFlag != ''"> and project_finished_flag = #{projectFinishedFlag}</if>
             <if test="projectDeleteFlag != null  and projectDeleteFlag != ''"> and project_delete_flag = #{projectDeleteFlag}</if>
-            <if test="projectUpdateFlag != null "> and project_update_flag = #{projectUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -58,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectTrafficStaffId != null">project_traffic_staff_id,</if>
             <if test="projectFinishedFlag != null">project_finished_flag,</if>
             <if test="projectDeleteFlag != null">project_delete_flag,</if>
-            <if test="projectUpdateFlag != null">project_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null">#{projectName},</if>
@@ -71,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectTrafficStaffId != null">#{projectTrafficStaffId},</if>
             <if test="projectFinishedFlag != null">#{projectFinishedFlag},</if>
             <if test="projectDeleteFlag != null">#{projectDeleteFlag},</if>
-            <if test="projectUpdateFlag != null">#{projectUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -88,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectTrafficStaffId != null">project_traffic_staff_id = #{projectTrafficStaffId},</if>
             <if test="projectFinishedFlag != null">project_finished_flag = #{projectFinishedFlag},</if>
             <if test="projectDeleteFlag != null">project_delete_flag = #{projectDeleteFlag},</if>
-            <if test="projectUpdateFlag != null">project_update_flag = #{projectUpdateFlag},</if>
+
         </trim>
         where project_id = #{projectId}
     </update>

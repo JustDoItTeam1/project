@@ -1,6 +1,9 @@
 package com.sju.program.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -59,7 +62,18 @@ public class Menu
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date menuUpdateFlag;
 
-    public void setMenuId(Long menuId) 
+    /** 子菜单 */
+    private List<Menu> children = new ArrayList<Menu>();
+
+    public List<Menu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Menu> children) {
+        this.children = children;
+    }
+
+    public void setMenuId(Long menuId)
     {
         this.menuId = menuId;
     }

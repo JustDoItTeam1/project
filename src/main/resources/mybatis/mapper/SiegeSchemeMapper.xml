@@ -21,11 +21,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ssDeleteFlag"    column="ss_delete_flag"    />
         <result property="ssVerifyFlag"    column="ss_verify_flag"    />
         <result property="ssVerifyDate"    column="ss_verify_date"    />
-        <result property="ssUpdateFlag"    column="ss_update_flag"    />
     </resultMap>
 
     <sql id="selectSiegeSchemeVo">
-        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date, ss_update_flag from siege_scheme
+        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date from siege_scheme
     </sql>
 
     <select id="selectSiegeSchemeList" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
@@ -46,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssDeleteFlag != null  and ssDeleteFlag != ''"> and ss_delete_flag = #{ssDeleteFlag}</if>
             <if test="ssVerifyFlag != null  and ssVerifyFlag != ''"> and ss_verify_flag = #{ssVerifyFlag}</if>
             <if test="ssVerifyDate != null "> and ss_verify_date = #{ssVerifyDate}</if>
-            <if test="ssUpdateFlag != null "> and ss_update_flag = #{ssUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -87,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssDeleteFlag != null">ss_delete_flag,</if>
             <if test="ssVerifyFlag != null">ss_verify_flag,</if>
             <if test="ssVerifyDate != null">ss_verify_date,</if>
-            <if test="ssUpdateFlag != null">ss_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ssStatus != null">#{ssStatus},</if>
@@ -105,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssDeleteFlag != null">#{ssDeleteFlag},</if>
             <if test="ssVerifyFlag != null">#{ssVerifyFlag},</if>
             <if test="ssVerifyDate != null">#{ssVerifyDate},</if>
-            <if test="ssUpdateFlag != null">#{ssUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -127,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssDeleteFlag != null">ss_delete_flag = #{ssDeleteFlag},</if>
             <if test="ssVerifyFlag != null">ss_verify_flag = #{ssVerifyFlag},</if>
             <if test="ssVerifyDate != null">ss_verify_date = #{ssVerifyDate},</if>
-            <if test="ssUpdateFlag != null">ss_update_flag = #{ssUpdateFlag},</if>
+
         </trim>
         where ss_id = #{ssId}
     </update>

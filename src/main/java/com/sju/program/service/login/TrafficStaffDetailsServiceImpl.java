@@ -32,6 +32,7 @@ public class TrafficStaffDetailsServiceImpl implements UserDetailsService
         TrafficeStaff trafficeStaff =iTrafficeStaffService.selectTrafficeStaffByUsername(username);
         if (StringUtils.isNull(trafficeStaff))
         {
+            System.out.println("trafficeStaff"+trafficeStaff);
             log.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
         }

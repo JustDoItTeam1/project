@@ -8,6 +8,7 @@ import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class SiegeSchemeController extends BaseController
      * 查询围蔽方案列表
      */
     @ApiOperation(value = "查询围蔽方案接口",notes = "根据不同用户信息,查询其围蔽方案")
-    @PreAuthorize("@ss.hasPermi('program:scheme:list')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping("/list")
     public TableDataInfo list(SiegeScheme siegeScheme)
     {
@@ -73,7 +74,7 @@ public class SiegeSchemeController extends BaseController
      * 获取围蔽方案详细信息
      */
     @ApiOperation(value = "查询单个围蔽方案接口")
-    @PreAuthorize("@ss.hasPermi('program:scheme:query')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:query')")
     @GetMapping(value = "/{ssId}")
     public AjaxResult getInfo(@PathVariable("ssId") Long ssId)
     {
@@ -83,7 +84,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 新增围蔽方案
      */
-    @PreAuthorize("@ss.hasPermi('program:scheme:add')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:add')")
     @Log(title = "围蔽方案", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SiegeScheme siegeScheme)
@@ -94,7 +95,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 修改围蔽方案
      */
-    @PreAuthorize("@ss.hasPermi('program:scheme:edit')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:edit')")
     @Log(title = "围蔽方案", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SiegeScheme siegeScheme)
@@ -105,7 +106,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 删除围蔽方案
      */
-    @PreAuthorize("@ss.hasPermi('program:scheme:remove')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:remove')")
     @Log(title = "围蔽方案", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ssIds}")
     public AjaxResult remove(@PathVariable Long[] ssIds)

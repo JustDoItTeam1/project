@@ -133,22 +133,23 @@ public class AdminLoginController
         return ajax;
     }
 
-    /**
-     * 获取菜单路由信息
-     *
-     * @return 菜单路由信息
-     */
-   // @PreAuthorize("@ss.hasPermi()")
-    @ApiOperation(value = "获取管理员路由信息接口",notes = "获取菜单信息返回")
-    @GetMapping("/login/getAdminRouters")
-    public AjaxResult getRouters()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        if(loginUser==null){
-            return AjaxResult.error("用户不存在");
-        }
-        List<Menu> menus = menuService.selectAllMenu();
-        return AjaxResult.success(menus);
-    }
+//    /**
+//     * 获取菜单路由信息
+//     *
+//     * @return 菜单路由信息
+//     */
+//   // @PreAuthorize("@ss.hasPermi()")
+//    @ApiOperation(value = "获取管理员路由信息接口",notes = "获取菜单信息返回")
+//    @GetMapping("/login/getAdminRouters")
+//    public AjaxResult getRouters()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        if(loginUser==null){
+//            return AjaxResult.error("用户不存在");
+//        }
+//        List<Menu> menus = menuService.selectAllMenu();
+//        List<Menu> menus1=menuService.getChildPerms(menus,0);
+//        return AjaxResult.success(menuService.buildMenus(menus1));
+//    }
 }
 

@@ -118,23 +118,24 @@ public class PoliceLoginController
         return ajax;
     }
 
-    /**
-     * 获取菜单路由信息
-     *
-     * @return 菜单路由信息
-     */
-    // @PreAuthorize("@ss.hasPermi()")
-    @ApiOperation(value = "获取交警路由接口",notes = "获取菜单返回")
-    @GetMapping("/login/getPoliceRouters")
-    public AjaxResult getRouters()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        if(loginUser==null){
-            return AjaxResult.error("用户不存在");
-        }
-        List<Menu> menus = menuService.selectMenusByAuthenticate(((Police)loginUser.getUser()).getAuthenticate());
-        return AjaxResult.success(menus);
-    }
+//    /**
+//     * 获取菜单路由信息
+//     *
+//     * @return 菜单路由信息
+//     */
+//    // @PreAuthorize("@ss.hasPermi()")
+//    @ApiOperation(value = "获取交警路由接口",notes = "获取菜单返回")
+//    @GetMapping("/login/getPoliceRouters")
+//    public AjaxResult getRouters()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        if(loginUser==null){
+//            return AjaxResult.error("用户不存在");
+//        }
+//        List<Menu> menus = menuService.selectMenusByAuthenticate(((Police)loginUser.getUser()).getAuthenticate());
+//        List<Menu> menus1=menuService.getChildPerms(menus,0);
+//        return AjaxResult.success(menuService.buildMenus(menus));
+//    }
 }
 
 

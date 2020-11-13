@@ -39,6 +39,7 @@ public class BuilderDetailServiceImpl implements UserDetailsService
         Builder builder =iBuilderService.selectBuilderByUsername(username);
         if (StringUtils.isNull(builder))
         {
+            System.out.println("builder"+builder);
             log.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
         }

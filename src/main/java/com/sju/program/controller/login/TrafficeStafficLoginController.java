@@ -7,7 +7,7 @@ import com.sju.program.domain.model.LoginBody;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
-import com.sju.program.security.token.TrafficStaffUsernamePasswordAuthticationToekn;
+import com.sju.program.security.token.TrafficStaffUsernamePasswordAuthticationToken;
 import com.sju.program.service.*;
 import com.sju.program.service.login.LoginService;
 import com.sju.program.service.IMenuService;
@@ -75,7 +75,7 @@ public class TrafficeStafficLoginController
         try {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager
-                    .authenticate(new TrafficStaffUsernamePasswordAuthticationToekn(loginBody.getUsername(), loginBody.getPassword()));
+                    .authenticate(new TrafficStaffUsernamePasswordAuthticationToken(loginBody.getUsername(), loginBody.getPassword()));
         } catch (Exception e) {
             return AjaxResult.error("用户验证失败");
         }
@@ -120,23 +120,23 @@ public class TrafficeStafficLoginController
         return ajax;
     }
 
-    /**
-     * 获取菜单路由信息
-     *
-     * @return 菜单路由信息
-     */
-    // @PreAuthorize("@ss.hasPermi()")
-    @ApiOperation(value = "获取路由信息接口",notes = "获取菜单信息返回")
-    @GetMapping("/login/getTrafficRouters")
-    public AjaxResult getRouters()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        if(loginUser==null){
-            return AjaxResult.error("用户不存在");
-        }
-        List<Menu> menus = menuService.selectMenusByAuthenticate(((TrafficeStaff)loginUser.getUser()).getAuthenticate());
-        return AjaxResult.success(menus);
-    }
+//    /**
+//     * 获取菜单路由信息
+//     *
+//     * @return 菜单路由信息
+//     */
+//    // @PreAuthorize("@ss.hasPermi()")
+//    @ApiOperation(value = "获取路由信息接口",notes = "获取菜单信息返回")
+//    @GetMapping("/login/getTrafficRouters")
+//    public AjaxResult getRouters()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        if(loginUser==null){
+//            return AjaxResult.error("用户不存在");
+//        }
+//        List<Menu> menus = menuService.selectMenusByAuthenticate(((TrafficeStaff)loginUser.getUser()).getAuthenticate());
+//        return AjaxResult.success(menus);
+//    }
 }
 
 

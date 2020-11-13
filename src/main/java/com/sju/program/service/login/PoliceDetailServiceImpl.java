@@ -38,6 +38,7 @@ public class PoliceDetailServiceImpl implements UserDetailsService
         //Police police=null;
         if (StringUtils.isNull(police))
         {
+            System.out.println("police"+police);
             log.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
         }

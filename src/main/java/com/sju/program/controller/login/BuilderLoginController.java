@@ -3,12 +3,10 @@ package com.sju.program.controller.login;
 
 import com.sju.program.constant.Constants;
 import com.sju.program.domain.*;
-import com.sju.program.domain.Admin;
 import com.sju.program.domain.model.LoginBody;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
-import com.sju.program.security.token.BuilderUsernamePasswordAuthticationToekn;
-import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
+import com.sju.program.security.token.BuilderUsernamePasswordAuthticationToken;
 import com.sju.program.service.*;
 import com.sju.program.service.login.LoginService;
 import com.sju.program.service.IMenuService;
@@ -19,9 +17,7 @@ import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +73,7 @@ public class BuilderLoginController
         {
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager
-                    .authenticate(new BuilderUsernamePasswordAuthticationToekn(loginBody.getUsername(), loginBody.getPassword()));
+                    .authenticate(new BuilderUsernamePasswordAuthticationToken(loginBody.getUsername(), loginBody.getPassword()));
         }
         catch (Exception e)
         {
@@ -128,23 +124,24 @@ public class BuilderLoginController
         return ajax;
     }
 
-    /**
-     * 获取菜单路由信息
-     *
-     * @return 菜单路由信息
-     */
-    // @PreAuthorize("@ss.hasPermi()")
-    @ApiOperation(value = "获取施工单位路由信息接口",notes = "获取菜单信息返回")
-    @GetMapping("/login/getBuilderRouters")
-    public AjaxResult getRouters()
-    {
-        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-        if(loginUser==null){
-            return AjaxResult.error("用户不存在");
-        }
-        List<Menu> menus = menuService.selectMenusByAuthenticate(((Builder)loginUser.getUser()).getAuthenticate());
-        return AjaxResult.success(menus);
-    }
+//    /**
+//     * 获取菜单路由信息
+//     *
+//     * @return 菜单路由信息
+//     */
+//    // @PreAuthorize("@ss.hasPermi()")
+//    @ApiOperation(value = "获取施工单位路由信息接口",notes = "获取菜单信息返回")
+//    @GetMapping("/login/getBuilderRouters")
+//    public AjaxResult getRouters()
+//    {
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        if(loginUser==null){
+//            return AjaxResult.error("用户不存在");
+//        }
+//        List<Menu> menus = menuService.selectMenusByAuthenticate(((Builder)loginUser.getUser()).getAuthenticate());
+//        List<Menu> menus1=menuService.getChildPerms(menus,0);
+//        return AjaxResult.success(menuService.buildMenus(menus));
+//    }
 }
 
 

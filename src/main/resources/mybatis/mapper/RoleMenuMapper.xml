@@ -8,18 +8,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="roleId"    column="role_id"    />
         <result property="menuId"    column="menu_id"    />
         <result property="roleDeleteFlag"    column="role_delete_flag"    />
-        <result property="roleUpdateFlag"    column="role_update_flag"    />
     </resultMap>
 
     <sql id="selectRoleMenuVo">
-        select role_id, menu_id, role_delete_flag, role_update_flag from role_menu
+        select role_id, menu_id, role_delete_flag from role_menu
     </sql>
 
     <select id="selectRoleMenuList" parameterType="RoleMenu" resultMap="RoleMenuResult">
         <include refid="selectRoleMenuVo"/>
         <where>  
             <if test="roleDeleteFlag != null  and roleDeleteFlag != ''"> and role_delete_flag = #{roleDeleteFlag}</if>
-            <if test="roleUpdateFlag != null "> and role_update_flag = #{roleUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -34,13 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="roleId != null">role_id,</if>
             <if test="menuId != null">menu_id,</if>
             <if test="roleDeleteFlag != null">role_delete_flag,</if>
-            <if test="roleUpdateFlag != null">role_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="roleId != null">#{roleId},</if>
             <if test="menuId != null">#{menuId},</if>
             <if test="roleDeleteFlag != null">#{roleDeleteFlag},</if>
-            <if test="roleUpdateFlag != null">#{roleUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -49,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="menuId != null">menu_id = #{menuId},</if>
             <if test="roleDeleteFlag != null">role_delete_flag = #{roleDeleteFlag},</if>
-            <if test="roleUpdateFlag != null">role_update_flag = #{roleUpdateFlag},</if>
+
         </trim>
         where role_id = #{roleId}
     </update>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.sju.program.domain.Menu;
+import com.sju.program.domain.vo.RouterVo;
 
 /**
  * 菜单Service接口
@@ -41,6 +42,16 @@ public interface IMenuService
 
     public List<Menu> selectMenusByAuthenticate(int auth);
 
+    public List<Menu> getChildPerms(List<Menu> list, int parentId);
+
+
+    /**
+     * 构建前端路由所需要的菜单
+     *
+     * @param menus 菜单列表
+     * @return 路由列表
+     */
+    public List<RouterVo> buildMenus(List<Menu> menus);
     /**
      * 新增菜单
      * 

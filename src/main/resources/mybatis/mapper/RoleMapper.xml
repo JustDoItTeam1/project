@@ -8,11 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="roleId"    column="role_id"    />
         <result property="roleName"    column="role_name"    />
         <result property="roleDeleteFlag"    column="role_delete_flag"    />
-        <result property="roleUpdateFlag"    column="role_update_flag"    />
     </resultMap>
 
     <sql id="selectRoleVo">
-        select role_id, role_name, role_delete_flag, role_update_flag from role
+        select role_id, role_name, role_delete_flag from role
     </sql>
 
     <select id="selectRoleList" parameterType="Role" resultMap="RoleResult">
@@ -20,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
             <if test="roleDeleteFlag != null  and roleDeleteFlag != ''"> and role_delete_flag = #{roleDeleteFlag}</if>
-            <if test="roleUpdateFlag != null "> and role_update_flag = #{roleUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -34,12 +33,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="roleName != null">role_name,</if>
             <if test="roleDeleteFlag != null">role_delete_flag,</if>
-            <if test="roleUpdateFlag != null">role_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="roleName != null">#{roleName},</if>
             <if test="roleDeleteFlag != null">#{roleDeleteFlag},</if>
-            <if test="roleUpdateFlag != null">#{roleUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -48,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="roleName != null">role_name = #{roleName},</if>
             <if test="roleDeleteFlag != null">role_delete_flag = #{roleDeleteFlag},</if>
-            <if test="roleUpdateFlag != null">role_update_flag = #{roleUpdateFlag},</if>
+
         </trim>
         where role_id = #{roleId}
     </update>

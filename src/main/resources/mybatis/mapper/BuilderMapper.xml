@@ -14,11 +14,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="builderAddress"    column="builder_address"    />
         <result property="builderEnterpriseNumber"    column="builder_enterprise_number"    />
         <result property="builderDeleteFlag"    column="builder_delete_flag"    />
-        <result property="builderUpdateFlag"    column="builder_update_flag"    />
     </resultMap>
 
     <sql id="selectBuilderVo">
-        select builder_id, builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag, builder_update_flag from builder
+        select builder_id, builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag from builder
     </sql>
 
     <select id="selectBuilderList" parameterType="Builder" resultMap="BuilderResult">
@@ -32,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderAddress != null  and builderAddress != ''"> and builder_address = #{builderAddress}</if>
             <if test="builderEnterpriseNumber != null  and builderEnterpriseNumber != ''"> and builder_enterprise_number = #{builderEnterpriseNumber}</if>
             <if test="builderDeleteFlag != null  and builderDeleteFlag != ''"> and builder_delete_flag = #{builderDeleteFlag}</if>
-            <if test="builderUpdateFlag != null "> and builder_update_flag = #{builderUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -57,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderAddress != null">builder_address,</if>
             <if test="builderEnterpriseNumber != null">builder_enterprise_number,</if>
             <if test="builderDeleteFlag != null">builder_delete_flag,</if>
-            <if test="builderUpdateFlag != null">builder_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="builderUsername != null">#{builderUsername},</if>
@@ -68,7 +67,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderAddress != null">#{builderAddress},</if>
             <if test="builderEnterpriseNumber != null">#{builderEnterpriseNumber},</if>
             <if test="builderDeleteFlag != null">#{builderDeleteFlag},</if>
-            <if test="builderUpdateFlag != null">#{builderUpdateFlag},</if>
          </trim>
     </insert>
 
@@ -83,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderAddress != null">builder_address = #{builderAddress},</if>
             <if test="builderEnterpriseNumber != null">builder_enterprise_number = #{builderEnterpriseNumber},</if>
             <if test="builderDeleteFlag != null">builder_delete_flag = #{builderDeleteFlag},</if>
-            <if test="builderUpdateFlag != null">builder_update_flag = #{builderUpdateFlag},</if>
+
         </trim>
         where builder_id = #{builderId}
     </update>

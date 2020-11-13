@@ -37,6 +37,7 @@ public class AdminDetailsServiceImpl implements UserDetailsService
         //Admin admin =null;
         if (StringUtils.isNull(admin))
         {
+            System.out.println("admin"+admin);
             log.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
         }

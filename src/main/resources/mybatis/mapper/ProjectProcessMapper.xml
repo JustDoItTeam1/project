@@ -10,11 +10,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ppProjectId"    column="pp_project_id"    />
         <result property="ppDescription"    column="pp_description"    />
         <result property="ppDeleteFlag"    column="pp_delete_flag"    />
-        <result property="ppUpdateFlag"    column="pp_update_flag"    />
     </resultMap>
 
     <sql id="selectProjectProcessVo">
-        select pp_id, pp_time, pp_project_id, pp_description, pp_delete_flag, pp_update_flag from project_process
+        select pp_id, pp_time, pp_project_id, pp_description, pp_delete_flag from project_process
     </sql>
 
     <select id="selectProjectProcessList" parameterType="ProjectProcess" resultMap="ProjectProcessResult">
@@ -24,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ppProjectId != null "> and pp_project_id = #{ppProjectId}</if>
             <if test="ppDescription != null  and ppDescription != ''"> and pp_description = #{ppDescription}</if>
             <if test="ppDeleteFlag != null  and ppDeleteFlag != ''"> and pp_delete_flag = #{ppDeleteFlag}</if>
-            <if test="ppUpdateFlag != null "> and pp_update_flag = #{ppUpdateFlag}</if>
+
         </where>
     </select>
     
@@ -40,14 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ppProjectId != null">pp_project_id,</if>
             <if test="ppDescription != null">pp_description,</if>
             <if test="ppDeleteFlag != null">pp_delete_flag,</if>
-            <if test="ppUpdateFlag != null">pp_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ppTime != null">#{ppTime},</if>
             <if test="ppProjectId != null">#{ppProjectId},</if>
             <if test="ppDescription != null">#{ppDescription},</if>
             <if test="ppDeleteFlag != null">#{ppDeleteFlag},</if>
-            <if test="ppUpdateFlag != null">#{ppUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -58,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ppProjectId != null">pp_project_id = #{ppProjectId},</if>
             <if test="ppDescription != null">pp_description = #{ppDescription},</if>
             <if test="ppDeleteFlag != null">pp_delete_flag = #{ppDeleteFlag},</if>
-            <if test="ppUpdateFlag != null">pp_update_flag = #{ppUpdateFlag},</if>
+
         </trim>
         where pp_id = #{ppId}
     </update>

@@ -13,11 +13,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="riPhotoPath"    column="ri_photo_path"    />
         <result property="riStatus"    column="ri_status"    />
         <result property="riDeleteFlag"    column="ri_delete_flag"    />
-        <result property="riUpdateFlag"    column="ri_update_flag"    />
     </resultMap>
 
     <sql id="selectRectificationInfoVo">
-        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag from rectification_info
     </sql>
 
     <select id="selectRectificationInfoList" parameterType="RectificationInfo" resultMap="RectificationInfoResult">
@@ -30,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="riPhotoPath != null  and riPhotoPath != ''"> and ri_photo_path = #{riPhotoPath}</if>
             <if test="riStatus != null  and riStatus != ''"> and ri_status = #{riStatus}</if>
             <if test="riDeleteFlag != null  and riDeleteFlag != ''"> and ri_delete_flag = #{riDeleteFlag}</if>
-            <if test="riUpdateFlag != null "> and ri_update_flag = #{riUpdateFlag}</if>
+
         </where>
     </select>
 
@@ -39,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!--</select>-->
 
     <select id="selectRectificationInfoByBuilderId" parameterType="Long" resultMap="RectificationInfoResult">
-        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag from rectification_info
         LEFT JOIN project p on p.project_id=rectification_info.ri_project_id
         LEFT JOIN builder b ON p.project_builder_id = b.builder_id
         WHERE b.builder_id=#{builderId}
@@ -60,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="riPhotoPath != null">ri_photo_path,</if>
             <if test="riStatus != null">ri_status,</if>
             <if test="riDeleteFlag != null">ri_delete_flag,</if>
-            <if test="riUpdateFlag != null">ri_update_flag,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="riProjectId != null">#{riProjectId},</if>
@@ -70,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="riPhotoPath != null">#{riPhotoPath},</if>
             <if test="riStatus != null">#{riStatus},</if>
             <if test="riDeleteFlag != null">#{riDeleteFlag},</if>
-            <if test="riUpdateFlag != null">#{riUpdateFlag},</if>
+
          </trim>
     </insert>
 
@@ -84,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="riPhotoPath != null">ri_photo_path = #{riPhotoPath},</if>
             <if test="riStatus != null">ri_status = #{riStatus},</if>
             <if test="riDeleteFlag != null">ri_delete_flag = #{riDeleteFlag},</if>
-            <if test="riUpdateFlag != null">ri_update_flag = #{riUpdateFlag},</if>
+
         </trim>
         where ri_id = #{riId}
     </update>
