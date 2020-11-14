@@ -17,7 +17,7 @@ public interface IProjectService
      * @param projectId 施工项目ID
      * @return 施工项目
      */
-    public Project selectProjectById(Long projectId);
+    public List<Project> selectProjectById(Long projectId,Long builderId);
 
     /**
      * 查询施工项目列表
@@ -68,4 +68,6 @@ public interface IProjectService
     List<Project> selectProjectByBuilderId(Long id);
 
     List<Project> selectAllProjectList();
+
+    List<Project> selectProject(Long projectId);
 }

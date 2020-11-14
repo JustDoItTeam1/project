@@ -33,7 +33,7 @@ public class Project extends BaseEntity
 
     /** 负责人 */
     @Excel(name = "负责人")
-    private String projectManger;
+    private String projectManager;
 
     /** 联系电话 */
     @Excel(name = "联系电话")
@@ -102,12 +102,12 @@ public class Project extends BaseEntity
     }
     public void setProjectManger(String projectManger) 
     {
-        this.projectManger = projectManger;
+        this.projectManager = projectManger;
     }
 
     public String getProjectManger() 
     {
-        return projectManger;
+        return projectManager;
     }
     public void setProjectPhone(String projectPhone) 
     {

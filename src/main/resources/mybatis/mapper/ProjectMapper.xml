@@ -45,8 +45,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectProjectById" parameterType="Long" resultMap="ProjectResult">
+        SELECT  p.project_id, p.project_name, p.project_location, p.project_long_lat, p.project_manger, p.project_phone, p.project_builder_name, p.project_builder_id, p.project_traffic_staff_id, p.project_finished_flag, p.project_delete_flag, p.project_update_flag from project p
+        LEFT JOIN builder bui on p.project_builder_id = bui.builder_id
+        WHERE bui.builder_id = #{builderId} and p.project_id = #{projectId}
+    </select>
+
+    <select id="selectProject" parameterType="Long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        WHERE project_id = #{projectId}
+         WHERE p.project_id = #{projectId}
     </select>
 
     <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
@@ -68,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_location = #{projectLocation}
     </select>
 
-    <select id="searchProjectByManager" parameterType="String" resultMap="ProjectResult">
+    <select id="selectProjectByManager" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
         where project_manager = #{projectManager}
     </select>

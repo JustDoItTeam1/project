@@ -2,6 +2,8 @@ package com.sju.program.controller;
 
 import java.util.List;
 
+import com.sju.program.domain.SiegeScheme;
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
@@ -21,6 +23,7 @@ import com.sju.program.enums.BusinessType;
 import com.sju.program.page.TableDataInfo;
 import com.sju.program.domain.Project;
 import com.sju.program.service.IProjectService;
+import com.sju.program.domain.Builder;
 
 /**
  * 施工项目Controller
@@ -40,7 +43,7 @@ public class ProjectController extends BaseController
     /**
      * 查询施工项目列表
      */
-    @PreAuthorize("@ss.hasPermi('program:project:list')")
+    //@PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
     {
@@ -62,12 +65,29 @@ public class ProjectController extends BaseController
 //        ExcelUtil<Project> util = new ExcelUtil<Project>(Project.class);
 //        return util.exportExcel(list, "project");
 //    }
+    /**
+     * 获取施工项目详细信息
+     */
 
     //@PreAuthorize("@ss.hasPermi('program:project:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
-        return AjaxResult.success(projectService.selectProjectById(projectId));
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<Project> list=null;
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
+        switch (baseUser.getAuthenticate()){
+            case 1:
+            case 3:
+                list=projectService.selectProject(projectId);
+                break;
+            case 4:
+                list= projectService.selectProjectById(projectId,baseUser.getId());
+                break;
+
+        }
+        return AjaxResult.success(list);
     }
 
     /**

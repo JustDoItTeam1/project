@@ -26,9 +26,9 @@ public class ProjectServiceImpl implements IProjectService
      * @return 施工项目
      */
     @Override
-    public Project selectProjectById(Long projectId)
+    public List<Project> selectProjectById(Long projectId,Long builderId)
     {
-        return projectMapper.selectProjectById(projectId);
+        return projectMapper.selectProjectById(projectId,builderId);
     }
 
     @Override
@@ -45,6 +45,11 @@ public class ProjectServiceImpl implements IProjectService
     @Override
     public List<Project> selectAllProjectList() {
         return projectMapper.selectAllProjectList();
+    }
+
+    @Override
+    public List<Project> selectProject(Long projectId) {
+        return projectMapper.selectProject(projectId);
     }
 
     /**
