@@ -21,6 +21,34 @@ public class SieheSchemeParentVo {
 
     private String ssProjectName;
 
+    private String ssStatus;
+
+    private String ssLane;
+
+    private String ssStage;
+
+    private String ssStartTime;
+
+    private String ssEndTime;
+
+    private String ssRange;
+
+    private String ssProperties;
+
+    private String ssSuggessions;
+
+    private String ssFilePath;
+
+    private Long ssBuilderId;
+
+    private Long ssTrafficStaffId;
+
+    private Long ssDeleteFlag;
+
+    private Long ssVerifyDate;
+
+
+
 
     private List<SiegeScheme> children;
 
@@ -96,5 +124,113 @@ public class SieheSchemeParentVo {
 
     public void setChildrennum(int childrennum) {
         this.childrennum = childrennum;
+    }
+
+    public String getSsStatus() {
+        return ssStatus;
+    }
+
+    public void setSsStatus(String ssStatus) {
+        this.ssStatus = ssStatus;
+    }
+
+    public String getSsLane() {
+        return ssLane;
+    }
+
+    public void setSsLane(String ssLane) {
+        this.ssLane = ssLane;
+    }
+
+    public String getSsStage() {
+        return ssStage;
+    }
+
+    public void setSsStage(String ssStage) {
+        this.ssStage = ssStage;
+    }
+
+    public String getSsStartTime() {
+        return ssStartTime;
+    }
+
+    public void setSsStartTime(String ssStartTime) {
+        this.ssStartTime = ssStartTime;
+    }
+
+    public String getSsEndTime() {
+        return ssEndTime;
+    }
+
+    public void setSsEndTime(String ssEndTime) {
+        this.ssEndTime = ssEndTime;
+    }
+
+    public String getSsRange() {
+        return ssRange;
+    }
+
+    public void setSsRange(String ssRange) {
+        this.ssRange = ssRange;
+    }
+
+    public String getSsProperties() {
+        return ssProperties;
+    }
+
+    public void setSsProperties(String ssProperties) {
+        this.ssProperties = ssProperties;
+    }
+
+    public String getSsSuggessions() {
+        return ssSuggessions;
+    }
+
+    public void setSsSuggessions(String ssSuggessions) {
+        this.ssSuggessions = ssSuggessions;
+    }
+
+    public String getSsFilePath() {
+        return ssFilePath;
+    }
+
+    public void setSsFilePath(String ssFilePath) {
+        this.ssFilePath = ssFilePath;
+    }
+
+    public Long getSsBuilderId() {
+        return ssBuilderId;
+    }
+
+    public void setSsBuilderId(Long ssBuilderId) {
+        this.ssBuilderId = ssBuilderId;
+    }
+
+    public Long getSsTrafficStaffId() {
+        return ssTrafficStaffId;
+    }
+
+    public void setSsTrafficStaffId(Long ssTrafficStaffId) {
+        this.ssTrafficStaffId = ssTrafficStaffId;
+    }
+
+    public Long getSsDeleteFlag() {
+        return ssDeleteFlag;
+    }
+
+    public void setSsDeleteFlag(Long ssDeleteFlag) {
+        this.ssDeleteFlag = ssDeleteFlag;
+    }
+
+    public Long getSsVerifyDate() {
+        return ssVerifyDate;
+    }
+
+    public void setSsVerifyDate(Long ssVerifyDate) {
+        this.ssVerifyDate = ssVerifyDate;
+    }
+
+    public void setChildren(List<SiegeScheme> children) {
+        this.children = children;
     }
 }
