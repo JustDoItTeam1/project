@@ -49,7 +49,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectMenuPermsByAuthenticate" parameterType="Integer" resultType="String">
         SELECT menu_perms FROM menu
         LEFT  JOIN role_menu on menu.menu_id = role_menu.menu_id
-        WHERE role_menu.role_id=#{auth}
+        <!--<where>-->
+            <!--<if test="menuPerms != null  and menuName != ''"> AND role_menu.role_id=#{auth} </if>-->
+        <!--</where>-->
+        WHERE role_menu.role_id=#{auth} and menu_perms is NOT  NULL
     </select>
 
     <select id="selectMenusByAuthenticate" parameterType="Integer" resultMap="MenuResult">
