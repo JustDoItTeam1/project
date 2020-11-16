@@ -75,6 +75,7 @@ public class GetInfoAndRouters {
             admin.setPermissions(permissions);
             ajax.put("user", admin);
             ajax.put("permissions",permissions);
+            ajax.put("roles","admin");
         }
 
         if (loginUser.getUser().getClass()==Builder.class){
@@ -84,6 +85,7 @@ public class GetInfoAndRouters {
             builder.setPermissions(permissions);
             ajax.put("user", builder);
             ajax.put("permissions",permissions);
+            ajax.put("roles","admin");
         }
         if (loginUser.getUser().getClass()==TrafficeStaff.class){
             TrafficeStaff trafficeStaff=(TrafficeStaff) loginUser.getUser();
@@ -92,6 +94,7 @@ public class GetInfoAndRouters {
             trafficeStaff.setPermissions(permissions);
             ajax.put("user", trafficeStaff);
             ajax.put("permissions",permissions);
+            ajax.put("roles","admin");
         }
         if (loginUser.getUser().getClass()==Police.class){
             Police police=(Police) loginUser.getUser();
@@ -100,6 +103,7 @@ public class GetInfoAndRouters {
             police.setPermissions(permissions);
             ajax.put("user", police);
             ajax.put("permissions",permissions);
+            ajax.put("roles","admin");
         }
         return ajax;
     }
