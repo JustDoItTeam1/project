@@ -123,10 +123,12 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
         Map<String,String> map=new HashMap<String, String>();
         //List<Map<Long,List<SiegeScheme>>> mapList=new ArrayList<>();
         Set<Long> set=new LinkedHashSet<>();
+        int i=0;
         for(SiegeScheme siegeScheme:siegeSchemes){
             set.add(siegeScheme.getSsProjectId());
+            i++;
         }
-        int i=0;
+
         List<SieheSchemeParentVo> list=new ArrayList<>();
         for(Long projectId:set){
             SieheSchemeParentVo sieheSchemeParentVo=new SieheSchemeParentVo();
@@ -134,7 +136,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 //            Map<String,List<SiegeScheme>> map2=new HashMap<>();
 //            Map<String,Object> map3=new HashMap<>();
             sieheSchemeParentVo.setChild(siegeSchemeMapper.selectSiegeSchemeByProjectId(projectId));
-            sieheSchemeParentVo.setSsId(i++);
+            sieheSchemeParentVo.setSsId(++i);
             sieheSchemeParentVo.setSsVerifyFlag(siegeSchemeMapper.getSsBySsVerifyFlagProjectId(projectId));
             sieheSchemeParentVo.setSs(true);
             sieheSchemeParentVo.setSsmap(false);
