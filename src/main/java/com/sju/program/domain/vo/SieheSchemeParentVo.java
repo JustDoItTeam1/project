@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SieheSchemeParentVo {
 
-    private int Id;
+    private int ssId;
 
     private Boolean ss;
 
@@ -94,12 +94,12 @@ public class SieheSchemeParentVo {
         this.ssProjectName = ssProjectName;
     }
 
-    public int getId() {
-        return Id;
+    public int getSsId() {
+        return ssId;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setSsId(int ssId) {
+        this.ssId = ssId;
     }
 
     public Boolean getSs() {
