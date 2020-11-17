@@ -134,7 +134,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 //            Map<String,List<SiegeScheme>> map2=new HashMap<>();
 //            Map<String,Object> map3=new HashMap<>();
             sieheSchemeParentVo.setChild(siegeSchemeMapper.selectSiegeSchemeByProjectId(projectId));
-            sieheSchemeParentVo.setId(i++);
+            sieheSchemeParentVo.setSsId(i++);
             sieheSchemeParentVo.setSsVerifyFlag(siegeSchemeMapper.getSsBySsVerifyFlagProjectId(projectId));
             sieheSchemeParentVo.setSs(true);
             sieheSchemeParentVo.setSsmap(false);
