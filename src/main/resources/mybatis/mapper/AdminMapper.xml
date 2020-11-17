@@ -9,11 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="adminUsername"    column="admin_username"    />
         <result property="adminPassword"    column="admin_password"    />
         <result property="adminDeleteFlag"    column="admin_delete_flag"    />
-        <result property="adminUpdateFlag"    column="admin_update_flag"    />
+        <!--<result property="adminUpdateFlag"    column="admin_update_flag"    />-->
     </resultMap>
 
     <sql id="selectAdminVo">
-        select admin_id, admin_username, admin_password, admin_delete_flag, admin_update_flag from admin
+        select admin_id, admin_username, admin_password, admin_delete_flag from admin
     </sql>
 
     <select id="selectAdminList" parameterType="Admin" resultMap="AdminResult">
@@ -88,6 +88,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{adminId}
         </foreach>
     </delete>-->
-    </delete>
+    <!--</delete>-->
 
 </mapper>

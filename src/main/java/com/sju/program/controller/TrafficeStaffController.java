@@ -34,7 +34,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 查询交管人员列表
      */
-    @PreAuthorize("@ss.hasPermi('program:staff:list')")
+    //@PreAuthorize("@ss.hasPermi('program:staff:list')")
     @GetMapping("/list")
     public TableDataInfo list(TrafficeStaff trafficeStaff)
     {
@@ -59,7 +59,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 获取交管人员详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:staff:query')")
+    //@PreAuthorize("@ss.hasPermi('program:staff:query')")
     @GetMapping(value = "/{trafficId}")
     public AjaxResult getInfo(@PathVariable("trafficId") Long trafficId)
     {
@@ -69,7 +69,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 新增交管人员
      */
-    @PreAuthorize("@ss.hasPermi('program:staff:add')")
+    //@PreAuthorize("@ss.hasPermi('program:staff:add')")
     @Log(title = "交管人员", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TrafficeStaff trafficeStaff)
@@ -80,7 +80,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 修改交管人员
      */
-    @PreAuthorize("@ss.hasPermi('program:staff:edit')")
+    //@PreAuthorize("@ss.hasPermi('program:staff:edit')")
     @Log(title = "交管人员", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TrafficeStaff trafficeStaff)
@@ -91,7 +91,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 删除交管人员
      */
-    @PreAuthorize("@ss.hasPermi('program:staff:remove')")
+    //@PreAuthorize("@ss.hasPermi('program:staff:remove')")
     @Log(title = "交管人员", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{trafficIds}")
     public AjaxResult remove(@PathVariable Long[] trafficIds)

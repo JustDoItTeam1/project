@@ -9,11 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="trafficName"    column="traffic_name"    />
         <result property="trafficPassword"    column="traffic_password"    />
         <result property="trafficDeleteFlag"    column="traffic_delete_flag"    />
-        <result property="trafficUpdateFlag"    column="traffic_update_flag"    />
+        <!--<result property="trafficUpdateFlag"    column="traffic_update_flag"    />-->
     </resultMap>
 
     <sql id="selectTrafficeStaffVo">
-        select traffic_id, traffic_name, traffic_password, traffic_delete_flag, traffic_update_flag from traffice_staff
+        select traffic_id, traffic_name, traffic_password, traffic_delete_flag from traffice_staff
     </sql>
 
     <select id="selectTrafficeStaffList" parameterType="TrafficeStaff" resultMap="TrafficeStaffResult">
@@ -63,7 +63,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where traffic_id = #{trafficId}
     </update>
 
-    <delete id="deleteTrafficeStaffById" parameterType="Long">
+    <update id="deleteTrafficeStaffById" parameterType="Long">
+        update traffice_staff SET traffic_delete_flag = 1
+        where traffic_id = #{trafficId}
+    </update>
+
+    <update id="deleteTrafficeStaffByIds" parameterType="String">
+        UPDATE traffice_staff SET traffic_delete_flag = 1 where traffic_id in
+        <foreach item="trafficId" collection="array" open="(" separator="," close=")">
+            #{trafficId}
+        </foreach>
+    </update>
+
+    <!--<delete id="deleteTrafficeStaffById" parameterType="Long">
         delete from traffice_staff where traffic_id = #{trafficId}
     </delete>
 
@@ -72,6 +84,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <foreach item="trafficId" collection="array" open="(" separator="," close=")">
             #{trafficId}
         </foreach>
-    </delete>
+    </delete>-->
     
 </mapper>

@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.Project;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 施工项目Service接口
@@ -18,6 +19,14 @@ public interface IProjectService
      * @return 施工项目
      */
     public Project selectProjectById(Long projectId);
+
+    /**
+     * 查询施工项目
+     *
+     * @param builderId 施工项目ID
+     * @return 施工项目
+     */
+    public List<Project> selectProjectByBuilderId(Long builderId);
 
     /**
      * 查询施工项目列表

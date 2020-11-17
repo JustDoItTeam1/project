@@ -31,6 +31,12 @@ public class ProjectServiceImpl implements IProjectService
         return projectMapper.selectProjectById(projectId);
     }
 
+    @Override
+    public List<Project> selectProjectByBuilderId(Long BuilderId)
+    {
+        return projectMapper.selectProjectByBuilderId(BuilderId);
+    }
+
     /**
      * 查询施工项目列表
      * 

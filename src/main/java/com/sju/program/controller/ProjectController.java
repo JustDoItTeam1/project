@@ -1,6 +1,11 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.domain.model.BaseUser;
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +35,8 @@ public class ProjectController extends BaseController
 {
     @Autowired
     private IProjectService projectService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询施工项目列表
@@ -39,7 +46,17 @@ public class ProjectController extends BaseController
     public TableDataInfo list(Project project)
     {
         startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<Project> list = projectService.selectProjectList(project);
+        return getDataTable(list);
+    }
+
+    @GetMapping(value ="/{builderId}")
+    public TableDataInfo list(@PathVariable("builderId") Long builderId)
+    {
+        startPage();
+        //LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<Project> list = (List<Project>) projectService.selectProjectByBuilderId(builderId);
         return getDataTable(list);
     }
 
@@ -60,11 +77,11 @@ public class ProjectController extends BaseController
      * 获取施工项目详细信息
      */
     //@PreAuthorize("@ss.hasPermi('program:project:query')")
-    @GetMapping(value = "/{projectId}")
+/*    @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
         return AjaxResult.success(projectService.selectProjectById(projectId));
-    }
+    }*/
 
     /**
      * 新增施工项目

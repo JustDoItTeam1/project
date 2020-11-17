@@ -19,6 +19,8 @@ public interface ProjectMapper
      */
     public Project selectProjectById(Long projectId);
 
+    public List<Project> selectProjectByBuilderId(Long builderId);
+
     /**
      * 查询施工项目列表
      * 

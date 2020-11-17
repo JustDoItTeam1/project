@@ -21,11 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ssDeleteFlag"    column="ss_delete_flag"    />
         <result property="ssVerifyFlag"    column="ss_verify_flag"    />
         <result property="ssVerifyDate"    column="ss_verify_date"    />
-        <result property="ssUpdateFlag"    column="ss_update_flag"    />
+        <!--<result property="ssUpdateFlag"    column="ss_update_flag"    />-->
     </resultMap>
 
     <sql id="selectSiegeSchemeVo">
-        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date, ss_update_flag from siege_scheme
+        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date from siege_scheme
     </sql>
 
     <select id="selectSiegeSchemeList" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
@@ -132,7 +132,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where ss_id = #{ssId}
     </update>
 
-    <delete id="deleteSiegeSchemeById" parameterType="Long">
+    <update id="deleteSiegeSchemeById" parameterType="Long">
+        update siege_scheme SET ss_delete_flag = 1
+        where ss_id = #{ssId}
+    </update>
+
+    <update id="deleteSiegeSchemeByIds" parameterType="String">
+        UPDATE siege_scheme SET ss_delete_flag = 1 where ss_id in
+        <foreach item="ssId" collection="array" open="(" separator="," close=")">
+            #{ssId}
+        </foreach>
+    </update>
+
+<!--    <delete id="deleteSiegeSchemeById" parameterType="Long">
         delete from siege_scheme where ss_id = #{ssId}
     </delete>
 
@@ -142,5 +154,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{ssId}
         </foreach>
     </delete>
-    
+    -->
 </mapper>
