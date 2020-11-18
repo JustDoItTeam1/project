@@ -2,10 +2,13 @@ package com.sju.program.service.impl;
 
 import java.util.*;
 
+import com.sju.program.constant.UserConstants;
+import com.sju.program.domain.Project;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
 import com.sju.program.mapper.BuilderMapper;
 import com.sju.program.mapper.ProjectMapper;
+import com.sju.program.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.SiegeSchemeMapper;
@@ -70,6 +73,26 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
         return siegeSchemeMapper.selectPassSiegeScheme();
     }
 
+    @Override
+    public List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, Project project) {
+        List<SieheSchemeParentVo> sieheSchemeParentVoList=new LinkedList<>();
+        for(SieheSchemeParentVo sieheSchemeParentVo:list){
+            if(sieheSchemeParentVo.getSsBuilderName().contains(project.getProjectBuilderName())&&sieheSchemeParentVo.getSsProjectName().contains(project.getProjectName())){
+                sieheSchemeParentVoList.add(sieheSchemeParentVo);
+            }
+        }
+        return sieheSchemeParentVoList;
+    }
+
+    @Override
+    public String checkSifegeSchemeUnique(SiegeScheme sieheScheme) {
+            SiegeScheme siegeScheme=siegeSchemeMapper.checkSifegeSchemeUnique(sieheScheme);
+            if(StringUtils.isNotNull(siegeScheme)){
+                return UserConstants.NOT_UNIQUE;
+            }
+            return UserConstants.UNIQUE;
+    }
+
     /**
      * 新增围蔽方案
      * 
@@ -103,7 +126,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     @Override
     public int deleteSiegeSchemeByIds(Long[] ssIds)
     {
-        return siegeSchemeMapper.deleteSiegeSchemeByIds(ssIds);
+        return siegeSchemeMapper.updateSiegeSchemeDeleteFlagByIds(ssIds);
     }
 
     /**
@@ -123,10 +146,10 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
         Map<String,String> map=new HashMap<String, String>();
         //List<Map<Long,List<SiegeScheme>>> mapList=new ArrayList<>();
         Set<Long> set=new LinkedHashSet<>();
-        int i=0;
+        Long i=0L;
         for(SiegeScheme siegeScheme:siegeSchemes){
             set.add(siegeScheme.getSsProjectId());
-            i++;
+            i=siegeScheme.getSsId();
         }
 
         List<SieheSchemeParentVo> list=new ArrayList<>();

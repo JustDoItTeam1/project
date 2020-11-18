@@ -68,16 +68,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSiegeSchemeByBuilderId" parameterType="Long" resultMap="SiegeSchemeResult">
    <include refid="selectSiegeSchemeVo"></include>
-    WHERE ss_builder_id=#{builderId}
+    WHERE ss_builder_id=#{builderId} AND ss_delete_flag!="del"
     </select>
 
     <select id="selectPassSiegeScheme" resultMap="SiegeSchemeResult">
         <include refid="selectSiegeSchemeVo"></include>
-        WHERE ss_verify_flag="pass"
+        WHERE ss_verify_flag="pass" AND ss_delete_flag!="del"
     </select>
 
     <select id="selectAllSiegeSchemeList" resultMap="SiegeSchemeResult">
         <include refid="selectSiegeSchemeVo"></include>
+        WHERE ss_delete_flag!="del"
         ORDER BY ss_project_id,ss_stage
     </select>
 <select id="getChildNumberBySsProjectId" parameterType="Long" resultType="Integer">
@@ -96,14 +97,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssRange != null">ss_range,</if>
             <if test="ssProjectId != null">ss_project_id,</if>
             <if test="ssProperties != null">ss_properties,</if>
-            <if test="ssSuggessions != null">ss_suggessions,</if>
+            <!--<if test="ssSuggessions != null">ss_suggessions,</if>-->
             <if test="ssFilePath != null">ss_file_path,</if>
             <if test="ssBuilderId != null">ss_builder_id,</if>
             <if test="ssTrafficStaffId != null">ss_traffic_staff_id,</if>
-            <if test="ssDeleteFlag != null">ss_delete_flag,</if>
-            <if test="ssVerifyFlag != null">ss_verify_flag,</if>
-            <if test="ssVerifyDate != null">ss_verify_date,</if>
-
+            ss_delete_flag,
+            ss_verify_flag,
+            ss_verify_date
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ssStatus != null">#{ssStatus},</if>
@@ -114,16 +114,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ssRange != null">#{ssRange},</if>
             <if test="ssProjectId != null">#{ssProjectId},</if>
             <if test="ssProperties != null">#{ssProperties},</if>
-            <if test="ssSuggessions != null">#{ssSuggessions},</if>
+            <!--<if test="ssSuggessions != null">#{ssSuggessions},</if>-->
             <if test="ssFilePath != null">#{ssFilePath},</if>
             <if test="ssBuilderId != null">#{ssBuilderId},</if>
             <if test="ssTrafficStaffId != null">#{ssTrafficStaffId},</if>
-            <if test="ssDeleteFlag != null">#{ssDeleteFlag},</if>
-            <if test="ssVerifyFlag != null">#{ssVerifyFlag},</if>
-            <if test="ssVerifyDate != null">#{ssVerifyDate},</if>
+            "live",
+            "review",
+            sysdate()
 
          </trim>
     </insert>
+
+    <select id="checkSifegeSchemeUnique" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
+        <include refid="selectSiegeSchemeVo" ></include>
+        WHERE (ss_status=#{ssStatus} or ss_stage=#{ssStage}) AND ss_project_id=#{ssProjectId}  limit 1
+    </select>
 
     <update id="updateSiegeScheme" parameterType="SiegeScheme">
         update siege_scheme
@@ -146,6 +151,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </trim>
         where ss_id = #{ssId}
+    </update>
+    <update id="updateSiegeSchemeDeleteFlagByIds" parameterType="String">
+        UPDATE siege_scheme SET ss_delete_flag="del"
+        WHERE ss_id IN
+        <foreach item="ssId" collection="array" open="(" separator="," close=")">
+            #{ssId}
+        </foreach>
     </update>
 
     <delete id="deleteSiegeSchemeById" parameterType="Long">

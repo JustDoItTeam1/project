@@ -43,6 +43,10 @@ public interface SiegeSchemeMapper
 
     public String getSsBySsVerifyFlagProjectId(Long projectId);
 
+    SiegeScheme checkSifegeSchemeUnique(SiegeScheme siegeScheme);
+
+    int updateSiegeSchemeDeleteFlagByIds(Long[] ssId);
+
 
 
 

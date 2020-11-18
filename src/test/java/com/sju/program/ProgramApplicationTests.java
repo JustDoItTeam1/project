@@ -10,4 +10,10 @@ class ProgramApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void test(){
+		String s="翻新";
+		System.out.println(s.contains(""));
+	}
+
 }

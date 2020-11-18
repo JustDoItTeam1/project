@@ -3,9 +3,12 @@ package com.sju.program.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.sju.program.constant.UserConstants;
+import com.sju.program.domain.Project;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
+import com.sju.program.message.HttpStatus;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
@@ -51,13 +54,24 @@ public class SiegeSchemeController extends BaseController
     @ApiOperation(value = "查询围蔽方案接口",notes = "根据不同用户信息,查询其围蔽方案")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SiegeScheme siegeScheme)
+    public TableDataInfo list(Project project)
     {
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
-        return getDataTable(sieheSchemeParentVoList);
+        if (project.getProjectBuilderName()==null&&project.getProjectName()==null){
+            return getDataTable(sieheSchemeParentVoList);
+        }
+        if(project.getProjectBuilderName().equals("")&&project.getProjectName().equals("")){
+            return getDataTable(sieheSchemeParentVoList);
+        }
+        else {
+            List<SieheSchemeParentVo> sieheSchemeParentVoList1=siegeSchemeService.selectSiegeSchemeBySearch(sieheSchemeParentVoList,project);
+            return getDataTable(sieheSchemeParentVoList1);
+        }
+
+        //return getDataTable(sieheSchemeParentVoList);
     }
 
 //    /**
@@ -87,17 +101,22 @@ public class SiegeSchemeController extends BaseController
     /**
      * 新增围蔽方案
      */
+    @ApiOperation(value = "新增围蔽方案接口",notes = "围蔽阶段或围蔽状态信息已存在则新增失败")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:add')")
     @Log(title = "围蔽方案", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SiegeScheme siegeScheme)
     {
+        if (UserConstants.NOT_UNIQUE.equals(siegeSchemeService.checkSifegeSchemeUnique(siegeScheme))){
+            return AjaxResult.error("新增围蔽失败，围蔽阶段或围蔽状态信息已存在");
+        }
         return toAjax(siegeSchemeService.insertSiegeScheme(siegeScheme));
     }
 
     /**
      * 修改围蔽方案
      */
+    @ApiOperation(value = "修改围蔽方案接口")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:edit')")
     @Log(title = "围蔽方案", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -109,6 +128,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 删除围蔽方案
      */
+    @ApiOperation(value = "伪删除围蔽方案接口",notes = "支持批量删除 格式：/program/scheme/1,2")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:remove')")
     @Log(title = "围蔽方案", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ssIds}")

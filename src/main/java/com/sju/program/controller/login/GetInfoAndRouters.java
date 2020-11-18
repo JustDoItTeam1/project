@@ -8,6 +8,7 @@ import com.sju.program.service.login.PermissionService;
 import com.sju.program.service.login.SysPermissionService;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+@Api(tags = "获取用户信息和路由信息")
 @RestController
 public class GetInfoAndRouters {
 

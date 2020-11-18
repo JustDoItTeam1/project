@@ -1,6 +1,9 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,7 @@ import com.sju.program.service.IProjectProcessService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags = "施工进度管理接口")
 @RestController
 @RequestMapping("/program/process")
 public class ProjectProcessController extends BaseController

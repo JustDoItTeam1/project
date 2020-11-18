@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SieheSchemeParentVo {
 
-    private int ssId;
+    private Long ssId;
 
     private Boolean ss;
 
@@ -94,11 +94,11 @@ public class SieheSchemeParentVo {
         this.ssProjectName = ssProjectName;
     }
 
-    public int getSsId() {
+    public Long getSsId() {
         return ssId;
     }
 
-    public void setSsId(int ssId) {
+    public void setSsId(Long ssId) {
         this.ssId = ssId;
     }
 

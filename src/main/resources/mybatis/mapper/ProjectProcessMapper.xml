@@ -35,18 +35,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertProjectProcess" parameterType="ProjectProcess" useGeneratedKeys="true" keyProperty="ppId">
         insert into project_process
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="ppTime != null">pp_time,</if>
+            pp_time,
             <if test="ppProjectId != null">pp_project_id,</if>
             <if test="ppDescription != null">pp_description,</if>
-            <if test="ppDeleteFlag != null">pp_delete_flag,</if>
-
+            pp_delete_flag
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="ppTime != null">#{ppTime},</if>
+            sysdate(),
             <if test="ppProjectId != null">#{ppProjectId},</if>
             <if test="ppDescription != null">#{ppDescription},</if>
-            <if test="ppDeleteFlag != null">#{ppDeleteFlag},</if>
-
+            "live"
          </trim>
     </insert>
 

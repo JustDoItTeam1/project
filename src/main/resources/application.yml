@@ -1,3 +1,14 @@
+# 项目相关配置
+program:
+  # 名称
+  name: RuoYi
+  # 版本
+  version: 1.0
+  # 版权年份
+  copyrightYear: 2020
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: D:/qhw/uploadPath
+
 spring:
   datasource:
 #   数据源基本配置

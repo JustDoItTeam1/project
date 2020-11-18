@@ -3,6 +3,7 @@ package com.sju.program.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sju.program.domain.Project;
 import com.sju.program.domain.SiegeScheme;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
@@ -33,6 +34,10 @@ public interface ISiegeSchemeService
     public List<SiegeScheme> selectPassSiegeScheme();
 
     public List<SieheSchemeParentVo> buildSiegeScheme(List<SiegeScheme> list);
+
+    List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, Project project);
+
+    String checkSifegeSchemeUnique(SiegeScheme sieheScheme);
 
 
 
