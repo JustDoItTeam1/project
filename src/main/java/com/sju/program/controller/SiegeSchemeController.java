@@ -60,18 +60,14 @@ public class SiegeSchemeController extends BaseController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
-        if (project.getProjectBuilderName()==null&&project.getProjectName()==null){
-            return getDataTable(sieheSchemeParentVoList);
-        }
-        if(project.getProjectBuilderName().equals("")&&project.getProjectName().equals("")){
+        if (project.getProjectInfo()==null){
             return getDataTable(sieheSchemeParentVoList);
         }
         else {
-            List<SieheSchemeParentVo> sieheSchemeParentVoList1=siegeSchemeService.selectSiegeSchemeBySearch(sieheSchemeParentVoList,project);
+            List<SieheSchemeParentVo> sieheSchemeParentVoList1=siegeSchemeService.selectSiegeSchemeBySearch(sieheSchemeParentVoList,project.getProjectInfo());
             return getDataTable(sieheSchemeParentVoList1);
         }
-
-        //return getDataTable(sieheSchemeParentVoList);
+       // return getDataTable(sieheSchemeParentVoList);
     }
 
 //    /**

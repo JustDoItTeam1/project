@@ -101,6 +101,7 @@ public class AdminLoginController
         }
         playload.put("authenticate",1);//管理员权限标识为1
         String token=JwtUtils.getToken(playload);
+
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }

@@ -35,7 +35,7 @@ public interface ISiegeSchemeService
 
     public List<SieheSchemeParentVo> buildSiegeScheme(List<SiegeScheme> list);
 
-    List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, Project project);
+    List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, String projectInfo);
 
     String checkSifegeSchemeUnique(SiegeScheme sieheScheme);
 

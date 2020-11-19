@@ -74,10 +74,10 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     }
 
     @Override
-    public List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, Project project) {
+    public List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, String projectInfo) {
         List<SieheSchemeParentVo> sieheSchemeParentVoList=new LinkedList<>();
         for(SieheSchemeParentVo sieheSchemeParentVo:list){
-            if(sieheSchemeParentVo.getSsBuilderName().contains(project.getProjectBuilderName())&&sieheSchemeParentVo.getSsProjectName().contains(project.getProjectName())){
+            if(sieheSchemeParentVo.getSsBuilderName().contains(projectInfo)||sieheSchemeParentVo.getSsProjectName().contains(projectInfo)){
                 sieheSchemeParentVoList.add(sieheSchemeParentVo);
             }
         }

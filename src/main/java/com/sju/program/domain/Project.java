@@ -64,7 +64,19 @@ public class Project extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date projectUpdateFlag;
 
-    public void setProjectId(Long projectId) 
+    /** 模糊查询 */
+    @Excel(name = "模糊查询标识")
+    private String projectInfo;
+
+    public String getProjectInfo() {
+        return projectInfo;
+    }
+
+    public void setProjectInfo(String projectInfo) {
+        this.projectInfo = projectInfo;
+    }
+
+    public void setProjectId(Long projectId)
     {
         this.projectId = projectId;
     }
