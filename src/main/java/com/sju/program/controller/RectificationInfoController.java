@@ -41,7 +41,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 查询整改信息列表
      */
-    //@PreAuthorize("@ss.hasPermi('program:info:list')")
+    @PreAuthorize("@ss.hasPermi('program:info:list')")
     @GetMapping("/list")
     public TableDataInfo list(RectificationInfo rectificationInfo)
     {

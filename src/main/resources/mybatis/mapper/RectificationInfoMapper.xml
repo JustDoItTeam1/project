@@ -50,27 +50,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertRectificationInfo" parameterType="RectificationInfo" useGeneratedKeys="true" keyProperty="riId">
-        insert into rectification_info
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="riProjectId != null">ri_project_id,</if>
-            <if test="riDate != null">ri_date,</if>
-            <if test="riRequirements != null">ri_requirements,</if>
-            <if test="riPoliceId != null">ri_police_id,</if>
-            <if test="riPhotoPath != null">ri_photo_path,</if>
-            <if test="riStatus != null">ri_status,</if>
-            <if test="riDeleteFlag != null">ri_delete_flag,</if>
-
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="riProjectId != null">#{riProjectId},</if>
-            <if test="riDate != null">#{riDate},</if>
-            <if test="riRequirements != null">#{riRequirements},</if>
-            <if test="riPoliceId != null">#{riPoliceId},</if>
-            <if test="riPhotoPath != null">#{riPhotoPath},</if>
-            <if test="riStatus != null">#{riStatus},</if>
-            <if test="riDeleteFlag != null">#{riDeleteFlag},</if>
-
-         </trim>
+        insert into rectification_info (ri_project_id,ri_date,ri_requirements,ri_police_id,ri_photo_path,ri_status,ri_delete_flag) VALUES (#{riProjectId},#{riDate},#{riRequirements},#{riPoliceId},#{riPhotoPath},"submit","live")
+        <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+            <!--<if test="riProjectId != null">ri_project_id,</if>-->
+            <!--<if test="riDate != null">ri_date,</if>-->
+            <!--<if test="riRequirements != null">ri_requirements,</if>-->
+            <!--<if test="riPoliceId != null">ri_police_id,</if>-->
+            <!--<if test="riPhotoPath != null">ri_photo_path,</if>-->
+            <!--<if test="riStatus != null">ri_status,</if>-->
+            <!--<if test="riDeleteFlag != null">ri_delete_flag,</if>-->
+         <!--</trim>-->
+        <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+            <!--<if test="riProjectId != null">#{riProjectId},</if>-->
+            <!--<if test="riDate != null">#{riDate},</if>-->
+            <!--<if test="riRequirements != null">#{riRequirements},</if>-->
+            <!--<if test="riPoliceId != null">#{riPoliceId},</if>-->
+            <!--<if test="riPhotoPath != null">#{riPhotoPath},</if>-->
+            <!--"submit",-->
+            <!--"live"-->
+         <!--</trim>-->
     </insert>
 
     <update id="updateRectificationInfo" parameterType="RectificationInfo">
@@ -86,6 +84,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </trim>
         where ri_id = #{riId}
+    </update>
+    
+    
+    <update id="updateRectificationDeleteFlagInfoByIds" parameterType="String">
+        UPDATE rectification_info SET ri_delete_flag="del" WHERE ri_id IN
+        <foreach collection="array" item="riId" open="(" separator="," close=")">
+              #{riId}
+        </foreach>
     </update>
 
     <delete id="deleteRectificationInfoById" parameterType="Long">

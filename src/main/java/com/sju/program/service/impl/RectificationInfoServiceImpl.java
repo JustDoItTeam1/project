@@ -86,7 +86,7 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
     @Override
     public int deleteRectificationInfoByIds(Long[] riIds)
     {
-        return rectificationInfoMapper.deleteRectificationInfoByIds(riIds);
+        return rectificationInfoMapper.updateRectificationDeleteFlagInfoByIds(riIds);
     }
 
     /**
