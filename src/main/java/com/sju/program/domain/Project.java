@@ -12,7 +12,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class Project extends BaseEntity
+public class Project
 {
     private static final long serialVersionUID = 1L;
 

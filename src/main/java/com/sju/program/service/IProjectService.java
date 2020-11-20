@@ -68,4 +68,6 @@ public interface IProjectService
     List<Project> selectProjectByBuilderId(Long id);
 
     List<Project> selectAllProjectList();
+
+    List<Project> selectSiegeSchemeBySearch(List<Project> list,String projectInfo);
 }

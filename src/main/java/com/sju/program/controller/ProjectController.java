@@ -5,6 +5,7 @@ import java.util.List;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import com.sju.program.utils.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +41,16 @@ public class ProjectController extends BaseController
     /**
      * 查询施工项目列表
      */
-    @PreAuthorize("@ss.hasPermi('program:project:list')")
+    //@PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
     {
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<Project> list = tokenService.getLoginUserProject(loginUser);
+        if (StringUtils.isNotEmpty(project.getProjectInfo())){
+            return getDataTable(projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo()));
+        }
         return getDataTable(list);
     }
 

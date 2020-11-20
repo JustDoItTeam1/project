@@ -1,5 +1,6 @@
 package com.sju.program.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,17 @@ public class ProjectServiceImpl implements IProjectService
     @Override
     public List<Project> selectAllProjectList() {
         return projectMapper.selectAllProjectList();
+    }
+
+    @Override
+    public List<Project> selectSiegeSchemeBySearch(List<Project> list,String projectInfo) {
+        List<Project> projectList=new ArrayList<>();
+        for(Project project:list){
+            if(project.getProjectBuilderName().contains(projectInfo)||project.getProjectName().contains(projectInfo)){
+                projectList.add(project);
+            }
+        }
+        return projectList;
     }
 
     /**
