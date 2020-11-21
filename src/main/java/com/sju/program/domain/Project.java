@@ -59,10 +59,10 @@ public class Project
     @Excel(name = "删除标识")
     private String projectDeleteFlag;
 
-    /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date projectUpdateFlag;
+//    /** 更新时间 */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    private Date projectUpdateFlag;
 
     /** 模糊查询 */
     @Excel(name = "模糊查询标识")
@@ -175,15 +175,15 @@ public class Project
     {
         return projectDeleteFlag;
     }
-    public void setProjectUpdateFlag(Date projectUpdateFlag) 
-    {
-        this.projectUpdateFlag = projectUpdateFlag;
-    }
-
-    public Date getProjectUpdateFlag() 
-    {
-        return projectUpdateFlag;
-    }
+//    public void setProjectUpdateFlag(Date projectUpdateFlag)
+//    {
+//        this.projectUpdateFlag = projectUpdateFlag;
+//    }
+//
+//    public Date getProjectUpdateFlag()
+//    {
+//        return projectUpdateFlag;
+//    }
 
     @Override
     public String toString() {
@@ -199,7 +199,7 @@ public class Project
             .append("projectTrafficStaffId", getProjectTrafficStaffId())
             .append("projectFinishedFlag", getProjectFinishedFlag())
             .append("projectDeleteFlag", getProjectDeleteFlag())
-            .append("projectUpdateFlag", getProjectUpdateFlag())
+            //.append("projectUpdateFlag", getProjectUpdateFlag())
             .toString();
     }
 }

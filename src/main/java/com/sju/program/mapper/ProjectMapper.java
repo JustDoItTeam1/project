@@ -71,5 +71,8 @@ public interface ProjectMapper
     public List<Object> selectProjectByName(String projectName);
 
     List<Project> selectProjectByBuilderId(long builderId);
+
     List<Project> selectAllProjectList();
+
+    int updateProjectByIds(Long[] projectId);
 }

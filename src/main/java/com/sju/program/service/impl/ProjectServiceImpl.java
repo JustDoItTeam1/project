@@ -104,7 +104,7 @@ public class ProjectServiceImpl implements IProjectService
     @Override
     public int deleteProjectByIds(Long[] projectIds)
     {
-        return projectMapper.deleteProjectByIds(projectIds);
+        return projectMapper.updateProjectByIds(projectIds);
     }
 
     /**

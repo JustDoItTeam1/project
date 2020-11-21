@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        where p.project_builder_id = #{projectBuilderId}
+        where project_builder_id = #{projectBuilderId}
     </select>
 
     <select id="selectAllProjectList"  resultMap="ProjectResult">
@@ -112,8 +112,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderName != null">#{projectBuilderName},</if>
             <if test="projectBuilderId != null">#{projectBuilderId},</if>
             <if test="projectTrafficStaffId != null">#{projectTrafficStaffId},</if>
-            <if test="projectFinishedFlag != null">#{projectFinishedFlag},</if>
-            <if test="projectDeleteFlag != null">#{projectDeleteFlag},</if>
+            "continue",
+            "live"
 
          </trim>
     </insert>
@@ -141,7 +141,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_id = #{projectId}
     </update>
     <update id="updateProjectByIds" parameterType="String">
-        UPDATE project SET project_delete_flag = 1 where project_id in
+        UPDATE project SET project_delete_flag = "del" where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
