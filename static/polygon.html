@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
+    <style>
+      html,body,#container{
+        height: 100%
+      }
+      .input-item{
+        height: 2.2rem;
+      }
+      .btn{
+        width: 6rem;
+        margin: 0 1rem 0 2rem;
+      }
+      .input-text{
+        width: 4rem;
+        margin-right:1rem;
+      }
+    </style>
+    <title>鼠标工具绘制</title>
+  </head>
+  <body>
+    <div id='container'></div>
+    <div class='info'>操作说明：通过鼠标左键点击来绘制多边形，通过鼠标右键点击结束当前多边形绘制</div>
+    <div class="input-card" style='width: 24rem;'>
+
+        <div class="input-item">
+            <input id="clear" type="button" class="btn" value="清除" />
+          <input id="sub" type="button" class="btn" value="确定" />
+        </div>
+    </div>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=86b08ba4308ecdf138b7e910b50efe28&plugin=AMap.MouseTool&callback=init"></script>
+    <script type="text/javascript">
+
+    window.init=function () {
+      var map = new AMap.Map('container',{
+        zoom:12,
+        center: [104.07, 30.67],
+      });
+      AMap.plugin(["AMap.MouseTool"],function () {
+        mouseTool = new AMap.MouseTool(map);
+      });
+
+      //监听draw事件可获取画好的覆盖物
+      var overlays = [];
+      var overlay=[];
+      mouseTool.on('draw',function(e){
+        overlays.push(e.obj.getPath());
+        overlay.push(e.obj);
+      })
+
+      mouseTool.polygon({
+        fillColor:'#00b0ff',
+        strokeColor:'#80d8ff'
+        //同Polygon的Option设置
+      });
+
+
+      var str="";
+
+      document.getElementById('clear').onclick = function(){
+        map.remove(overlay)
+        overlays = [];
+        overlay=[];
+        // console.log(overlay);
+        // console.log(overlays);
+      }
+      document.getElementById('sub').onclick = function(){
+        //mouseTool.close(true)//关闭，并清除覆盖物
+        // console.log(overlays);
+        str="";
+        if(overlays.length==1)
+        {
+          for(var i=0;i<overlays.length;i++)
+          {
+            for(var j=0;j<overlays[i].length;j++)
+            {
+              str=str+overlays[i][j].lng;
+              str=str+","+overlays[i][j].lat;
+              str=str+";";
+              // console.log(str)
+            }
+
+          }
+          window.alert("提交成功！")
+          window.parent.postMessage(str,'*');
+        }
+        else{
+          window.alert("请绘制一个多边形！");
+          map.remove(overlay);
+          overlays = [];
+          overlay=[];
+        }
+
+
+
+      }
+    }
+
+
+    //var mouseTool = new AMap.MouseTool(map);
+
+
+
+
+    </script>
+  </body>
+</html>

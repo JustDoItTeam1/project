@@ -1,0 +1,893 @@
+<template>
+  <div>
+
+  <div id="container" style="width: 100%;height: 670px;position:relative ">
+  </div>
+  <el-dialog   :visible.sync="vformVisible" append-to-body>
+    <detailForm  ref="detailfrom" :msg="nomsg"></detailForm>
+  </el-dialog>
+
+
+
+<!--    <div style="position: absolute;left: 2%;top:5%;width: 200px">-->
+<!--    </div>-->
+
+<!--    切换图层-->
+    <div style="position: absolute;left: 80%;top:2%;width: 260px">
+      <el-radio-group v-model="radio1" @change="radioChange">
+        <el-radio-button label="查看围蔽方案"></el-radio-button>
+        <el-radio-button label="查看施工项目"></el-radio-button>
+      </el-radio-group>
+
+    </div>
+
+    <!--   左边搜索框-->
+<!--    <div style="position: absolute;left:1%;top:2%;width: 450px;border-radius: 10px;background-color: white">-->
+      <div style="position: absolute;left: 1%;top:2%;">
+      <el-form  ref="queryForm" :inline="true" >
+        <el-form-item  >
+          <el-input
+            v-model="searchName"
+            :placeholder="placeh"
+            clearable
+            size=" small"
+            style="width: 270px"
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+<!--    搜索结果-->
+    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVS">
+      <el-card class="box-card" v-for="o in this.searchSeige" :key="o" >
+
+        <div  class="text item">
+          <el-button
+            size="samll"
+            type="text"
+            @click="handleClick(o)"
+
+          > {{o.ssProjectName}}</el-button>
+        </div>
+<!--        <div  class="text item">-->
+<!--          {{o.ssProjectName}}-->
+<!--        </div>-->
+        <div  class="text item">
+          {{o.ssBuilderName}}
+        </div>
+      </el-card>
+
+<!--      <el-table-->
+<!--        :data="searchSeige"-->
+<!--        style="width: 100%; font-size: 14px;"-->
+<!--        :show-header="false">-->
+<!--        <el-table-column-->
+
+<!--          style="width:50%">-->
+<!--          <template slot-scope="scope" >-->
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              @click="handleClick(scope.row)"-->
+
+<!--            > {{scope.row.ssProjectName}}</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="ssBuilderName"-->
+<!--          style="width:50%" >-->
+<!--        </el-table-column>-->
+<!--&lt;!&ndash;        <el-table-column&ndash;&gt;-->
+<!--&lt;!&ndash;          prop="ssBuilderName">&ndash;&gt;-->
+<!--&lt;!&ndash;        </el-table-column>&ndash;&gt;-->
+<!--      </el-table>-->
+      <div style="position: absolute;left: 27%;top:100%;">
+       <el-pagination
+
+        layout="prev, pager, next"
+        :total="total"
+
+       >
+       </el-pagination>
+
+      </div>
+    </div>
+
+<!--    项目搜索结果-->
+    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVP">
+      <el-card class="box-card" v-for="o in this.searchProject" :key="o" >
+
+        <div  class="text item">
+          <el-button
+            size="samll"
+            type="text"
+            @click="handleClick(o)"
+
+          > {{o.projectName}}</el-button>
+        </div>
+        <!--        <div  class="text item">-->
+        <!--          {{o.ssProjectName}}-->
+        <!--        </div>-->
+        <div  class="text item">
+          {{o.projectBuilderName}}
+        </div>
+      </el-card>
+
+      <!--      <el-table-->
+      <!--        :data="searchSeige"-->
+      <!--        style="width: 100%; font-size: 14px;"-->
+      <!--        :show-header="false">-->
+      <!--        <el-table-column-->
+
+      <!--          style="width:50%">-->
+      <!--          <template slot-scope="scope" >-->
+      <!--            <el-button-->
+      <!--              size="mini"-->
+      <!--              type="text"-->
+      <!--              @click="handleClick(scope.row)"-->
+
+      <!--            > {{scope.row.ssProjectName}}</el-button>-->
+      <!--          </template>-->
+      <!--        </el-table-column>-->
+      <!--        <el-table-column-->
+      <!--          prop="ssBuilderName"-->
+      <!--          style="width:50%" >-->
+      <!--        </el-table-column>-->
+      <!--&lt;!&ndash;        <el-table-column&ndash;&gt;-->
+      <!--&lt;!&ndash;          prop="ssBuilderName">&ndash;&gt;-->
+      <!--&lt;!&ndash;        </el-table-column>&ndash;&gt;-->
+      <!--      </el-table>-->
+      <div style="position: absolute;left: 27%;top:100%;">
+        <el-pagination
+
+          layout="prev, pager, next"
+          :total="total"
+
+        >
+        </el-pagination>
+
+      </div>
+    </div>
+<!--弹出围蔽详情表格-->
+    <el-dialog :visible.sync="siegeV" width="98%" append-to-body title="围蔽信息详情">
+    <el-table
+      :data="schemeListOne"
+      row-key="ssId"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column label="施工项目id" align="center" prop="ssProjectId" width="110" />
+      <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
+      <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
+      <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
+      <el-table-column label="围蔽状态" align="center" prop="ssStatus" width="170" />
+      <el-table-column label="围蔽车道" align="center" prop="ssLane" width="130"/>
+
+      <el-table-column label="开始时间" align="center" prop="ssStartTime" width="140">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.ssStartTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="结束时间" align="center" prop="ssEndTime" width="140">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.ssEndTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="围蔽性质" align="center" prop="ssProperties" width="120" />
+      <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>
+
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+
+        <template slot-scope="scope" >
+          <el-button
+            size="mini"
+            type="text"
+            @click="handleDownload(scope.row)"
+            v-hasPermi="['system:menu:download']"
+            v-if=scope.row.ss
+          >下载附件</el-button>
+          <el-button size="mini"
+                     type="text"
+                     @click="handleAgree(scope.row)"
+                     v-hasPermi="['system:menu:agree']"
+                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"
+          >通过</el-button>
+          <el-button size="mini"
+                     type="text"
+                     @click="handleDisagree(scope.row)"
+                     v-hasPermi="['system:menu:edit']"
+                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"
+          >否决</el-button>
+
+
+        </template>
+
+      </el-table-column>
+    </el-table>
+    </el-dialog>
+<!--否决弹窗-->
+    <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
+      <el-form ref="elForm" :model="Suggessions"  size="medium" label-width="100px">
+        <el-form-item label="原因或建议" prop="sugge">
+          <el-input v-model="Suggessions.sugge" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
+                    :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="handelConfirmReason">确定</el-button>
+        <el-button @click="close">取消</el-button>
+
+      </div>
+    </el-dialog>
+  </div>
+
+
+</template>
+
+<script>
+import {listProject} from "../../../api/project/project";
+import {listEnclosure,updateEnclosure} from "../../../api/enclosure/enclosure";
+import detailForm from "../components/detailForm";
+export default {
+  name: "Map",
+  components: {detailForm},
+  data() {
+    return {
+      //查询参数
+      searchName: null,
+      searchQueryParams: {
+        //seigeName:null,
+        projectInfo:null,
+      },
+      searchSeige:[],
+      searchProject:[],
+      placeh:"输入施工项目名称、施工方名称搜索",
+      resultVS:false,
+      resultVP:false,
+      //首页图层显示
+      radio1:"查看围蔽方案",
+      //polygon集合
+      overlayGroup1:null,
+      overlayGroup2:null,
+      ploy:"",
+      //施工项目和围蔽方案查询结果
+      ployg:[],
+      ployg1:[],
+      ployg2:[],
+      // 一个施工项目的围蔽详情
+      schemeListOne:[],
+      //围蔽详情弹窗
+      siegeV:false,
+      ploy1:[],
+      ploy2:[],
+      temp:[],
+      path:[],
+      lng:[],
+      vformVisible:false,
+      // formVisible:false,
+      nomsg:{},
+
+      maps:null,
+
+      //拒绝理由弹窗
+      opendisa:false,
+      //拒绝理由
+      Suggessions:{},
+      // 总条数
+      total: 0,
+      updataSeige:{
+        ssId:null,
+        ssVerifyFlag:null,
+        ssVerifyDate:null,
+      },
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        enclosurestatus: null,
+        phaseid: null,
+        startDate: null,
+        endDate: null,
+        projectid: null,
+        ploygon: null,
+        lane: null,
+        enclosurelenght: null,
+        enclosureproperty: null
+      },
+      // 表单校验
+      rules: {
+      }
+
+    };
+  },
+  created() {
+
+
+
+
+    // this.ployg1=[
+    //   {
+    //     children:[
+    //       {
+    //
+    //         ss:false,
+    //         ssmap:true,
+    //         ssId:11,
+    //         ssStatus: '修筑路基',
+    //         ssLane: '左二、三车道',
+    //         ssStage: '1',
+    //         ssStartTime: '2020-11-14',
+    //         ssEndTime: '2020-12-14',
+    //         ssRange: '103.977028,30.753652;103.983251,30.758668;103.983262,30.758576;103.977103,30.753625;',
+    //
+    //         ssProperties: '全封闭',
+    //         // ssSuggessions: null,
+    //
+    //         // ssFilePath: null,
+    //         ssBuilderName:null,
+    //         ssProjectId: null,
+    //         ssProjectName: null,
+    //       },
+    //       {
+    //         ss:false,
+    //         ssmap:true,
+    //         ssId:12,
+    //         ssStatus: '修筑排水设施',
+    //         ssLane: '左二、三车道',
+    //         ssStage: '2',
+    //         ssStartTime: '2020-12-14',
+    //         ssEndTime: '2020-12-30',
+    //         ssRange: '103.977028,30.753652;103.983251,30.758668;103.983262,30.758576;103.977103,30.753625;',
+    //
+    //         ssProperties: '全封闭',
+    //         // ssSuggessions: null,
+    //
+    //         // ssFilePath: null,
+    //         ssBuilderName:null,
+    //         ssProjectId: null,
+    //         ssProjectName: null,
+    //       }
+    //     ],
+    //     ss:true,
+    //     ssmap:false,
+    //     childrennum:2,
+    //     ssId: 1,
+    //     ssStatus: null,
+    //     ssLane: null,
+    //     ssStage: null,
+    //     ssStartTime: null,
+    //     ssEndTime: null,
+    //     ssRange: null,
+    //     ssProperties: null,
+    //     // ssSuggessions: null,
+    //
+    //     // ssFilePath: null,
+    //     ssBuilderName:'中铁一局',
+    //     ssProjectId: 1,
+    //     ssProjectName: '兴业北街翻新',
+    //     // ssBuilderId: 1,
+    //     // ssTrafficStaffId: null,
+    //     // ssDeleteFlag: null,
+    //     // ssVerifyFlag: null,
+    //     // ssVerifyDate: null,
+    //     // ssUpdateFlag: null
+    //   },
+    //   {
+    //     children:[
+    //       {
+    //         ss:false,
+    //         ssmap:true,
+    //         ssId:21,
+    //         ssStatus: '修筑路基',
+    //         ssLane: '左二、三车道',
+    //         ssStage: '1',
+    //         ssStartTime: '2020-11-14',
+    //         ssEndTime: '2020-12-14',
+    //         ssRange: '103.982044,30.752082;103.985831,30.755079;103.985896,30.755014;103.982151,30.752101;',
+    //
+    //         ssProperties: '全封闭',
+    //         // ssSuggessions: null,
+    //
+    //         // ssFilePath: null,
+    //         ssBuilderName:null,
+    //         ssProjectId: null,
+    //         ssProjectName: null,
+    //       },
+    //       {
+    //         ss:false,
+    //         ssmap:true,
+    //         ssId:22,
+    //         ssStatus: '修筑排水设施',
+    //         ssLane: '左二、三车道',
+    //         ssStage: '2',
+    //         ssStartTime: '2020-12-14',
+    //         ssEndTime: '2020-12-30',
+    //         ssRange: '103.985831,30.755008;103.980553,30.750803;103.98051,30.750895;103.985799,30.755091;',
+    //
+    //         ssProperties: '全封闭',
+    //         // ssSuggessions: null,
+    //
+    //         // ssFilePath: null,
+    //         ssBuilderName:null,
+    //         ssProjectId: null,
+    //         ssProjectName: null,
+    //       },
+    //       {
+    //         ss:false,
+    //         ssmap:true,
+    //         ssId:23,
+    //         ssStatus: '修筑排水设施',
+    //         ssLane: '左二、三车道',
+    //         ssStage: '3',
+    //         ssStartTime: '2020-12-14',
+    //         ssEndTime: '2020-12-30',
+    //         ssRange: '103.979802,30.750061;103.980671,30.750974;103.985928,30.755123;103.985939,30.755031;103.980703,30.750937;103.979877,30.750052;',
+    //
+    //         ssProperties: '全封闭',
+    //         // ssSuggessions: null,
+    //
+    //         // ssFilePath: null,
+    //         ssBuilderName:null,
+    //         ssProjectId: null,
+    //         ssProjectName: null,
+    //       }
+    //     ],
+    //     ss:true,
+    //     ssmap:false,
+    //     ssId: 2,
+    //     childrennum:3,
+    //     ssStatus: null,
+    //     ssLane: null,
+    //     ssStage: null,
+    //     ssStartTime: null,
+    //     ssEndTime: null,
+    //     ssRange: null,
+    //     ssProperties: null,
+    //     // ssSuggessions: null,
+    //
+    //     // ssFilePath: null,
+    //     ssBuilderName:'中铁一局',
+    //     ssProjectId: 2,
+    //     ssProjectName: '犀安路翻新',
+    //     // ssBuilderId: 1,
+    //     // ssTrafficStaffId: null,
+    //     // ssDeleteFlag: null,
+    //     // ssVerifyFlag: null,
+    //     // ssVerifyDate: null,
+    //     // ssUpdateFlag: null
+    //   }
+    // ],
+    // this.ployg2=[
+    //   {id: '0000000001',
+    //     name: '天府路施工',
+    //     company:'十七冶',
+    //     principal:'王三',
+    //     money:'50万人民币',
+    //     status:'水泥',
+    //     address: '安徽省马鞍山市',
+    //     point:'103.973144,30.757308;103.980966,30.761484;103.980923,30.761512;103.973059,30.757336;',},
+    //   {id: '0000000002',
+    //     name: '犀安路施工',
+    //     company:'十七冶',
+    //     principal:'王三',
+    //     money:'50万人民币',
+    //     status:'水泥',
+    //     address: '安徽省马鞍山市',
+    //     point:'103.985998,30.755206;103.980665,30.750983;103.980815,30.750974;103.986073,30.755151;',},
+    //
+    //
+    // ],
+    //
+    // this.ployg=[{id: '0000000001',
+    //   name: '校园路有轨电车施工',
+    //   company:'十七冶',
+    //   principal:'王三',
+    //   money:'50万人民币',
+    //   status:'水泥',
+    //   address: '安徽省马鞍山市',
+    //   point:'103.981063,30.761549;103.981476,30.761014;103.98153,30.761028;103.981112,30.761558;',},
+    //   {id: '0000000002',
+    //     name: '天府路施工',
+    //     company:'十七冶',
+    //     principal:'王三',
+    //     money:'50万人民币',
+    //     status:'水泥',
+    //     address: '安徽省马鞍山市',
+    //     point:'103.980701,30.761388;103.980734,30.761361;103.978652,30.760273;103.978625,30.760282;',},
+    //   {id: '0000000003',
+    //     name: '犀安路施工',
+    //     company:'十七冶',
+    //     principal:'王三',
+    //     money:'50万人民币',
+    //     status:'水泥',
+    //     address: '安徽省马鞍山市',
+    //     point:'103.989255,30.757623;103.987114,30.755982;103.987157,30.755936;103.989266,30.757586;',},
+    //   {id: '0000000004',
+    //     name: '测试',
+    //     company:'十七冶',
+    //     principal:'王三',
+    //     money:'50万人民币',
+    //     status:'水泥',
+    //     address: '安徽省马鞍山市',
+    //     point:'104.083099,30.64344;104.083162,30.643444;104.084355,30.646787;104.084271,30.646822;',},]
+
+  },
+  methods: {
+    /** 点击搜索结果查看详情操作 */
+    handleClick(o){
+      this.siegeV = true;
+
+      //将object转化为array
+      var myArray=new Array()
+      myArray.push(o);
+      this.schemeListOne= myArray;
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      //搜索结果显示
+
+      if(this.radio1=="查看围蔽方案"){
+        this.resultVS=true;
+        this.searchQueryParams.projectInfo=this.searchName;
+        listEnclosure(this.searchQueryParams).then(response => {
+          this.searchSeige=response.rows;
+          this.total=response.total;
+          console.log(this.searchSeige)
+        });
+      }
+      else{
+        this.resultVP=true;
+        this.searchQueryParams.projectInfo=this.searchName;
+        listProject(this.searchQueryParams).then(response => {
+          this.searchProject=response.rows;
+          this.total=response.total;
+          console.log(this.searchProject)
+        });
+
+
+      }
+
+    },
+    /** 通过按钮操作 */
+    handleAgree(e){
+      console.log(e);
+      this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        for(var i=0;i<e.children.len;i++)
+        {
+          this. updataSeige.ssId=e.children[i].ssId;
+          updateEnclosure(this. updataSeige).then(response => {
+
+            console.log(response)
+          });
+        }
+
+
+
+        this.$message({
+          type: 'success',
+          message: '该围蔽方案成功设置为已通过!'
+        });
+
+        // this.getList();
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消设置'
+        });
+
+      });
+    },
+    /** 否决按钮操作 */
+    handleDisagree(e){
+      console.log(e);
+      this.Suggessions= {
+        projectid:e.ssProjectId,
+        sugge:null,
+      }
+      this.opendisa = true;
+    },
+    //否决取消
+    close(){
+      this.opendisa = false;
+      this.Suggessions={
+        projectid:null,
+        sugge:null,
+      };
+    },
+    /** 否决确定操作 */
+    handelConfirmReason() {
+      this.$refs['elForm'].validate(valid => {
+        if (valid) {
+          this.msgSuccess("否决围蔽方案成功");
+          this.opendisa = false;
+        }
+      })
+    },
+    //切换图层  radio点击事件
+    radioChange:function(){
+      this.searchName=null;
+      this.resultVS=false;
+      this.resultVP=false;
+      if(this.radio1=="查看围蔽方案"){
+
+        this.overlayGroup1.show();
+        this.overlayGroup2.hide();
+        this.placeh="输入施工项目名称、施工方名称搜索";
+      }
+      else{
+        this.overlayGroup2.show();
+        this.overlayGroup1.hide();
+        this.placeh="输入施工项目名称、施工方名称搜索";
+      }
+
+
+},
+
+    //生成施工项目全部polygon
+    createPolygon:function(map,ployg,overlayGroup){
+
+      var temp = [];
+      var path = [];
+      var ploy2 = [];
+      for(var i=0;i<ployg.length;i++)
+      {
+        temp[i]=ployg[i].projectLongLat.split(';');
+      }
+
+      // 生成四边形
+      for(var i=0;i<temp.length;i++)
+      {
+
+        path = [];
+        //  console.log(this.path)
+        var a=0;
+        var b=0;
+        for(var j=0;j<temp[i].length-1;j++)
+        {
+
+          ploy2=temp[i][j].split(',');
+          a=parseFloat(a)+parseFloat(ploy2[0]);
+          b=parseFloat(b)+parseFloat(ploy2[1]);
+          path.push(new AMap.LngLat(ploy2[0]-0,ploy2[1]-0));
+
+        }
+        a=a/(temp[i].length-1);
+        b=b/(temp[i].length-1);
+        // console.log("a"+a);
+        // console.log("b"+b);
+        var pt=new AMap.LngLat(a,b)
+        var polygon = new AMap.Polygon({
+          path:path,
+          fillColor: '#fff', // 多边形填充颜色
+          borderWeight: 2, // 线条宽度，默认为 1
+          strokeColor: 'red', // 线条颜色
+        });
+
+        // polygon.pl=this.ploy2;
+
+
+        var marker = new AMap.Marker({
+          position: pt,
+          title: ployg[i].projectName
+        });
+        //marker.content = "project";
+        //marker.content={};
+        marker.cont=ployg[i];
+
+        //map.add(marker);
+        marker.on('click', markerClick);
+
+        ////////////////////////////////////////////////////////////////////////
+        // map.add(polygon);
+
+        overlayGroup.addOverlay(marker);
+        overlayGroup.addOverlay(polygon);
+
+
+        var that =this;
+        function markerClick(e) {
+
+          that.vformVisible=true;
+          // that.formVisible=true;
+          //console.log(e.target.cont);
+          // 数据脱绑
+          that.nomsg=JSON.parse(JSON.stringify(e.target.cont));
+          //   var t=document.getElementById("txt");
+          //  t.value=that.nomsg.id
+        }
+        //polygon.on('click',polygonClick);
+        //polygon.emit('click', {target: polygon});
+        // clickListener = AMap.event.addListener(polygon, "click", function(e) {
+        //   new AMap.Marker({
+        //     position: [103.98,30.7615],
+        //     map: map
+        //   });
+        // });
+      }
+    },
+
+    //生成围蔽方案全部polygon
+    createSiegePolygon:function(map,ployg,overlayGroup){
+      for(var m=0;m<ployg.length;m++) {
+        var temp = [];
+        var path = [];
+        var ploy2 = [];
+        var color = ['red', 'green', 'blue', 'yellow', 'black']
+
+
+        for (var i = 0; i < ployg[m].children.length; i++) {
+          temp[i] = ployg[m].children[i].ssRange.split(';');
+          //    console.log(this.temp[i]);
+
+        }
+
+        // 生成四边形
+        for (var i = 0; i < temp.length; i++) {
+
+          path = [];
+          //  console.log(this.path)
+          var a = 0;
+          var b = 0;
+          for (var j = 0; j < temp[i].length - 1; j++) {
+
+            ploy2 = temp[i][j].split(',');
+            a = parseFloat(a) + parseFloat(ploy2[0]);
+            b = parseFloat(b) + parseFloat(ploy2[1]);
+            path.push(new AMap.LngLat(ploy2[0] - 0, ploy2[1] - 0));
+
+          }
+          a = a / (temp[i].length - 1);
+          b = b / (temp[i].length - 1);
+          // console.log("a"+a);
+          // console.log("b"+b);
+          var pt = new AMap.LngLat(a, b)
+          var polygon = new AMap.Polygon({
+            path: path,
+            fillColor: '#fff', // 多边形填充颜色
+            fillOpacity:0,
+            borderWeight: 2, // 线条宽度，默认为 1
+            strokeColor: color[i], // 线条颜色
+          });
+          overlayGroup.addOverlay(polygon);
+
+          // polygon.pl=this.ploy2;
+
+
+          if(i==0){
+            var marker = new AMap.Marker({
+              position: pt,
+              title: ployg[m].ssProjectName
+            });
+            marker.content = m;
+            //marker.content = {};
+            marker.cont = ployg[m];
+
+            // 创建 已经通过审核的红色AMap.Icon 实例：
+            var icon = new AMap.Icon({
+              size: new AMap.Size(40, 50),    // 图标尺寸
+              image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',  // Icon的图像
+             // imageOffset: new AMap.Pixel(0, -60),  // 图像相对展示区域的偏移量，适于雪碧图等
+              imageSize: new AMap.Size(22, 35)   // 根据所设置的大小拉伸或压缩图片
+            });
+
+            if(ployg[m].ssVerifyFlag=='pass')
+            {
+              marker.setIcon(icon)
+
+            }
+            //map.add(marker);
+            marker.on('click', markerClick);
+
+            ////////////////////////////////////////////////////////////////////////
+            // map.add(polygon);
+
+            overlayGroup.addOverlay(marker);
+
+
+
+            var that = this;
+
+            function markerClick(e) {
+              that.siegeV = true;
+
+              //将object转化为array
+              var myArray=new Array()
+              myArray.push(that.ployg1[parseInt(e.target.content)]);
+              that.schemeListOne= myArray;
+
+
+            }
+          }
+        }
+
+      }
+    },
+
+    init:function () {
+      //初始化地图
+      // var satellite = new AMap.TileLayer.Satellite();
+      this.maps = new AMap.Map('container', {
+        center: [104.07, 30.67],
+        resizeEnable: true,
+        expandZoomRange: true,
+        zooms: [3, 20],
+        zoom:12,
+        // layers:[
+        //
+        //   // 卫星
+        //   new AMap.TileLayer.Satellite(),
+        //   // 路网
+        //   new AMap.TileLayer.RoadNet()
+        // ]
+      })
+
+
+      this.overlayGroup1 = new AMap.OverlayGroup();
+      this.overlayGroup2 = new AMap.OverlayGroup();
+
+      //获得每个四边形图层
+      // this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
+      //this.createSiegePolygon(this.maps,this.ployg1,this.overlayGroup1);
+
+      //this.maps.add(this.overlayGroup1);
+      // this.maps.add(this.overlayGroup2);
+
+    },
+    //下载附件
+    handleDownload:function () {
+
+    }
+  },
+
+  mounted() {
+
+    this.init();
+
+    listProject().then(response => {
+      //this.ployg = response.rows;
+      this.ployg2=response.rows;
+      // console.log(response);
+      // console.log(this.ployg2);
+      this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
+      this.maps.add(this.overlayGroup2);
+      this.overlayGroup2.hide();
+
+      // console.log(response);
+    });
+
+    listEnclosure().then(response => {
+      //this.ployg = response.rows;
+      this.ployg1=response.rows;
+
+      this.createSiegePolygon(this.maps,this.ployg1,this.overlayGroup1);
+      this.maps.add(this.overlayGroup1);
+       this.overlayGroup1.show();
+      //console.log("围蔽"+response.rows)
+    });
+
+
+
+  }
+}
+</script>
+<style rel="stylesheet/scss" lang="scss">
+  .card{
+    position: absolute;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 3px 0;
+  }
+  .search{
+    background-color: white;
+  }
+</style>
