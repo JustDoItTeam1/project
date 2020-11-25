@@ -127,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_id = #{projectId}
     </update>
 
-    <!--
+ 
     <delete id="deleteProjectById" parameterType="Long">
         delete from project where project_id = #{projectId}
     </delete>
@@ -138,5 +138,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{projectId}
         </foreach>
    </delete>
-    -->
 </mapper>
