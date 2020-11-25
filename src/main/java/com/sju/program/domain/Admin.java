@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
+import io.swagger.annotations.ApiModel;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
@@ -17,6 +18,7 @@ import com.sju.program.domain.BaseEntity;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@ApiModel(description = "管理员")
 public class Admin extends BaseUser
 {
     private static final long serialVersionUID = 1L;

@@ -3,6 +3,7 @@ package com.sju.program.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sju.program.domain.model.BaseUser;
+import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Map;
  * 
  * @author ruoyi
  */
+@ApiModel(description ="基础实体")
 public class BaseEntity  extends BaseUser implements Serializable
 {
     private static final long serialVersionUID = 1L;

@@ -69,7 +69,7 @@ public class ProjectController extends BaseController
      * 获取施工项目详细信息
      */
 
-    //@PreAuthorize("@ss.hasPermi('program:project:query')")
+    @PreAuthorize("@ss.hasPermi('program:project:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
