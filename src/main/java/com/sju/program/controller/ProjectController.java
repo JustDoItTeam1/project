@@ -6,6 +6,8 @@ import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.sju.program.service.IProjectService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags={"施工项目管理"})
 @RestController
 @RequestMapping("/program/project")
 public class ProjectController extends BaseController
@@ -41,6 +44,7 @@ public class ProjectController extends BaseController
     /**
      * 查询施工项目列表
      */
+    @ApiOperation(value="查询施工项目列表")
     //@PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
@@ -51,6 +55,7 @@ public class ProjectController extends BaseController
         return getDataTable(list);
     }
 
+    @ApiOperation(value="查询施工项目")
     @GetMapping(value ="/{builderId}")
     public TableDataInfo list(@PathVariable("builderId") Long builderId)
     {
@@ -86,6 +91,7 @@ public class ProjectController extends BaseController
     /**
      * 新增施工项目
      */
+    @ApiOperation(value="新增施工项目")
     //@PreAuthorize("@ss.hasPermi('program:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
@@ -97,6 +103,7 @@ public class ProjectController extends BaseController
     /**
      * 修改施工项目
      */
+    @ApiOperation(value="修改施工项目")
     //@PreAuthorize("@ss.hasPermi('program:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -108,6 +115,7 @@ public class ProjectController extends BaseController
     /**
      * 删除施工项目
      */
+    @ApiOperation(value="删除施工项目")
     //@PreAuthorize("@ss.hasPermi('program:project:remove')")
     @Log(title = "施工项目", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{projectIds}")

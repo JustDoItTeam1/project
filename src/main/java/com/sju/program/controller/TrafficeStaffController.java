@@ -1,6 +1,9 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,7 @@ import com.sju.program.service.ITrafficeStaffService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags={"交管人员管理"})
 @RestController
 @RequestMapping("/program/staff")
 public class TrafficeStaffController extends BaseController
@@ -34,6 +38,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 查询交管人员列表
      */
+    @ApiOperation(value="查询交管人员列表")
     //@PreAuthorize("@ss.hasPermi('program:staff:list')")
     @GetMapping("/list")
     public TableDataInfo list(TrafficeStaff trafficeStaff)
@@ -59,6 +64,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 获取交管人员详细信息
      */
+    @ApiOperation(value="查询交管人员")
     //@PreAuthorize("@ss.hasPermi('program:staff:query')")
     @GetMapping(value = "/{trafficId}")
     public AjaxResult getInfo(@PathVariable("trafficId") Long trafficId)
@@ -69,6 +75,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 新增交管人员
      */
+    @ApiOperation(value="新增交管人员")
     //@PreAuthorize("@ss.hasPermi('program:staff:add')")
     @Log(title = "交管人员", businessType = BusinessType.INSERT)
     @PostMapping
@@ -80,6 +87,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 修改交管人员
      */
+    @ApiOperation(value="修改交管人员")
     //@PreAuthorize("@ss.hasPermi('program:staff:edit')")
     @Log(title = "交管人员", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -91,6 +99,7 @@ public class TrafficeStaffController extends BaseController
     /**
      * 删除交管人员
      */
+    @ApiOperation(value="删除交管人员")
     //@PreAuthorize("@ss.hasPermi('program:staff:remove')")
     @Log(title = "交管人员", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{trafficIds}")

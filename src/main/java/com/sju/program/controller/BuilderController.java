@@ -1,6 +1,10 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,7 @@ import com.sju.program.service.IBuilderService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags={"施工单位管理"})
 @RestController
 @RequestMapping("/program/builder")
 public class
@@ -35,6 +40,7 @@ BuilderController extends BaseController
     /**
      * 查询施工单位列表
      */
+    @ApiOperation(value="查询施工单位列表")
     //@PreAuthorize("@ss.hasPermi('program:builder:list')")
     @GetMapping("/list")
     public TableDataInfo list(Builder builder)
@@ -60,6 +66,7 @@ BuilderController extends BaseController
     /**
      * 获取施工单位详细信息
      */
+    @ApiOperation(value="查询施工单位")
     //@PreAuthorize("@ss.hasPermi('program:builder:query')")
     @GetMapping(value = "/{builderId}")
     public AjaxResult getInfo(@PathVariable("builderId") Long builderId)
@@ -70,6 +77,7 @@ BuilderController extends BaseController
     /**
      * 新增施工单位
      */
+    @ApiOperation(value="新增施工单位")
     //@PreAuthorize("@ss.hasPermi('program:builder:add')")
     @Log(title = "施工单位", businessType = BusinessType.INSERT)
     @PostMapping
@@ -81,6 +89,7 @@ BuilderController extends BaseController
     /**
      * 修改施工单位
      */
+    @ApiOperation(value="修改施工单位")
     //@PreAuthorize("@ss.hasPermi('program:builder:edit')")
     @Log(title = "施工单位", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -92,6 +101,7 @@ BuilderController extends BaseController
     /**
      * 删除施工单位
      */
+    @ApiOperation(value="删除施工单位")
     //@PreAuthorize("@ss.hasPermi('program:builder:remove')")
     @Log(title = "施工单位", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{builderIds}")

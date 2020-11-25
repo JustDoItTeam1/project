@@ -5,6 +5,7 @@ import java.util.List;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import com.sju.program.service.IRectificationInfoService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags={"整改信息管理"})
 @RestController
 @RequestMapping("/program/info")
 public class RectificationInfoController extends BaseController
@@ -68,7 +70,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 获取整改信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('program:info:query')")
+    //@PreAuthorize("@ss.hasPermi('program:info:query')")
     @GetMapping(value = "/{riId}")
     public AjaxResult getInfo(@PathVariable("riId") Long riId)
     {
@@ -78,7 +80,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 新增整改信息
      */
-    @PreAuthorize("@ss.hasPermi('program:info:add')")
+    //@PreAuthorize("@ss.hasPermi('program:info:add')")
     @Log(title = "整改信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody RectificationInfo rectificationInfo)
@@ -89,7 +91,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 修改整改信息
      */
-    @PreAuthorize("@ss.hasPermi('program:info:edit')")
+    //@PreAuthorize("@ss.hasPermi('program:info:edit')")
     @Log(title = "整改信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody RectificationInfo rectificationInfo)

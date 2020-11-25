@@ -6,18 +6,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="RectificationInfo" id="RectificationInfoResult">
         <result property="riId"    column="ri_id"    />
-        <result property="riProjectId"    column="ri_project_id"    />
-        <result property="riDate"    column="ri_date"    />
-        <result property="riRequirements"    column="ri_requirements"    />
-        <result property="riPoliceId"    column="ri_police_id"    />
-        <result property="riPhotoPath"    column="ri_photo_path"    />
-        <result property="riStatus"    column="ri_status"    />
-        <result property="riDeleteFlag"    column="ri_delete_flag"    />
+                <result property="riProjectId"    column="ri_project_id"    />
+                <result property="riDate"    column="ri_date"    />
+                <result property="riRequirements"    column="ri_requirements"    />
+                <result property="riPoliceId"    column="ri_police_id"    />
+                <result property="riPhotoPath"    column="ri_photo_path"    />
+                <result property="riStatus"    column="ri_status"    />
+                <result property="riDeleteFlag"    column="ri_delete_flag"    />
         <result property="riUpdateFlag"    column="ri_update_flag"    />
     </resultMap>
 
     <sql id="selectRectificationInfoVo">
-        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag, ri_update_flag from rectification_info
+        select ri_id, ri_project_id, ri_date, ri_requirements, ri_police_id, ri_photo_path, ri_status, ri_delete_flag 9from rectification_info
     </sql>
 
     <select id="selectRectificationInfoList" parameterType="RectificationInfo" resultMap="RectificationInfoResult">

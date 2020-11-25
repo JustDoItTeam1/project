@@ -1,6 +1,9 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import com.sju.program.service.IPoliceService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags={"交警人员管理"})
 @RestController
 @RequestMapping("/program/police")
 public class PoliceController extends BaseController
@@ -35,6 +39,7 @@ public class PoliceController extends BaseController
     /**
      * 查询交警人员列表
      */
+    @ApiOperation(value="查询交警人员列表")
     //@PreAuthorize("@ss.hasPermi('program:police:list')")
     @GetMapping("/list")
     public TableDataInfo list(Police police)
@@ -60,6 +65,7 @@ public class PoliceController extends BaseController
     /**
      * 获取交警人员详细信息
      */
+    @ApiOperation(value="查询交警人员")
     //@PreAuthorize("@ss.hasPermi('program:police:query')")
     @GetMapping(value = "/{policeId}")
     public AjaxResult getInfo(@PathVariable("policeId") Long policeId)
@@ -70,6 +76,7 @@ public class PoliceController extends BaseController
     /**
      * 新增交警人员
      */
+    @ApiOperation(value="新增交警人员")
     //@PreAuthorize("@ss.hasPermi('program:police:add')")
     @Log(title = "交警人员", businessType = BusinessType.INSERT)
     @PostMapping
@@ -81,6 +88,7 @@ public class PoliceController extends BaseController
     /**
      * 修改交警人员
      */
+    @ApiOperation(value="修改交警人员")
     //@PreAuthorize("@ss.hasPermi('program:police:edit')")
     @Log(title = "交警人员", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -92,6 +100,7 @@ public class PoliceController extends BaseController
     /**
      * 删除交警人员
      */
+    @ApiOperation(value="删除交警人员")
     //@PreAuthorize("@ss.hasPermi('program:police:remove')")
     @Log(title = "交警人员", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{policeIds}")
