@@ -12,8 +12,10 @@ class ProgramApplicationTests {
 
 	@Test
 	void test(){
-		String s="翻新";
-		System.out.println(s.contains(""));
+		String s="翻新/";
+		s.replaceAll("/","\\");
+		System.out.println(s);
 	}
+
 
 }
