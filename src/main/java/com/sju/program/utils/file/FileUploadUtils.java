@@ -113,8 +113,8 @@ public class FileUploadUtils
 
         File desc = getAbsoluteFile(baseDir, fileName);
         file.transferTo(desc);
-        String pathFileName = getPathFileName(baseDir, fileName);
-        return pathFileName;
+        //String pathFileName = getPathFileName(baseDir, fileName);
+        return fileName;
     }
 
     /**
@@ -145,7 +145,7 @@ public class FileUploadUtils
 
     private static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
-        int dirLastIndex = ProgramConfig.getProfile().length() + 1;
+        int dirLastIndex = Constants.WINDOWS_FILE_PATH.length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;

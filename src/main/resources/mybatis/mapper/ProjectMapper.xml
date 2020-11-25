@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        where p.project_builder_id = #{projectBuilderId}
+        where project_builder_id = #{projectBuilderId}
     </select>
 
     <select id="selectAllProjectList"  resultMap="ProjectResult">
