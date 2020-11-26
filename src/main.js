@@ -30,7 +30,7 @@ VueAMap.initAMapApiLoader({
   key: '86b08ba4308ecdf138b7e910b50efe28',
   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor','AMap.MouseTool'],
   // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.4'
+  v: '1.4.14'
 });
 
 // 全局方法挂载

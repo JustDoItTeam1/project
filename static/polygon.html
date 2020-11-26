@@ -6,7 +6,9 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
     <style>
-      html,body,#container{
+      html,
+      body,
+      #container{
         height: 100%
       }
       .input-item{
@@ -38,13 +40,14 @@
 
     window.init=function () {
       var map = new AMap.Map('container',{
+        mapStyle:'amap://styles/whitesmoke',
         zoom:12,
         center: [104.07, 30.67],
       });
       AMap.plugin(["AMap.MouseTool"],function () {
         mouseTool = new AMap.MouseTool(map);
       });
-
+      map.setMapStyle('amap://styles/797343a394a721796989e608aaeff24d');
       //监听draw事件可获取画好的覆盖物
       var overlays = [];
       var overlay=[];
@@ -58,8 +61,6 @@
         strokeColor:'#80d8ff'
         //同Polygon的Option设置
       });
-
-
       var str="";
 
       document.getElementById('clear').onclick = function(){
@@ -95,17 +96,9 @@
           overlays = [];
           overlay=[];
         }
-
-
-
       }
     }
-
-
     //var mouseTool = new AMap.MouseTool(map);
-
-
-
 
     </script>
   </body>

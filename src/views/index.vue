@@ -3,9 +3,45 @@
 
   <div id="container" style="width: 100%;height: 670px;position:relative ">
   </div>
-  <el-dialog   :visible.sync="vformVisible" append-to-body>
-    <detailForm  ref="detailfrom" :msg="nomsg"></detailForm>
-  </el-dialog>
+<!--  <el-dialog   :visible.sync="vformVisible" append-to-body>-->
+<!--    <detailForm  ref="detailfrom" :msg="nomsg"></detailForm>-->
+<!--  </el-dialog>-->
+    <el-dialog title='施工项目详情' :visible.sync="vformVisible" width="500px" append-to-body>
+      <el-form ref="projectForm" :model="projectListOne" :rules="rules" label-width="120px">
+        <el-form-item label="项目id"  >
+          <el-input v-model="projectListOne.projectId" :disabled="true"/>
+
+        </el-form-item>
+        <el-form-item label="项目名称" prop="projectName">
+          <el-input v-model="projectListOne.projectName" placeholder="请输入项目名称" />
+        </el-form-item>
+        <el-form-item label="项目位置" prop="projectLocation">
+          <el-input v-model="projectListOne.projectLocation" placeholder="请输入项目位置" />
+        </el-form-item>
+        <el-form-item label="项目位置(地图)" prop="projectLongLat">
+          <el-input v-model="projectListOne.projectLongLat" placeholder="请输入项目位置(地图)" />
+          <el-button type="primary" @click="mapshow" plain size="small">选择</el-button>
+        </el-form-item>
+        <el-form-item label="项目负责人" prop="projectManger">
+          <el-input v-model="projectListOne.projectManger" placeholder="请输入项目负责人" />
+        </el-form-item>
+        <el-form-item label="负责人联系电话" prop="projectPhone">
+          <el-input v-model="projectListOne.projectPhone" placeholder="请输入负责人联系电话" />
+        </el-form-item>
+        <el-form-item label="施工单位名称" prop="projectBuilderName">
+          <el-input v-model="projectListOne.projectBuilderName" placeholder="请输入施工单位名称" />
+        </el-form-item>
+        <el-form-item label="是否完工" prop="projectFinishedFlag">
+          <el-input v-model="projectListOne.projectFinishedFlag" placeholder="请输入施工单位名称" :disabled="true" />
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="info"  @click="clickSeige" style="float: left" round>查看围蔽详情</el-button>
+        <el-button type="primary" @click="submitProject">确 定</el-button>
+        <el-button>取 消</el-button>
+      </div>
+    </el-dialog>
 
 
 
@@ -13,13 +49,13 @@
 <!--    </div>-->
 
 <!--    切换图层-->
-    <div style="position: absolute;left: 80%;top:2%;width: 260px">
-      <el-radio-group v-model="radio1" @change="radioChange">
-        <el-radio-button label="查看围蔽方案"></el-radio-button>
-        <el-radio-button label="查看施工项目"></el-radio-button>
-      </el-radio-group>
+<!--    <div style="position: absolute;left: 80%;top:2%;width: 260px">-->
+<!--      <el-radio-group v-model="radio1" @change="radioChange">-->
+<!--        <el-radio-button label="查看围蔽方案"></el-radio-button>-->
+<!--        <el-radio-button label="查看施工项目"></el-radio-button>-->
+<!--      </el-radio-group>-->
 
-    </div>
+<!--    </div>-->
 
     <!--   左边搜索框-->
 <!--    <div style="position: absolute;left:1%;top:2%;width: 450px;border-radius: 10px;background-color: white">-->
@@ -221,18 +257,25 @@
 
       </div>
     </el-dialog>
+
+    <!--ploygon子组件，选择地图中位置-->
+    <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
+      <Ploygon v-if="pointVisible" ref="Ploygon" :msg="projectListOne.projectLongLat" @myfun="myf"></Ploygon>
+    </el-dialog>
   </div>
 
 
 </template>
 
 <script>
-import {listProject} from "../api/project/project";
+import {listProject,updateProject} from "../api/project/project";
+import Ploygon from "./test/components/Ploygon";
 import {listEnclosure,updateEnclosure} from "../api/enclosure/enclosure";
 import detailForm from "./test/components/detailForm";
 export default {
   name: "index",
-  components: {detailForm},
+  components: {detailForm,Ploygon},
+  props:['msg'],
   data() {
     return {
       //查询参数
@@ -241,9 +284,11 @@ export default {
         //seigeName:null,
         projectInfo:null,
       },
+      //查询结果
       searchSeige:[],
       searchProject:[],
       placeh:"输入施工项目名称、施工方名称搜索",
+      //显示
       resultVS:false,
       resultVP:false,
       //首页图层显示
@@ -251,6 +296,8 @@ export default {
       //polygon集合
       overlayGroup1:null,
       overlayGroup2:null,
+      //地图获取点Ploygon组件是否显示
+      pointVisible:false,
       ploy:"",
       //施工项目和围蔽方案查询结果
       ployg:[],
@@ -258,6 +305,10 @@ export default {
       ployg2:[],
       // 一个施工项目的围蔽详情
       schemeListOne:[],
+      // 一个施工项目的详情
+      projectListOne:[],
+
+
       //围蔽详情弹窗
       siegeV:false,
       ploy1:[],
@@ -515,44 +566,62 @@ export default {
 
   },
   methods: {
+    // 地图选择子组件显示
+    mapshow(){
+      this.pointVisible=true;
+    },
+
+    // 获取子组件ploygon传来的值
+    myf(ms) {
+      this.projectListOne.projectLongLat=ms;
+    },
+
     /** 点击搜索结果查看详情操作 */
     handleClick(o){
-      this.siegeV = true;
 
-      //将object转化为array
-      var myArray=new Array()
-      myArray.push(o);
-      this.schemeListOne= myArray;
+      //console.log(o)
+      this.vformVisible=true;
+      this.projectListOne= o;
+      //console.log(this.projectListOne);
+      this.maps.setCenter(this.projectListOne.marker.getPosition());
+      this.maps.setZoom(17);
+      // this.siegeV = true;
+      //
+      // //将object转化为array
+      // var myArray=new Array()
+      // myArray.push(o);
+      // this.schemeListOne= myArray;
     },
     /** 搜索按钮操作 */
     handleQuery() {
       //搜索结果显示
 
-      if(this.radio1=="查看围蔽方案"){
-        this.resultVS=true;
-        this.searchQueryParams.projectInfo=this.searchName;
-        listEnclosure(this.searchQueryParams).then(response => {
-          this.searchSeige=response.rows;
-          this.total=response.total;
-          console.log(this.searchSeige)
-        });
-      }
-      else{
+      // if(this.radio1=="查看围蔽方案"){
+      //   this.resultVS=true;
+      //   this.searchQueryParams.projectInfo=this.searchName;
+      //   listEnclosure(this.searchQueryParams).then(response => {
+      //     this.searchSeige=response.rows;
+      //     this.total=response.total;
+      //     console.log(this.searchSeige)
+      //   });
+      // }
+      // else{
         this.resultVP=true;
         this.searchQueryParams.projectInfo=this.searchName;
         listProject(this.searchQueryParams).then(response => {
+          this.createPolygon(this.maps,response.rows,this.overlayGroup2);
           this.searchProject=response.rows;
           this.total=response.total;
-          console.log(this.searchProject)
+          //console.log(this.searchProject)
         });
 
 
-      }
+      // }
 
     },
     /** 通过按钮操作 */
     handleAgree(e){
-      console.log(e);
+      // console.log(e);
       this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -563,12 +632,9 @@ export default {
           this. updataSeige.ssId=e.children[i].ssId;
           updateEnclosure(this. updataSeige).then(response => {
 
-            console.log(response)
+            // console.log(response)
           });
         }
-
-
-
         this.$message({
           type: 'success',
           message: '该围蔽方案成功设置为已通过!'
@@ -609,25 +675,25 @@ export default {
         }
       })
     },
-    //切换图层  radio点击事件
-    radioChange:function(){
-      this.searchName=null;
-      this.resultVS=false;
-      this.resultVP=false;
-      if(this.radio1=="查看围蔽方案"){
-
-        this.overlayGroup1.show();
-        this.overlayGroup2.hide();
-        this.placeh="输入施工项目名称、施工方名称搜索";
-      }
-      else{
-        this.overlayGroup2.show();
-        this.overlayGroup1.hide();
-        this.placeh="输入施工项目名称、施工方名称搜索";
-      }
-
-
-},
+//     //切换图层  radio点击事件
+//     radioChange:function(){
+//       this.searchName=null;
+//       this.resultVS=false;
+//       this.resultVP=false;
+//       if(this.radio1=="查看围蔽方案"){
+//
+//         this.overlayGroup1.show();
+//         this.overlayGroup2.hide();
+//         this.placeh="输入施工项目名称、施工方名称搜索";
+//       }
+//       else{
+//         this.overlayGroup2.show();
+//         this.overlayGroup1.hide();
+//         this.placeh="输入施工项目名称、施工方名称搜索";
+//       }
+//
+//
+// },
 
     //生成施工项目全部polygon
     createPolygon:function(map,ployg,overlayGroup){
@@ -672,13 +738,18 @@ export default {
         // polygon.pl=this.ploy2;
 
 
+        // console.log(ployg);
+
         var marker = new AMap.Marker({
           position: pt,
           title: ployg[i].projectName
         });
-        //marker.content = "project";
+        marker.content =i;
         //marker.content={};
-        marker.cont=ployg[i];
+        //marker.cont=ployg[i];
+
+
+        ployg[i]["marker"]=marker;
 
         //map.add(marker);
         marker.on('click', markerClick);
@@ -692,12 +763,19 @@ export default {
 
         var that =this;
         function markerClick(e) {
+         //console.log(e);
 
+          that.maps.setCenter(that.ployg2[parseInt(e.target.content)].marker.getPosition());
+          that.maps.setZoom(17);
           that.vformVisible=true;
           // that.formVisible=true;
-          //console.log(e.target.cont);
-          // 数据脱绑
-          that.nomsg=JSON.parse(JSON.stringify(e.target.cont));
+          //将object转化为array
+          // var myArray=new Array()
+          // myArray.push(that.ployg2[parseInt(e.target.content)]);
+         that.projectListOne= that.ployg2[parseInt(e.target.content)];
+         // console.log(that.projectListOne)
+          // // 数据脱绑
+          // that.nomsg=JSON.parse(JSON.stringify(e.target.cont));
           //   var t=document.getElementById("txt");
           //  t.value=that.nomsg.id
         }
@@ -712,107 +790,108 @@ export default {
       }
     },
 
-    //生成围蔽方案全部polygon
-    createSiegePolygon:function(map,ployg,overlayGroup){
-      for(var m=0;m<ployg.length;m++) {
-        var temp = [];
-        var path = [];
-        var ploy2 = [];
-        var color = ['red', 'green', 'blue', 'yellow', 'black']
-
-
-        for (var i = 0; i < ployg[m].children.length; i++) {
-          temp[i] = ployg[m].children[i].ssRange.split(';');
-          //    console.log(this.temp[i]);
-
-        }
-
-        // 生成四边形
-        for (var i = 0; i < temp.length; i++) {
-
-          path = [];
-          //  console.log(this.path)
-          var a = 0;
-          var b = 0;
-          for (var j = 0; j < temp[i].length - 1; j++) {
-
-            ploy2 = temp[i][j].split(',');
-            a = parseFloat(a) + parseFloat(ploy2[0]);
-            b = parseFloat(b) + parseFloat(ploy2[1]);
-            path.push(new AMap.LngLat(ploy2[0] - 0, ploy2[1] - 0));
-
-          }
-          a = a / (temp[i].length - 1);
-          b = b / (temp[i].length - 1);
-          // console.log("a"+a);
-          // console.log("b"+b);
-          var pt = new AMap.LngLat(a, b)
-          var polygon = new AMap.Polygon({
-            path: path,
-            fillColor: '#fff', // 多边形填充颜色
-            fillOpacity:0,
-            borderWeight: 2, // 线条宽度，默认为 1
-            strokeColor: color[i], // 线条颜色
-          });
-          overlayGroup.addOverlay(polygon);
-
-          // polygon.pl=this.ploy2;
-
-
-          if(i==0){
-            var marker = new AMap.Marker({
-              position: pt,
-              title: ployg[m].ssProjectName
-            });
-            marker.content = m;
-            //marker.content = {};
-            marker.cont = ployg[m];
-
-            // 创建 已经通过审核的红色AMap.Icon 实例：
-            var icon = new AMap.Icon({
-              size: new AMap.Size(40, 50),    // 图标尺寸
-              image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',  // Icon的图像
-             // imageOffset: new AMap.Pixel(0, -60),  // 图像相对展示区域的偏移量，适于雪碧图等
-              imageSize: new AMap.Size(22, 35)   // 根据所设置的大小拉伸或压缩图片
-            });
-
-            if(ployg[m].ssVerifyFlag=='pass')
-            {
-              marker.setIcon(icon)
-
-            }
-            //map.add(marker);
-            marker.on('click', markerClick);
-
-            ////////////////////////////////////////////////////////////////////////
-            // map.add(polygon);
-
-            overlayGroup.addOverlay(marker);
-
-
-
-            var that = this;
-
-            function markerClick(e) {
-              that.siegeV = true;
-
-              //将object转化为array
-              var myArray=new Array()
-              myArray.push(that.ployg1[parseInt(e.target.content)]);
-              that.schemeListOne= myArray;
-
-
-            }
-          }
-        }
-
-      }
-    },
+    // //生成围蔽方案全部polygon
+    // createSiegePolygon:function(map,ployg,overlayGroup){
+    //   for(var m=0;m<ployg.length;m++) {
+    //     var temp = [];
+    //     var path = [];
+    //     var ploy2 = [];
+    //     var color = ['red', 'green', 'blue', 'yellow', 'black']
+    //
+    //
+    //     for (var i = 0; i < ployg[m].children.length; i++) {
+    //       temp[i] = ployg[m].children[i].ssRange.split(';');
+    //       //    console.log(this.temp[i]);
+    //
+    //     }
+    //
+    //     // 生成四边形
+    //     for (var i = 0; i < temp.length; i++) {
+    //
+    //       path = [];
+    //       //  console.log(this.path)
+    //       var a = 0;
+    //       var b = 0;
+    //       for (var j = 0; j < temp[i].length - 1; j++) {
+    //
+    //         ploy2 = temp[i][j].split(',');
+    //         a = parseFloat(a) + parseFloat(ploy2[0]);
+    //         b = parseFloat(b) + parseFloat(ploy2[1]);
+    //         path.push(new AMap.LngLat(ploy2[0] - 0, ploy2[1] - 0));
+    //
+    //       }
+    //       a = a / (temp[i].length - 1);
+    //       b = b / (temp[i].length - 1);
+    //       // console.log("a"+a);
+    //       // console.log("b"+b);
+    //       var pt = new AMap.LngLat(a, b)
+    //       var polygon = new AMap.Polygon({
+    //         path: path,
+    //         fillColor: '#fff', // 多边形填充颜色
+    //         fillOpacity:0,
+    //         borderWeight: 2, // 线条宽度，默认为 1
+    //         strokeColor: color[i], // 线条颜色
+    //       });
+    //       overlayGroup.addOverlay(polygon);
+    //
+    //       // polygon.pl=this.ploy2;
+    //
+    //
+    //       if(i==0){
+    //         var marker = new AMap.Marker({
+    //           position: pt,
+    //           title: ployg[m].ssProjectName
+    //         });
+    //         marker.content = m;
+    //         //marker.content = {};
+    //         marker.cont = ployg[m];
+    //
+    //         // 创建 已经通过审核的红色AMap.Icon 实例：
+    //         var icon = new AMap.Icon({
+    //           size: new AMap.Size(40, 50),    // 图标尺寸
+    //           image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',  // Icon的图像
+    //          // imageOffset: new AMap.Pixel(0, -60),  // 图像相对展示区域的偏移量，适于雪碧图等
+    //           imageSize: new AMap.Size(22, 35)   // 根据所设置的大小拉伸或压缩图片
+    //         });
+    //
+    //         if(ployg[m].ssVerifyFlag=='pass')
+    //         {
+    //           marker.setIcon(icon)
+    //
+    //         }
+    //         //map.add(marker);
+    //         marker.on('click', markerClick);
+    //
+    //         ////////////////////////////////////////////////////////////////////////
+    //         // map.add(polygon);
+    //
+    //         overlayGroup.addOverlay(marker);
+    //
+    //
+    //
+    //         var that = this;
+    //
+    //         function markerClick(e) {
+    //           that.siegeV = true;
+    //
+    //           //将object转化为array
+    //           var myArray=new Array()
+    //           myArray.push(that.ployg1[parseInt(e.target.content)]);
+    //           that.schemeListOne= myArray;
+    //
+    //
+    //         }
+    //       }
+    //     }
+    //
+    //   }
+    // },
 
     init:function () {
       //初始化地图
       // var satellite = new AMap.TileLayer.Satellite();
       this.maps = new AMap.Map('container', {
+        mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
         center: [104.07, 30.67],
         resizeEnable: true,
         expandZoomRange: true,
@@ -828,21 +907,51 @@ export default {
       })
 
 
-      this.overlayGroup1 = new AMap.OverlayGroup();
+     // this.overlayGroup1 = new AMap.OverlayGroup();
       this.overlayGroup2 = new AMap.OverlayGroup();
 
       //获得每个四边形图层
-      // this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
+       //this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
       //this.createSiegePolygon(this.maps,this.ployg1,this.overlayGroup1);
 
       //this.maps.add(this.overlayGroup1);
-      // this.maps.add(this.overlayGroup2);
+      //this.maps.add(this.overlayGroup2);
 
     },
     //下载附件
     handleDownload:function () {
 
-    }
+    },
+    clickSeige:function () {
+
+    },
+    //项目详情提交
+    submitProject:function () {
+      this.$refs["projectForm"].validate(valid => {
+        if (valid) {
+            //console.log(this.projectListOne);
+            if(this.projectListOne.marker)
+            {
+              delete this.projectListOne.marker;
+            }
+
+            updateProject(this.projectListOne).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("修改成功");
+                // this.open = false;
+                // this.getList();
+              }
+            });
+
+        }
+      });
+    },
+    //项目提交取消
+    cancel() {
+      this.vformVisible= false;
+
+    },
+
   },
 
   mounted() {
@@ -856,20 +965,20 @@ export default {
       // console.log(this.ployg2);
       this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
       this.maps.add(this.overlayGroup2);
-      this.overlayGroup2.hide();
+      this.overlayGroup2.show();
 
       // console.log(response);
     });
 
-    listEnclosure().then(response => {
-      //this.ployg = response.rows;
-      this.ployg1=response.rows;
-
-      this.createSiegePolygon(this.maps,this.ployg1,this.overlayGroup1);
-      this.maps.add(this.overlayGroup1);
-       this.overlayGroup1.show();
-      //console.log("围蔽"+response.rows)
-    });
+    // listEnclosure().then(response => {
+    //   //this.ployg = response.rows;
+    //   this.ployg1=response.rows;
+    //
+    //   this.createSiegePolygon(this.maps,this.ployg1,this.overlayGroup1);
+    //   this.maps.add(this.overlayGroup1);
+    //    this.overlayGroup1.show();
+    //   //console.log("围蔽"+response.rows)
+    // });
 
 
 
