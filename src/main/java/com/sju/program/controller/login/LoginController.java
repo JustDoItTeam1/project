@@ -67,7 +67,7 @@ public class LoginController  {
 	 * @param loginBody 登录信息
 	 * @return 结果
 	 */
-	@ApiOperation(value = "验证用户信息接口",notes = "验证用户信息,生成token")
+	@ApiOperation(value = "验证用户信息接口",notes = "管理员默认用户名admin,交警用户名必须以大写PO开头，交管以TS开头，施工单位以BU开头")
 	@PostMapping("/login")
 	public AjaxResult Login(@RequestBody LoginBody loginBody) throws Exception{
 			AjaxResult ajax=AjaxResult.success();
