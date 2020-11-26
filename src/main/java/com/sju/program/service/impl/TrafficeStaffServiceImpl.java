@@ -36,6 +36,11 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
         return trafficeStaffMapper.selectTrafficeStaffByUsername(trafficUseranme);
     }
 
+    @Override
+    public List<TrafficeStaff> selectAllTrafficeStaffList() {
+        return trafficeStaffMapper.selectAllTrafficeStaffList();
+    }
+
     /**
      * 查询交管人员列表
      * 
@@ -94,5 +99,10 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
     public int deleteTrafficeStaffById(Long trafficId)
     {
         return trafficeStaffMapper.deleteTrafficeStaffById(trafficId);
+    }
+
+    @Override
+    public int save(List<TrafficeStaff> trafficeStaffs) {
+        return trafficeStaffMapper.saveTrafficeStaff(trafficeStaffs);
     }
 }

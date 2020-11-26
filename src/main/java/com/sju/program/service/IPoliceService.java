@@ -26,6 +26,8 @@ public interface IPoliceService
      */
     public Police selectUserByUserName(String username);
 
+    public List<Police> selectAllPolice();
+
 
 
     /**
@@ -67,4 +69,6 @@ public interface IPoliceService
      * @return 结果
      */
     public int deletePoliceById(Long policeId);
+
+    public int save(List<Police> police);
 }

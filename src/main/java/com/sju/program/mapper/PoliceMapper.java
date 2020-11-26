@@ -21,6 +21,10 @@ public interface PoliceMapper
 
     public Police selectUserByUserName(String username);
 
+    public int saveAllPolices(List<Police> police);
+
+    public List<Police> selectAllPolice();
+
     /**
      * 查询交警人员列表
      * 

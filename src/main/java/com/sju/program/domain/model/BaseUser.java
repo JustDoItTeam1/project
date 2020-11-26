@@ -1,14 +1,17 @@
 package com.sju.program.domain.model;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+
 public class BaseUser {
 
     /**权限标识**/
+    @ExcelIgnore
     private int authenticate;
-
+    @ExcelIgnore
     private Long id;
-
+    @ExcelIgnore
     private String userName;
-
+    @ExcelIgnore
     private String userPassword;
 
     public Long getId() {

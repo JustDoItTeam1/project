@@ -24,6 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
+
+    <select id="selectAllTrafficeStaffList" resultMap="TrafficeStaffResult">
+        <include refid="selectTrafficeStaffVo"></include>
+    </select>
     
     <select id="selectTrafficeStaffById" parameterType="Long" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"/>
@@ -49,6 +53,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="trafficDeleteFlag != null">#{trafficDeleteFlag},</if>
 
          </trim>
+    </insert>
+
+    <insert id="saveTrafficeStaff" parameterType="TrafficeStaff">
+        INSERT INTO traffice_staff (traffic_name, traffic_password, traffic_delete_flag)
+        VALUES 
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.trafficName},#{item.trafficPassword},"live"
+        </foreach>
     </insert>
 
     <update id="updateTrafficeStaff" parameterType="TrafficeStaff">

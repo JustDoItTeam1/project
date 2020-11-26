@@ -19,6 +19,11 @@ public interface ITrafficeStaffService
      */
     public TrafficeStaff selectTrafficeStaffById(Long trafficId);
 
+
+    public List<TrafficeStaff> selectAllTrafficeStaffList();
+
+
+
     /**
      * 查询交管人员
      *
@@ -68,4 +73,6 @@ public interface ITrafficeStaffService
      * @return 结果
      */
     public int deleteTrafficeStaffById(Long trafficId);
+
+    public int save(List<TrafficeStaff> trafficeStaffs);
 }

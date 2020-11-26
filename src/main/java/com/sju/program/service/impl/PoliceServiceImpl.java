@@ -36,6 +36,11 @@ public class PoliceServiceImpl implements IPoliceService
         return policeMapper.selectUserByUserName(username);
     }
 
+    @Override
+    public List<Police> selectAllPolice() {
+        return policeMapper.selectAllPolice();
+    }
+
     /**
      * 查询交警人员列表
      * 
@@ -94,5 +99,10 @@ public class PoliceServiceImpl implements IPoliceService
     public int deletePoliceById(Long policeId)
     {
         return policeMapper.deletePoliceById(policeId);
+    }
+
+    @Override
+    public int save(List<Police> police) {
+        return policeMapper.saveAllPolices(police);
     }
 }

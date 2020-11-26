@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
 import io.swagger.annotations.ApiModel;
@@ -25,30 +27,34 @@ public class Police  extends BaseUser
 
     /** 交警人员id */
     @ApiModelProperty(name = "policeId",value = "交警人员id",example = "1")
+    @ExcelIgnore
     private Long policeId;
 
     /** 用户账户 */
     @Excel(name = "用户账户")
     @ApiModelProperty(name = "policeName",value = "用户账户",example = "jj111111")
+    @ExcelProperty("账户")
     private String policeName;
 
     /** 密码 */
     @Excel(name = "密码")
     @ApiModelProperty(name = "policePassword",value = "密码")
+    @ExcelProperty("密码")
     private String policePassword;
 
     /** 删除标识 */
     @Excel(name = "删除标识")
     @ApiModelProperty(name = "policeDeleteFlag",value = "删除标识",example = "live | del")
+    @ExcelProperty("删除标识")
     private String policeDeleteFlag;
 
 //    /** 更新标识 */
 //    @JsonFormat(pattern = "yyyy-MM-dd")
 //    @Excel(name = "更新标识", width = 30, dateFormat = "yyyy-MM-dd")
 //    private Date policeUpdateFlag;
-
+    @ExcelIgnore
     private int authenticate;
-
+    @ExcelIgnore
     private ArrayList<String> permissions;
 
     public ArrayList<String> getPermissions() {

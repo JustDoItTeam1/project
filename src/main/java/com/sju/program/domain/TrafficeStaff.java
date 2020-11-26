@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
 import io.swagger.annotations.ApiModel;
@@ -25,30 +27,36 @@ public class TrafficeStaff extends BaseUser
 
     /** 交管人员id */
     @ApiModelProperty(name = "trafficId",value = "交管人员id",example = "1")
+    @ExcelIgnore
     private Long trafficId;
 
     /** 用户账户 */
-    @Excel(name = "用户账户")
+    //@Excel(name = "用户账户")
     @ApiModelProperty(name = "trafficName",value = "用户账户",example = "traffic")
+    @ExcelProperty("账户")
     private String trafficName;
 
     /** 密码 */
-    @Excel(name = "密码")
+    @ExcelProperty("密码")
     @ApiModelProperty(name = "trafficPassword",value = "密码")
     private String trafficPassword;
 
     /** 删除标识 */
-    @Excel(name = "删除标识")
+   // @Excel(name = "删除标识")
     @ApiModelProperty(name = "trafficDeleteFlag",value = "删除标识",example = "live | del")
+    @ExcelProperty("删除标识")
     private String trafficDeleteFlag;
 
 //    /** 更新时间 */
 //    @JsonFormat(pattern = "yyyy-MM-dd")
 //    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
 //    private Date trafficUpdateFlag;
-
+    /**身份标识*/
+    @ExcelIgnore
     private int authenticate;
 
+    /**权限字符串*/
+    @ExcelIgnore
     private ArrayList<String> permissions;
 
     public ArrayList<String> getPermissions() {

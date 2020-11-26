@@ -27,6 +27,8 @@ public interface TrafficeStaffMapper
      */
     public TrafficeStaff selectTrafficeStaffByUsername(String trafficUsername);
 
+    public List<TrafficeStaff> selectAllTrafficeStaffList();
+
 
     /**
      * 查询交管人员列表
@@ -67,4 +69,7 @@ public interface TrafficeStaffMapper
      * @return 结果
      */
     public int deleteTrafficeStaffByIds(Long[] trafficIds);
+
+    public int saveTrafficeStaff(List<TrafficeStaff> trafficeStaffs);
+
 }
