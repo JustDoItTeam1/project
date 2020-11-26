@@ -74,7 +74,7 @@ public class PoliceController extends BaseController
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        String fileName = URLEncoder.encode("Police", "UTF-8");
+        String fileName = URLEncoder.encode("交警人员列表", "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), Police.class).sheet("人员").doWrite(policeService.selectAllPolice());
     }

@@ -1,6 +1,7 @@
 package com.sju.program.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class TrafficeStaffController extends BaseController
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        String fileName = URLEncoder.encode("trafficeStaff", "UTF-8");
+        String fileName = URLEncoder.encode("交管人员列表", "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), TrafficeStaff.class).sheet("人员").doWrite(trafficeStaffService.selectAllTrafficeStaffList());
     }
