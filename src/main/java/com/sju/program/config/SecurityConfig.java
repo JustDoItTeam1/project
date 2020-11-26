@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/builder").permitAll()
                 .antMatchers("/login/traffic").permitAll()
                 .antMatchers("/policelogin/test").permitAll()
+                .antMatchers("/login").permitAll()
                 //.antMatchers("/common/download").permitAll()
                 .antMatchers(
                         HttpMethod.GET,
@@ -75,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/doc.hml").anonymous()
+                .antMatchers("/swagger-ui.html").anonymous()
                 .antMatchers("/swagger-resources/**").anonymous()
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()

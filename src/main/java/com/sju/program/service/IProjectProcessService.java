@@ -27,6 +27,14 @@ public interface IProjectProcessService
      */
     public List<ProjectProcess> selectProjectProcessList(ProjectProcess projectProcess);
 
+    public List<ProjectProcess> selectAllProjectProcessList();
+
+    public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId);
+
+
+
+
+
     /**
      * 新增施工进度
      * 

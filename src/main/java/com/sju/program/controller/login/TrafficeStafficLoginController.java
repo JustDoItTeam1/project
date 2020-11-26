@@ -35,7 +35,7 @@ import java.util.*;
  * 用户4登录验证
  *
  */
-@Api(tags = "交管登录接口")
+@Api(tags = "交管登录接口（已停用）")
 @RestController
 public class TrafficeStafficLoginController
 {

@@ -4,6 +4,7 @@ import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -11,22 +12,17 @@ import java.util.HashMap;
  *
  * @author ruoyi
  */
-@ApiModel(description = "返回信息说明")
-public class AjaxResult extends HashMap<String, Object>
+public class AjaxResult extends HashMap<String, Object> implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-
     /** 状态码 */
-    @ApiModelProperty(name = "code",value = "状态码",example = "200")
     public static final String CODE_TAG = "code";
 
     /** 返回内容 */
-    @ApiModelProperty(name = "msg",value = "提示信息",example = "操作成功")
     public static final String MSG_TAG = "msg";
 
     /** 数据对象 */
-    @ApiModelProperty(name = "data",value = "数据")
     public static final String DATA_TAG = "data";
 
     /**

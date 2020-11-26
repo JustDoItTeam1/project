@@ -5,6 +5,10 @@ import java.util.List;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +33,7 @@ import com.sju.program.service.IRectificationInfoService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags = "整改信息接口")
 @RestController
 @RequestMapping("/program/info")
 public class RectificationInfoController extends BaseController
@@ -41,6 +46,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 查询整改信息列表
      */
+    @ApiOperation("获取整改信息列表")
     @PreAuthorize("@ss.hasPermi('program:info:list')")
     @GetMapping("/list")
     public TableDataInfo list(RectificationInfo rectificationInfo)
@@ -68,6 +74,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 获取整改信息详细信息
      */
+    @ApiOperation("获取id为x的整改信息")
     @PreAuthorize("@ss.hasPermi('program:info:query')")
     @GetMapping(value = "/{riId}")
     public AjaxResult getInfo(@PathVariable("riId") Long riId)
@@ -78,6 +85,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 新增整改信息
      */
+    @ApiOperation("新增整改信息")
     @PreAuthorize("@ss.hasPermi('program:info:add')")
     @Log(title = "整改信息", businessType = BusinessType.INSERT)
     @PostMapping
@@ -87,8 +95,21 @@ public class RectificationInfoController extends BaseController
     }
 
     /**
+     * 确认整改信息
+     */
+    @ApiOperation("确认整改信息")
+    @PreAuthorize("@ss.hasPermi('program:info:confirm')")
+    @Log(title = "整改信息", businessType = BusinessType.UPDATE)
+    @PostMapping("{riId}")
+    public AjaxResult confirm(@PathVariable Long riId)
+    {
+        return toAjax(rectificationInfoService.confirmRectificationInfo(riId));
+    }
+
+    /**
      * 修改整改信息
      */
+    @ApiOperation("修改整改信息")
     @PreAuthorize("@ss.hasPermi('program:info:edit')")
     @Log(title = "整改信息", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -100,6 +121,7 @@ public class RectificationInfoController extends BaseController
     /**
      * 删除整改信息
      */
+    @ApiOperation("删除整改信息(可批量删除)")
     @PreAuthorize("@ss.hasPermi('program:info:remove')")
     @Log(title = "整改信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{riIds}")

@@ -2,8 +2,13 @@ package com.sju.program.controller;
 
 import java.util.List;
 
+import com.sju.program.domain.SiegeScheme;
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +39,20 @@ public class ProjectProcessController extends BaseController
 {
     @Autowired
     private IProjectProcessService projectProcessService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询施工进度列表
      */
+    @ApiOperation("获取进度列表")
     @PreAuthorize("@ss.hasPermi('program:process:list')")
     @GetMapping("/list")
     public TableDataInfo list(ProjectProcess projectProcess)
     {
         startPage();
-        List<ProjectProcess> list = projectProcessService.selectProjectProcessList(projectProcess);
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<ProjectProcess> list=tokenService.getLoginUserProjectProcess(loginUser);
         return getDataTable(list);
     }
 
@@ -63,6 +72,7 @@ public class ProjectProcessController extends BaseController
     /**
      * 获取施工进度详细信息
      */
+    @ApiOperation("获取id为x的进度")
     @PreAuthorize("@ss.hasPermi('program:process:query')")
     @GetMapping(value = "/{ppId}")
     public AjaxResult getInfo(@PathVariable("ppId") Long ppId)
@@ -73,6 +83,7 @@ public class ProjectProcessController extends BaseController
     /**
      * 新增施工进度
      */
+    @ApiOperation("新增施工进度")
     @PreAuthorize("@ss.hasPermi('program:process:add')")
     @Log(title = "施工进度", businessType = BusinessType.INSERT)
     @PostMapping
@@ -84,6 +95,7 @@ public class ProjectProcessController extends BaseController
     /**
      * 修改施工进度
      */
+    @ApiOperation("修改施工进度")
     @PreAuthorize("@ss.hasPermi('program:process:edit')")
     @Log(title = "施工进度", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -95,6 +107,7 @@ public class ProjectProcessController extends BaseController
     /**
      * 删除施工进度
      */
+    @ApiOperation("删除施工进度(可批量删除)")
     @PreAuthorize("@ss.hasPermi('program:process:remove')")
     @Log(title = "施工进度", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ppIds}")

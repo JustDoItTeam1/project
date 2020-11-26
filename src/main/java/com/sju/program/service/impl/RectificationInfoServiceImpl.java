@@ -53,6 +53,11 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
         return rectificationInfoMapper.selectRectificationInfoList();
     }
 
+    @Override
+    public int confirmRectificationInfo(Long riId) {
+        return rectificationInfoMapper.confirmRectificationInfo(riId);
+    }
+
     /**
      * 新增整改信息
      * 

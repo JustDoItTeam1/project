@@ -4,6 +4,7 @@ import com.sju.program.constant.Constants;
 import com.sju.program.domain.*;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.IProjectProcessService;
 import com.sju.program.service.IProjectService;
 import com.sju.program.service.IRectificationInfoService;
 import com.sju.program.service.ISiegeSchemeService;
@@ -59,6 +60,8 @@ public class TokenService
     IRectificationInfoService rectificationInfoService;
     @Autowired
     IProjectService projectService;
+    @Autowired
+    IProjectProcessService projectProcessService;
 
     public List<SiegeScheme> getLoginUserSiegeScheme(LoginUser loginUser){
         List<SiegeScheme> list=null;
@@ -107,6 +110,23 @@ public class TokenService
                  break;
          }
         return rectificationInfoList;
+     }
+
+     public List<ProjectProcess> getLoginUserProjectProcess(LoginUser loginUser){
+        List<ProjectProcess> list=null;
+         BaseUser baseUser=(BaseUser) loginUser.getUser();
+         switch (baseUser.getAuthenticate()){
+             case 1:
+             case 2:
+             case 3:
+                 list=projectProcessService.selectAllProjectProcessList();
+                 break;
+             case 4:
+                 list= projectProcessService.selectProjectProcessByBuilderId(baseUser.getId());
+                 break;
+         }
+
+         return list;
      }
 
 

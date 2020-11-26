@@ -31,6 +31,8 @@ public interface RectificationInfoMapper
 
     public List<RectificationInfo> selectRectificationInfoByBuilderId(Long builderId);
 
+    public int confirmRectificationInfo(Long riId);
+
 
 
 

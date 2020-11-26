@@ -24,6 +24,9 @@ public class Admin extends BaseUser
 {
     private static final long serialVersionUID = 1L;
 
+//    @ApiModelProperty(name = "test",value = "test",example = "test")
+//    private  String test;
+
     /** 账号 */
     @ApiModelProperty(name = "adminId",value = "id",example = "1")
     private Long adminId;
@@ -52,6 +55,7 @@ public class Admin extends BaseUser
     private int authenticate;
 
     private ArrayList<String> permissions;
+
 
     public ArrayList<String> getPermissions() {
         return permissions;

@@ -43,6 +43,16 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
         return projectProcessMapper.selectProjectProcessList(projectProcess);
     }
 
+    @Override
+    public List<ProjectProcess> selectAllProjectProcessList() {
+        return projectProcessMapper.selectAllProjectProcessList();
+    }
+
+    @Override
+    public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId) {
+        return projectProcessMapper.selectProjectProcessByBuilderId(builderId);
+    }
+
     /**
      * 新增施工进度
      * 
@@ -76,7 +86,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
     @Override
     public int deleteProjectProcessByIds(Long[] ppIds)
     {
-        return projectProcessMapper.deleteProjectProcessByIds(ppIds);
+        return projectProcessMapper.updateProjectProcessByIds(ppIds);
     }
 
     /**

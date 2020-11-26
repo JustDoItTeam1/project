@@ -22,6 +22,10 @@ public interface IRectificationInfoService
     public List<RectificationInfo> selectRectificationInfoByBuilderId(Long riId);
 
 
+    public int confirmRectificationInfo(Long riId);
+
+
+
 
     /**
      * 查询整改信息列表

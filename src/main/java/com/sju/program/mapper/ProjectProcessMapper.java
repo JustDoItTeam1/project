@@ -27,6 +27,13 @@ public interface ProjectProcessMapper
      */
     public List<ProjectProcess> selectProjectProcessList(ProjectProcess projectProcess);
 
+    public List<ProjectProcess> selectAllProjectProcessList();
+
+    public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId);
+
+
+
+
     /**
      * 新增施工进度
      * 
@@ -58,4 +65,9 @@ public interface ProjectProcessMapper
      * @return 结果
      */
     public int deleteProjectProcessByIds(Long[] ppIds);
+
+    public int updateProjectProcessByIds(Long[] ppIds);
+
+
+
 }

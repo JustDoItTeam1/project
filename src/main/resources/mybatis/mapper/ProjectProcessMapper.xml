@@ -26,10 +26,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
+
+    <select id="selectAllProjectProcessList" resultMap="ProjectProcessResult">
+        SELECT pp_id, pp_time, pp_project_id, pp_description, pp_delete_flag FROM project_process
+        WHERE pp_delete_flag!="del"
+    </select>
     
     <select id="selectProjectProcessById" parameterType="Long" resultMap="ProjectProcessResult">
         <include refid="selectProjectProcessVo"/>
         where pp_id = #{ppId}
+    </select>
+
+    <select id="selectProjectProcessByBuilderId" parameterType="Long" resultMap="ProjectProcessResult">
+        SELECT pp_id, pp_time, pp_project_id, pp_description, pp_delete_flag FROM project_process
+        LEFT JOIN project ON project.project_id=project_process.pp_project_id
+        WHERE project.project_builder_id=#{builderId} AND pp_delete_flag!="del"
     </select>
         
     <insert id="insertProjectProcess" parameterType="ProjectProcess" useGeneratedKeys="true" keyProperty="ppId">
@@ -58,6 +69,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </trim>
         where pp_id = #{ppId}
+    </update>
+
+    <update id="updateProjectProcessByIds" parameterType="Long">
+        UPDATE project_process SET pp_delete_flag="del" WHERE pp_id IN
+        <foreach item="ppId" collection="array" open="(" separator="," close=")">
+            #{ppId}
+        </foreach>
     </update>
 
     <delete id="deleteProjectProcessById" parameterType="Long">

@@ -12,7 +12,7 @@ import com.sju.program.annotation.Excel;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public class ProjectProcess extends BaseEntity
+public class ProjectProcess
 {
     private static final long serialVersionUID = 1L;
 
@@ -36,10 +36,6 @@ public class ProjectProcess extends BaseEntity
     @Excel(name = "删除标识")
     private String ppDeleteFlag;
 
-    /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date ppUpdateFlag;
 
     public void setPpId(Long ppId) 
     {
@@ -86,15 +82,7 @@ public class ProjectProcess extends BaseEntity
     {
         return ppDeleteFlag;
     }
-    public void setPpUpdateFlag(Date ppUpdateFlag) 
-    {
-        this.ppUpdateFlag = ppUpdateFlag;
-    }
 
-    public Date getPpUpdateFlag() 
-    {
-        return ppUpdateFlag;
-    }
 
     @Override
     public String toString() {
@@ -104,7 +92,6 @@ public class ProjectProcess extends BaseEntity
             .append("ppProjectId", getPpProjectId())
             .append("ppDescription", getPpDescription())
             .append("ppDeleteFlag", getPpDeleteFlag())
-            .append("ppUpdateFlag", getPpUpdateFlag())
             .toString();
     }
 }

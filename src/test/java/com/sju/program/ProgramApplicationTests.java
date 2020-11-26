@@ -12,9 +12,9 @@ class ProgramApplicationTests {
 
 	@Test
 	void test(){
-		String s="翻新/";
-		s.replaceAll("/","\\");
-		System.out.println(s);
+		String s="admin";
+		//s.replaceAll("/","\\");
+		System.out.println(s.startsWith("admin"));
 	}
 
 

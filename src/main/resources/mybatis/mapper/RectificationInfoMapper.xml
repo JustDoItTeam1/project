@@ -94,6 +94,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
+    <update id="confirmRectificationInfo" parameterType="Long" >
+        UPDATE rectification_info SET ri_status="confirm" WHERE ri_id=#{riId}
+    </update>
+
     <delete id="deleteRectificationInfoById" parameterType="Long">
         delete from rectification_info where ri_id = #{riId}
     </delete>

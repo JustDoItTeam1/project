@@ -48,10 +48,10 @@ public class RectificationInfo
     @Excel(name = "删除标识")
     private String riDeleteFlag;
 
-    /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date riUpdateFlag;
+//    /** 更新时间 */
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    private Date riUpdateFlag;
 
     public void setRiId(Long riId) 
     {
@@ -125,15 +125,15 @@ public class RectificationInfo
     {
         return riDeleteFlag;
     }
-    public void setRiUpdateFlag(Date riUpdateFlag) 
-    {
-        this.riUpdateFlag = riUpdateFlag;
-    }
-
-    public Date getRiUpdateFlag() 
-    {
-        return riUpdateFlag;
-    }
+//    public void setRiUpdateFlag(Date riUpdateFlag)
+//    {
+//        this.riUpdateFlag = riUpdateFlag;
+//    }
+//
+//    public Date getRiUpdateFlag()
+//    {
+//        return riUpdateFlag;
+//    }
 
     @Override
     public String toString() {
@@ -146,7 +146,7 @@ public class RectificationInfo
             .append("riPhotoPath", getRiPhotoPath())
             .append("riStatus", getRiStatus())
             .append("riDeleteFlag", getRiDeleteFlag())
-            .append("riUpdateFlag", getRiUpdateFlag())
+            //.append("riUpdateFlag", getRiUpdateFlag())
             .toString();
     }
 }

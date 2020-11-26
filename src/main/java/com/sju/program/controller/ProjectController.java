@@ -6,6 +6,8 @@ import com.sju.program.domain.model.LoginUser;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import com.sju.program.service.IProjectService;
  * @author JustDoItTeam
  * @date 2020-11-03
  */
+@Api(tags = "施工项目接口")
 @RestController
 @RequestMapping("/program/project")
 public class ProjectController extends BaseController
@@ -41,7 +44,8 @@ public class ProjectController extends BaseController
     /**
      * 查询施工项目列表
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:list')")
+    @ApiOperation("获取施工项目列表")
+    @PreAuthorize("@ss.hasPermi('program:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
     {
@@ -71,7 +75,8 @@ public class ProjectController extends BaseController
     /**
      * 获取施工项目详细信息
      */
-    //@PreAuthorize("@ss.hasPermi('program:project:query')")
+    @ApiOperation("获取id为x的施工项目信息")
+    @PreAuthorize("@ss.hasPermi('program:project:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
@@ -81,6 +86,7 @@ public class ProjectController extends BaseController
     /**
      * 新增施工项目
      */
+    @ApiOperation("新增施工项目")
     @PreAuthorize("@ss.hasPermi('program:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
@@ -92,6 +98,7 @@ public class ProjectController extends BaseController
     /**
      * 修改施工项目
      */
+    @ApiOperation("修改施工项目")
     @PreAuthorize("@ss.hasPermi('program:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -103,6 +110,7 @@ public class ProjectController extends BaseController
     /**
      * 删除施工项目
      */
+    @ApiOperation("删除施工项目(可批量删除)")
     @PreAuthorize("@ss.hasPermi('program:project:remove')")
     @Log(title = "施工项目", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{projectIds}")

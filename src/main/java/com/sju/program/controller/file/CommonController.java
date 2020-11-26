@@ -42,7 +42,7 @@ public class CommonController
      * @param fileName 文件名称
      *
      */
-    @ApiOperation("下载请求")
+    @ApiOperation(value = "下载请求",response = AjaxResult.class)
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping("common/download")
     public AjaxResult fileDownload(String fileName,  HttpServletResponse response, HttpServletRequest request)
