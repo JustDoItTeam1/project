@@ -8,6 +8,8 @@
 		<version>2.3.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
+	<!--项目元数据信息-->
 	<groupId>com.sju</groupId>
 	<artifactId>program</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -27,6 +29,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<!--WEB依赖:自动配置Tomact，dispatchServlet，xml....-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -42,6 +46,8 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!--单元测试-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -182,7 +188,7 @@
 		</dependency>
 
 	</dependencies>
-
+    <!--jar包依赖-->
 	<build>
 		<plugins>
 			<plugin>

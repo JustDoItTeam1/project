@@ -40,6 +40,11 @@ public interface ISiegeSchemeService
     String checkSifegeSchemeUnique(SiegeScheme sieheScheme);
 
 
+    List<SiegeScheme> selectSiegeSchemeByprojectId(Long projectId);
+
+
+
+
 
     /**
      * 查询围蔽方案列表

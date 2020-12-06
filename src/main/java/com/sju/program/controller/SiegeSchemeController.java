@@ -97,6 +97,19 @@ public class SiegeSchemeController extends BaseController
     }
 
     /**
+     * 根据项目id获取围蔽方案详细信息
+     */
+    @ApiOperation(value = "根据项目id获取围蔽方案详细信息")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:query')")
+    @GetMapping(value = "/byProjectId/{projectId}")
+    public TableDataInfo getInfoByprojectId(@PathVariable("projectId") Long projectId)
+    {
+        List<SiegeScheme> list=siegeSchemeService.selectSiegeSchemeByprojectId(projectId);
+        List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
+        return  getDataTable(sieheSchemeParentVoList);
+    }
+
+    /**
      * 新增围蔽方案
      */
     @ApiOperation(value = "新增围蔽方案接口",notes = "围蔽阶段或围蔽状态信息已存在则新增失败")

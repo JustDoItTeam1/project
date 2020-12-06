@@ -112,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteMenuByIds" parameterType="String">
-        delete from menu where menu_id in 
+        delete from menu where menu_id in
         <foreach item="menuId" collection="array" open="(" separator="," close=")">
             #{menuId}
         </foreach>

@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where ss_id = #{ssId}
     </select>
     <select id="selectSiegeSchemeByProjectId" parameterType="Long" resultMap="SiegeSchemeResult">
-        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range,  ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date from siege_scheme
+        select ss_id, ss_status, ss_lane, ss_stage, ss_start_time, ss_end_time, ss_range, ss_project_id, ss_properties, ss_suggessions, ss_file_path, ss_builder_id, ss_traffic_staff_id, ss_delete_flag, ss_verify_flag, ss_verify_date from siege_scheme
         where ss_project_id = #{Id}
     </select>
     <select id="getSsBySsVerifyFlagProjectId" parameterType="Long" resultType="String">
