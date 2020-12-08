@@ -51,6 +51,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBuilderVo"></include>
         WHERE builder_name=#{buildername}
     </select>
+
+    <select id="selectAllBuilder" resultMap="BuilderResult">
+        select  builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag from builder
+    </select>
         
     <insert id="insertBuilder" parameterType="Builder" useGeneratedKeys="true" keyProperty="builderId">
         insert into builder
@@ -115,5 +119,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{builderId}
         </foreach>
     </delete>-->
+
+    <insert id="saveAllBuilder" parameterType="Builder">
+        INSERT INTO builder (builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag)
+        VALUES
+        <foreach collection="list" item="item"  separator=",">
+            (
+            #{item.builderUsername},#{item.builderName},#{item.builderPassword},#{item.builderCorporate},#{item.builderPhone},#{item.builderAddress},#{item.builderEnterpriseNumber},"live"
+            )
+        </foreach>
+    </insert>
     
 </mapper>

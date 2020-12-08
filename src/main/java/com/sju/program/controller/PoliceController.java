@@ -62,13 +62,13 @@ public class PoliceController extends BaseController
     }
 
     /**
-     * 导出交管人员列表
+     * 导出交警人员列表
      * 文件下载（失败了会返回一个有部分数据的Excel）
      * <p>1. 创建excel对应的实体对象
      * <p>2. 设置返回的 参数
      * <p>3. 直接写，这里注意，finish的时候会自动关闭OutputStream,当然你外面再关闭流问题不大
      **/
-    @ApiOperation("导出交管人员列表")
+    @ApiOperation("导出交警人员列表")
     @PreAuthorize("@ss.hasPermi('program:police:export')")
     @Log(title = "交警人员", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
@@ -146,7 +146,7 @@ public class PoliceController extends BaseController
      * <p>3. 直接读即可
      */
     @ApiOperation("导入交警人员")
-    @PreAuthorize("@ss.hasPermi('program:police:upload')")
+    //@PreAuthorize("@ss.hasPermi('program:police:upload')")
     @PostMapping("/upload")
     public AjaxResult upload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), Police.class, new PoliceListener(policeService)).sheet().doRead();

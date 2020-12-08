@@ -57,10 +57,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <insert id="saveAllPolices" parameterType="Police">
+    <insert id="saveAllPolices" parameterType="java.util.List">
         INSERT INTO police (police_name, police_password, police_delete_flag) VALUES
-        <foreach collection="list" item="item" open="(" separator="," close=")">
+        <foreach collection="list" item="item"  separator="," >
+            (
             #{item.policeName},#{item.policePassword},"live"
+            )
         </foreach>
     </insert>
 

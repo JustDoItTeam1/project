@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sju.program.domain.model.BaseUser;
 import io.swagger.annotations.ApiModel;
@@ -25,55 +27,61 @@ public class Builder extends BaseUser
 
     /** 施工单位id */
     @ApiModelProperty(name ="builderId",value = "施工单位id",example = "1")
+    @ExcelIgnore
     private Long builderId;
 
     /** 用户账号 */
-    @Excel(name = "用户账号")
+    //@Excel(name = "用户账号")
     @ApiModelProperty(name ="builderUsername",value = "用户账号",example = "builder",required = true)
+    @ExcelProperty("用户账号")
     private String builderUsername;
 
     /** 施工单位名称 */
-    @Excel(name = "施工单位名称")
+    //@Excel(name = "施工单位名称")
     @ApiModelProperty(name ="builderName",value = "施工单位名称",example = "中铁八局")
+    @ExcelProperty("施工单位名称")
     private String builderName;
 
     /** 密码 */
-    @Excel(name = "密码")
+    //@Excel(name = "密码")
     @ApiModelProperty(name ="builderPassword",value = "密码")
+    @ExcelProperty("密码")
     private String builderPassword;
 
     /** 施工单位法人 */
-    @Excel(name = "施工单位法人")
+    //@Excel(name = "施工单位法人")
     @ApiModelProperty(name ="builderCorporate",value = "施工单位法人",example = "张三")
+    @ExcelProperty("施工单位法人")
     private String builderCorporate;
 
     /** 联系电话 */
-    @Excel(name = "联系电话")
+    //@Excel(name = "联系电话")
     @ApiModelProperty(name ="builderPhone",value = "联系电话",example = "15255554444")
+    @ExcelProperty("联系电话")
     private String builderPhone;
 
     /** 公司地址 */
-    @Excel(name = "公司地址")
+   // @Excel(name = "公司地址")
     @ApiModelProperty(name ="builderAddress",value = "公司地址",example = "成都天府新区腾讯大厦")
+    @ExcelProperty("公司地址")
     private String builderAddress;
 
     /** 企业编号 */
-    @Excel(name = "企业编号")
+    //@Excel(name = "企业编号")
     @ApiModelProperty(name ="builderEnterpriseNumber",value = "企业编号",example = "xxxxxxxxxx")
+    @ExcelProperty("企业编号")
     private String builderEnterpriseNumber;
 
     /** 删除标识 */
-    @Excel(name = "删除标识")
+    //@Excel(name = "删除标识")
     @ApiModelProperty(name ="builderDeleteFlag",value = "删除标识",example = "live | del")
+    @ExcelProperty("删除标识")
     private String builderDeleteFlag;
 
-//    /** 更新时间 */
-//    @JsonFormat(pattern = "yyyy-MM-dd")
-//    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
-//    private Date builderUpdateFlag;
-
+    @ExcelIgnore
     private int authenticate;
 
+    @ExcelIgnore
     private ArrayList<String> permissions;
 
     public ArrayList<String> getPermissions() {

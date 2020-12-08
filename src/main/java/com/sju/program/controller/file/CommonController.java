@@ -76,7 +76,7 @@ public class CommonController
      * 通用上传请求
      */
     @ApiOperation("上传请求")
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
+    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @PostMapping("/common/upload")
     public AjaxResult uploadFile(MultipartFile file) throws Exception
     {

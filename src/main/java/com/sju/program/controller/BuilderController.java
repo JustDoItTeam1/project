@@ -1,6 +1,17 @@
 package com.sju.program.controller;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.fastjson.JSON;
+import com.sju.program.domain.Police;
+import com.sju.program.listener.BuilderListener;
+import com.sju.program.listener.PoliceListener;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +28,9 @@ import com.sju.program.enums.BusinessType;
 import com.sju.program.page.TableDataInfo;
 import com.sju.program.domain.Builder;
 import com.sju.program.service.IBuilderService;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 施工单位Controller
@@ -45,18 +59,36 @@ BuilderController extends BaseController
     }
 
 
-//    /**
-//     * 导出施工单位列表
-//     */
-//    @PreAuthorize("@ss.hasPermi('program:builder:export')")
-//    @Log(title = "施工单位", businessType = BusinessType.EXPORT)
-//    @GetMapping("/export")
-//    public AjaxResult export(Builder builder)
-//    {
-//        List<Builder> list = builderService.selectBuilderList(builder);
-//        ExcelUtil<Builder> util = new ExcelUtil<Builder>(Builder.class);
-//        return util.exportExcel(list, "builder");
-//    }
+    /**
+     * 导出交警人员列表
+     * 文件下载（失败了会返回一个有部分数据的Excel）
+     * <p>1. 创建excel对应的实体对象
+     * <p>2. 设置返回的 参数
+     * <p>3. 直接写，这里注意，finish的时候会自动关闭OutputStream,当然你外面再关闭流问题不大
+     **/
+    @ApiOperation("导出施工单位人员列表")
+   // @PreAuthorize("@ss.hasPermi('program:builder:export')")
+    @Log(title = "施工单位", businessType = BusinessType.EXPORT)
+    @GetMapping("/export")
+    public void download(HttpServletResponse response) throws IOException {
+        try {
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+            String fileName = URLEncoder.encode("施工单位人员列表", "UTF-8");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+            EasyExcel.write(response.getOutputStream(), Builder.class).sheet("人员").doWrite(builderService.selectAllBuilder());
+        } catch (IOException e) {
+            // 重置response
+            response.reset();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("status", "failure");
+            map.put("message", "下载文件失败" + e.getMessage());
+            response.getWriter().println(JSON.toJSONString(map));
+        }
+    }
 
     /**
      * 获取施工单位详细信息
@@ -99,5 +131,19 @@ BuilderController extends BaseController
     public AjaxResult remove(@PathVariable Long[] builderIds)
     {
         return toAjax(builderService.deleteBuilderByIds(builderIds));
+    }
+
+    /**
+     * 文件上传
+     * <p>1. 创建excel对应的实体对象 参照{@link UploadData}
+     * <p>2. 由于默认一行行的读取excel，所以需要创建excel一行一行的回调监听器，参照{@link UploadDataListener}
+     * <p>3. 直接读即可
+     */
+    @ApiOperation("导入施工单位人员")
+   // @PreAuthorize("@ss.hasPermi('program:builder:upload')")
+    @PostMapping("/upload")
+    public AjaxResult upload(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), Builder.class, new BuilderListener(builderService)).sheet().doRead();
+        return AjaxResult.success();
     }
 }

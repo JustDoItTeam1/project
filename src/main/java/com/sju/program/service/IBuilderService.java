@@ -30,6 +30,8 @@ public interface IBuilderService
      */
     public List<Builder> selectBuilderList(Builder builder);
 
+    public List<Builder> selectAllBuilder();
+
     /**
      * 新增施工单位
      * 
@@ -61,4 +63,6 @@ public interface IBuilderService
      * @return 结果
      */
     public int deleteBuilderById(Long builderId);
+
+    public int save(List<Builder> list);
 }

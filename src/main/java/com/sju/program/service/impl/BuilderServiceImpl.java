@@ -48,6 +48,11 @@ public class BuilderServiceImpl implements IBuilderService
         return builderMapper.selectBuilderList(builder);
     }
 
+    @Override
+    public List<Builder> selectAllBuilder() {
+        return builderMapper.selectAllBuilder();
+    }
+
     /**
      * 新增施工单位
      * 
@@ -94,5 +99,10 @@ public class BuilderServiceImpl implements IBuilderService
     public int deleteBuilderById(Long builderId)
     {
         return builderMapper.deleteBuilderById(builderId);
+    }
+
+    @Override
+    public int save(List<Builder> list) {
+        return builderMapper.saveAllBuilder(list);
     }
 }

@@ -31,19 +31,19 @@ public class Police  extends BaseUser
     private Long policeId;
 
     /** 用户账户 */
-    @Excel(name = "用户账户")
+    //@Excel(name = "用户账户")
     @ApiModelProperty(name = "policeName",value = "用户账户",example = "jj111111")
     @ExcelProperty("账户")
     private String policeName;
 
     /** 密码 */
-    @Excel(name = "密码")
+   // @Excel(name = "密码")
     @ApiModelProperty(name = "policePassword",value = "密码")
     @ExcelProperty("密码")
     private String policePassword;
 
     /** 删除标识 */
-    @Excel(name = "删除标识")
+   // @Excel(name = "删除标识")
     @ApiModelProperty(name = "policeDeleteFlag",value = "删除标识",example = "live | del")
     @ExcelProperty("删除标识")
     private String policeDeleteFlag;
