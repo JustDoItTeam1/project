@@ -49,6 +49,10 @@ public interface SiegeSchemeMapper
 
     int updateSiegeSchemeDeleteFlagByIds(Long[] ssId);
 
+    int passSiegeSchemeByIds(Long id);
+
+    int nopassSiegeSchemeById(Long id,String suggestion);
+
 
 
 

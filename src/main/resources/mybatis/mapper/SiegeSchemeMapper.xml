@@ -167,6 +167,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </update>
 
+    <update id="passSiegeSchemeByIds" parameterType="Long">
+        UPDATE siege_scheme SET ss_verify_flag="pass" WHERE ss_project_id=#{id}
+    </update>
+
+    <update id="nopassSiegeSchemeById" >
+        UPDATE siege_scheme SET ss_verify_flag="nopass" , ss_suggessions=#{arg1}
+        WHERE ss_project_id=#{arg0}
+    </update>
+
     <delete id="deleteSiegeSchemeById" parameterType="Long">
         delete from siege_scheme where ss_id = #{ssId}
     </delete>

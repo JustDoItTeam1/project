@@ -99,8 +99,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderName != null">project_builder_name,</if>
             <if test="projectBuilderId != null">project_builder_id,</if>
             <if test="projectTrafficStaffId != null">project_traffic_staff_id,</if>
-            <if test="projectFinishedFlag != null">project_finished_flag,</if>
-            <if test="projectDeleteFlag != null">project_delete_flag,</if>
+            project_finished_flag,
+            project_delete_flag
 
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -114,7 +114,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectTrafficStaffId != null">#{projectTrafficStaffId},</if>
             "continue",
             "live"
-
          </trim>
     </insert>
 

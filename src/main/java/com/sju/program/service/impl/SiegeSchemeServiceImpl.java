@@ -152,6 +152,16 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     }
 
     @Override
+    public int passSiegeSchemeByIds(Long id) {
+        return siegeSchemeMapper.passSiegeSchemeByIds(id);
+    }
+
+    @Override
+    public int nopassSiegeSchemeById(Long id, String suggestion) {
+        return siegeSchemeMapper.nopassSiegeSchemeById(id,suggestion);
+    }
+
+    @Override
     public List<SieheSchemeParentVo> buildSiegeScheme(List<SiegeScheme> siegeSchemes){
         Map<Long,String> map=new HashMap<Long, String>();
         //List<Map<Long,List<SiegeScheme>>> mapList=new ArrayList<>();

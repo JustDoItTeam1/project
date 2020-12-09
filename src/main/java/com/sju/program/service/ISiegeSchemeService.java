@@ -44,6 +44,10 @@ public interface ISiegeSchemeService
 
     List<SiegeScheme> selectSiegeSchemeByprojectIdIncludeProjectId(Long projectId);
 
+    int passSiegeSchemeByIds(Long id);
+
+    int nopassSiegeSchemeById(Long id,String suggestion);
+
 
 
 

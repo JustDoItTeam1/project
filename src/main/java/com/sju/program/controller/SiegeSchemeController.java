@@ -13,19 +13,13 @@ import com.sju.program.message.HttpStatus;
 import com.sju.program.message.Test;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.enums.BusinessType;
@@ -147,4 +141,21 @@ public class SiegeSchemeController extends BaseController
     {
         return toAjax(siegeSchemeService.deleteSiegeSchemeByIds(ssIds));
     }
+
+    /**
+     * 确认或者否决围蔽方案
+     */
+    @ApiOperation(value = "确认或者否决围蔽方案接口")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:review')")
+    @Log(title = "围蔽方案", businessType = BusinessType.DELETE)
+    @PutMapping("/{projectId}")
+    public AjaxResult pass(@PathVariable Long projectId, @RequestParam(name = "suggestion") String suggestion)
+    {
+        if (StringUtils.isNotEmpty(suggestion)){
+            return toAjax(siegeSchemeService.nopassSiegeSchemeById(projectId,suggestion));
+        }
+        return toAjax(siegeSchemeService.passSiegeSchemeByIds(projectId));
+    }
+
+
 }
