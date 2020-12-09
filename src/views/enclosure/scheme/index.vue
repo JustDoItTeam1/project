@@ -199,7 +199,7 @@
           <el-button size="mini"
                      type="text"
                      @click="handleMapview(scope.row)"
-                     v-hasPermi="['system:menu:mapview']"
+                     v-hasPermi="['enclosure:scheme:mapview']"
                      v-if=scope.row.ssmap
           >查看地图</el-button>
         </template>
@@ -212,19 +212,19 @@
             size="mini"
             type="text"
             @click="handleDownload(scope.row)"
-            v-hasPermi="['system:menu:download']"
+            v-hasPermi="['enclosure:scheme:download']"
             v-if=scope.row.ss
           >下载附件</el-button>
           <el-button size="mini"
                      type="text"
                      @click="handleAgree(scope.row)"
-                     v-hasPermi="['system:menu:agree']"
+                     v-hasPermi="['enclosure:scheme:agree']"
                      v-if=scope.row.ss
           >通过</el-button>
           <el-button size="mini"
                      type="text"
                      @click="handleDisagree(scope.row)"
-                     v-hasPermi="['system:menu:edit']"
+                     v-hasPermi="['enclosure:scheme:disagree']"
                      v-if=scope.row.ss
           >否决</el-button>
 

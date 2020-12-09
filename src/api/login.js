@@ -1,39 +1,25 @@
 import request from '@/utils/request'
 
 // 登录方法
-export function login(username, password, code, uuid ,radioRole) {
+export function login(username, password, code, uuid) {
   const data = {
     username,
     password,
 
   }
 
-  if(radioRole=="1"){
+
     return request({
-      url: '/login/admin',
+      url: '/login',
       method: 'post',
       data: data
     })
-  }
-  if(radioRole==2){
-    return request({
-      url: '/login/traffic',
-      method: 'post',
-      data: data
-    })
-  }
-  if(radioRole==3){
-    return request({
-      url: '/login/builder',
-      method: 'post',
-      data: data
-    })
-  }
+
 
 }
 
 // 获取用户详细信息
-export function getInfo(radioRole) {
+export function getInfo() {
   // if(radioRole=="1"){
   //   return request({
   //     url: '/login/getAdminInfo',

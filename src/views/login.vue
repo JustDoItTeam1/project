@@ -35,21 +35,21 @@
 <!--          <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
 <!--        </div>-->
 <!--      </el-form-item>-->
-      <el-form-item style="position: relative">
+<!--      <el-form-item style="position: relative">-->
 
 
-        <el-radio-group v-model="loginForm.radioRole" >
-          <el-radio :label="1">管理员</el-radio>
+<!--        <el-radio-group v-model="loginForm.radioRole" >-->
+<!--          <el-radio :label="1">管理员</el-radio>-->
 
-          <el-radio :label=2 style="position: absolute;left: 36%">交管人员</el-radio>
+<!--          <el-radio :label=2 style="position: absolute;left: 36%">交管人员</el-radio>-->
 
-          <el-radio :label=3 style="position: absolute;left: 75%">施工单位</el-radio>
-        </el-radio-group>
+<!--          <el-radio :label=3 style="position: absolute;left: 75%">施工单位</el-radio>-->
+<!--        </el-radio-group>-->
 
-<!--        <el-input v-model="loginForm.role" type="text" auto-complete="off" placeholder="账号">-->
-<!--          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />-->
-<!--        </el-input>-->
-      </el-form-item>
+<!--&lt;!&ndash;        <el-input v-model="loginForm.role" type="text" auto-complete="off" placeholder="账号">&ndash;&gt;-->
+<!--&lt;!&ndash;          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />&ndash;&gt;-->
+<!--&lt;!&ndash;        </el-input>&ndash;&gt;-->
+<!--      </el-form-item>-->
 
 
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
@@ -91,7 +91,7 @@ export default {
         rememberMe: false,
        // code: "",
         uuid: "",
-        radioRole:"1",
+        // radioRole:"1",
       },
       loginRules: {
         username: [

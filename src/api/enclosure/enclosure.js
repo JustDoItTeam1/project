@@ -8,11 +8,25 @@ export function listEnclosure(query) {
     params: query
   })
 }
-
+// 根据项目id获取围蔽方案详细信息
+export function getIdEnclosure(ssId) {
+  return request({
+    url: '/program/scheme/byProjectId/' + ssId,
+    method: 'get'
+  })
+}
+// 下载围蔽方案附件
+export function downloadEnclosure(query) {
+  return request({
+    url: '/common/download',
+    method: 'get',
+    params: query
+  })
+}
 // 查询围蔽信息详细
 export function getEnclosure(ssId) {
   return request({
-    url: '/enclosure/scheme/' + ssId,
+    url: '/program/scheme/' + ssId,
     method: 'get'
   })
 }

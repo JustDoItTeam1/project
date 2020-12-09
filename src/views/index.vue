@@ -39,7 +39,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="info"  @click="clickSeige" style="float: left" round>查看围蔽详情</el-button>
         <el-button type="primary" @click="submitProject">确 定</el-button>
-        <el-button>取 消</el-button>
+        <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -188,60 +188,174 @@
       </div>
     </div>
 <!--弹出围蔽详情表格-->
-    <el-dialog :visible.sync="siegeV" width="98%" append-to-body title="围蔽信息详情">
-    <el-table
-      :data="schemeListOne"
-      row-key="ssId"
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-    >
-      <el-table-column label="施工项目id" align="center" prop="ssProjectId" width="110" />
-      <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
-      <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
-      <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
-      <el-table-column label="围蔽状态" align="center" prop="ssStatus" width="170" />
-      <el-table-column label="围蔽车道" align="center" prop="ssLane" width="130"/>
+<!--    <el-dialog :visible.sync="siegeV" width="98%" append-to-body title="围蔽信息详情">-->
+<!--    <el-table-->
+<!--      :data="schemeListOne"-->
+<!--      row-key="ssId"-->
+<!--      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"-->
+<!--    >-->
+<!--      <el-table-column label="施工项目id" align="center" prop="ssProjectId" width="110" />-->
+<!--      <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />-->
+<!--      <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>-->
+<!--      <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>-->
+<!--      <el-table-column label="围蔽状态" align="center" prop="ssStatus" width="170" />-->
+<!--      <el-table-column label="围蔽车道" align="center" prop="ssLane" width="130"/>-->
 
-      <el-table-column label="开始时间" align="center" prop="ssStartTime" width="140">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.ssStartTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="结束时间" align="center" prop="ssEndTime" width="140">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.ssEndTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="围蔽性质" align="center" prop="ssProperties" width="120" />
-      <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>
+<!--      <el-table-column label="开始时间" align="center" prop="ssStartTime" width="140">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.ssStartTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="结束时间" align="center" prop="ssEndTime" width="140">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.ssEndTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="围蔽性质" align="center" prop="ssProperties" width="120" />-->
+<!--      <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>-->
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">-->
 
-        <template slot-scope="scope" >
+<!--        <template slot-scope="scope" >-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            @click="handleDownload(scope.row)"-->
+<!--            v-hasPermi="['system:menu:download']"-->
+<!--            v-if=scope.row.ss-->
+<!--          >下载附件</el-button>-->
+<!--          <el-button size="mini"-->
+<!--                     type="text"-->
+<!--                     @click="handleAgree(scope.row)"-->
+<!--                     v-hasPermi="['system:menu:agree']"-->
+<!--                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"-->
+<!--          >通过</el-button>-->
+<!--          <el-button size="mini"-->
+<!--                     type="text"-->
+<!--                     @click="handleDisagree(scope.row)"-->
+<!--                     v-hasPermi="['system:menu:edit']"-->
+<!--                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"-->
+<!--          >否决</el-button>-->
+
+
+<!--        </template>-->
+
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+<!--    </el-dialog>-->
+
+    <!--弹出围蔽详情表格-->
+    <el-dialog :visible.sync="siegeV" width="750px"  append-to-body title="围蔽信息详情" >
+      <el-form style="position: relative">
+
+        <label class="labelSeige" style="font-weight: 700;">施工项目id:</label>
+        <label class="labelSeige" style="width: 70px;font-weight: 900;">{{schemeListOne.ssProjectId}}</label>
+<!--        </div>-->
+<!--        <div style="position: absolute;left: 27%;top:20px;">-->
+        <label class="labelSeige" style="font-weight: 700">施工项目名称:</label>
+        <label class="labelSeige" style="width: 160px;font-weight: 900;">{{schemeListOne.ssProjectName}}</label>
+<!--        </div>-->
+<!--        <div style="position: absolute;left: 65%;top:20px;">-->
+        <label class="labelSeige" style="font-weight: 700">施工单位名称:</label>
+        <label class="labelSeige" style="width: 160px;font-weight: 900;">{{schemeListOne.ssBuilderName}}</label>
+<!--        </div>-->
+        <br>
+        <div style="position: absolute;top:35px;width: 90%">
+
+          <el-tag type="danger" dark style="position: absolute;left:5%">{{verifyFlag}}</el-tag>
           <el-button
-            size="mini"
-            type="text"
-            @click="handleDownload(scope.row)"
-            v-hasPermi="['system:menu:download']"
-            v-if=scope.row.ss
+            size="small"
+            type="info"
+            style="position: absolute;left: 55%;"
+            @click="handleDownload"
+            v-hasPermi="['enclosure:scheme:download']"
+            round
           >下载附件</el-button>
-          <el-button size="mini"
-                     type="text"
-                     @click="handleAgree(scope.row)"
-                     v-hasPermi="['system:menu:agree']"
-                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"
+          <el-button
+            size="small"
+            type="primary"
+            style="position: absolute;left: 73%"
+            @click="handleAgree"
+            v-hasPermi="['enclosure:scheme:agree']"
+            v-if="schemeListOne.ssVerifyFlag=='review'"
+            round
           >通过</el-button>
-          <el-button size="mini"
-                     type="text"
-                     @click="handleDisagree(scope.row)"
-                     v-hasPermi="['system:menu:edit']"
-                     v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"
+          <el-button
+            size="small"
+            type="warning"
+            style="position: absolute;left: 88%;"
+            @click="handleDisagree"
+            v-hasPermi="['nclosure:scheme:disagree']"
+            v-if="schemeListOne.ssVerifyFlag=='review'"
+            round
           >否决</el-button>
 
+        </div>
 
-        </template>
+        <br>
+        <br>
+<!--        <div v-if="schemeListOne.children[0].ssSuggessions!=null">-->
+<!--          <label class="labelSeige" style="font-weight: 700;width: 120px" >拒绝理由:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{schemeListOne.children[0].ssSuggessions}}</label><br>-->
+<!--        </div>-->
+        <br>
+     <div v-for="(key,index) in schemeListOne.children" >
+       <br>
+<!--       <div style="position: absolute;left: 20%;">-->
+       <label class="labelSeige" style="font-weight: 900;width: 120px">围蔽阶段:</label>
+       <label class="labelSeige" style="font-weight: 900;width: 560px">{{key.ssStage}}</label><br>
+       <label class="labelSeige" style="font-weight: 700;width: 120px">围蔽车道:</label>
+       <label class="labelSeige" style="width: 560px">{{key.ssLane}}</label><br>
+       <label class="labelSeige" style="font-weight: 700;width: 120px">开始时间:</label>
+       <label class="labelSeige" style="width: 560px">{{key.ssStartTime}}</label><br>
+       <label class="labelSeige" style="font-weight: 700;width: 120px">结束时间:</label>
+       <label class="labelSeige" style="width: 560px">{{key.ssEndTime}}</label><br>
+       <label class="labelSeige" style="font-weight: 700;width: 120px">围蔽状态:</label>
+       <label class="labelSeige" style="width: 560px">{{key.ssStatus}}</label><br>
 
-      </el-table-column>
-    </el-table>
+       <label class="labelSeige" style="font-weight: 700;width: 120px;">围蔽性质:</label>
+       <label class="labelSeige" style="width: 560px">{{key.ssProperties}}</label><br>
+
+       <label class="labelSeige" style="font-weight: 700;width: 120px;vertical-align:top">围蔽区域(地图):</label>
+       <label class="labelSeige" style="width: 560px;vertical-align:top">{{key.ssRange}}</label><br>
+
+<!--       </div>-->
+    </div>
+<!--        <el-form ref="form" :model="schemeListOne"  label-width="80px">-->
+<!--          <el-form-item label="用户账户" prop="adminUsername">-->
+<!--            <label  >{{schemeListOne.ssProjectName}}</label>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item label="密码" prop="adminPassword">-->
+<!--            <label  >{{schemeListOne.ssBuilderName}}</label>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
+<!--        <div slot="footer" class="dialog-footer">-->
+<!--          <el-button type="primary" @click="submitForm">确 定</el-button>-->
+<!--          <el-button @click="cancel">取 消</el-button>-->
+<!--        </div>-->
+     </el-form>
+
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              @click="handleDownload(scope.row)"-->
+<!--              v-hasPermi="['system:menu:download']"-->
+<!--             -->
+<!--            >下载附件</el-button>-->
+<!--            <el-button size="mini"-->
+<!--                       type="text"-->
+<!--                       @click="handleAgree(scope.row)"-->
+<!--                       v-hasPermi="['system:menu:agree']"-->
+<!--                       v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"-->
+<!--            >通过</el-button>-->
+<!--            <el-button size="mini"-->
+<!--                       type="text"-->
+<!--                       @click="handleDisagree(scope.row)"-->
+<!--                       v-hasPermi="['system:menu:edit']"-->
+<!--                       v-if="(scope.row.ss)&&(scope.row.ssVerifyFlag!='pass')"-->
+<!--            >否决</el-button>-->
+
+
     </el-dialog>
 <!--否决弹窗-->
     <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
@@ -270,7 +384,7 @@
 <script>
 import {listProject,updateProject} from "../api/project/project";
 import Ploygon from "./test/components/Ploygon";
-import {listEnclosure,updateEnclosure} from "../api/enclosure/enclosure";
+import {getIdEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
 import detailForm from "./test/components/detailForm";
 export default {
   name: "index",
@@ -278,12 +392,19 @@ export default {
   props:['msg'],
   data() {
     return {
-      //查询参数
+      //项目id
+      //PId:null,
+      //查询施工单位参数
       searchName: null,
       searchQueryParams: {
         //seigeName:null,
         projectInfo:null,
       },
+      // searchQueryParamsSeige:{
+      //   projectId:null,
+      // },v:null,
+      //围蔽是否通过
+      verifyFlag:null,
       //查询结果
       searchSeige:[],
       searchProject:[],
@@ -355,217 +476,24 @@ export default {
   },
   created() {
 
-
-
-
-    // this.ployg1=[
-    //   {
-    //     children:[
-    //       {
-    //
-    //         ss:false,
-    //         ssmap:true,
-    //         ssId:11,
-    //         ssStatus: '修筑路基',
-    //         ssLane: '左二、三车道',
-    //         ssStage: '1',
-    //         ssStartTime: '2020-11-14',
-    //         ssEndTime: '2020-12-14',
-    //         ssRange: '103.977028,30.753652;103.983251,30.758668;103.983262,30.758576;103.977103,30.753625;',
-    //
-    //         ssProperties: '全封闭',
-    //         // ssSuggessions: null,
-    //
-    //         // ssFilePath: null,
-    //         ssBuilderName:null,
-    //         ssProjectId: null,
-    //         ssProjectName: null,
-    //       },
-    //       {
-    //         ss:false,
-    //         ssmap:true,
-    //         ssId:12,
-    //         ssStatus: '修筑排水设施',
-    //         ssLane: '左二、三车道',
-    //         ssStage: '2',
-    //         ssStartTime: '2020-12-14',
-    //         ssEndTime: '2020-12-30',
-    //         ssRange: '103.977028,30.753652;103.983251,30.758668;103.983262,30.758576;103.977103,30.753625;',
-    //
-    //         ssProperties: '全封闭',
-    //         // ssSuggessions: null,
-    //
-    //         // ssFilePath: null,
-    //         ssBuilderName:null,
-    //         ssProjectId: null,
-    //         ssProjectName: null,
-    //       }
-    //     ],
-    //     ss:true,
-    //     ssmap:false,
-    //     childrennum:2,
-    //     ssId: 1,
-    //     ssStatus: null,
-    //     ssLane: null,
-    //     ssStage: null,
-    //     ssStartTime: null,
-    //     ssEndTime: null,
-    //     ssRange: null,
-    //     ssProperties: null,
-    //     // ssSuggessions: null,
-    //
-    //     // ssFilePath: null,
-    //     ssBuilderName:'中铁一局',
-    //     ssProjectId: 1,
-    //     ssProjectName: '兴业北街翻新',
-    //     // ssBuilderId: 1,
-    //     // ssTrafficStaffId: null,
-    //     // ssDeleteFlag: null,
-    //     // ssVerifyFlag: null,
-    //     // ssVerifyDate: null,
-    //     // ssUpdateFlag: null
-    //   },
-    //   {
-    //     children:[
-    //       {
-    //         ss:false,
-    //         ssmap:true,
-    //         ssId:21,
-    //         ssStatus: '修筑路基',
-    //         ssLane: '左二、三车道',
-    //         ssStage: '1',
-    //         ssStartTime: '2020-11-14',
-    //         ssEndTime: '2020-12-14',
-    //         ssRange: '103.982044,30.752082;103.985831,30.755079;103.985896,30.755014;103.982151,30.752101;',
-    //
-    //         ssProperties: '全封闭',
-    //         // ssSuggessions: null,
-    //
-    //         // ssFilePath: null,
-    //         ssBuilderName:null,
-    //         ssProjectId: null,
-    //         ssProjectName: null,
-    //       },
-    //       {
-    //         ss:false,
-    //         ssmap:true,
-    //         ssId:22,
-    //         ssStatus: '修筑排水设施',
-    //         ssLane: '左二、三车道',
-    //         ssStage: '2',
-    //         ssStartTime: '2020-12-14',
-    //         ssEndTime: '2020-12-30',
-    //         ssRange: '103.985831,30.755008;103.980553,30.750803;103.98051,30.750895;103.985799,30.755091;',
-    //
-    //         ssProperties: '全封闭',
-    //         // ssSuggessions: null,
-    //
-    //         // ssFilePath: null,
-    //         ssBuilderName:null,
-    //         ssProjectId: null,
-    //         ssProjectName: null,
-    //       },
-    //       {
-    //         ss:false,
-    //         ssmap:true,
-    //         ssId:23,
-    //         ssStatus: '修筑排水设施',
-    //         ssLane: '左二、三车道',
-    //         ssStage: '3',
-    //         ssStartTime: '2020-12-14',
-    //         ssEndTime: '2020-12-30',
-    //         ssRange: '103.979802,30.750061;103.980671,30.750974;103.985928,30.755123;103.985939,30.755031;103.980703,30.750937;103.979877,30.750052;',
-    //
-    //         ssProperties: '全封闭',
-    //         // ssSuggessions: null,
-    //
-    //         // ssFilePath: null,
-    //         ssBuilderName:null,
-    //         ssProjectId: null,
-    //         ssProjectName: null,
-    //       }
-    //     ],
-    //     ss:true,
-    //     ssmap:false,
-    //     ssId: 2,
-    //     childrennum:3,
-    //     ssStatus: null,
-    //     ssLane: null,
-    //     ssStage: null,
-    //     ssStartTime: null,
-    //     ssEndTime: null,
-    //     ssRange: null,
-    //     ssProperties: null,
-    //     // ssSuggessions: null,
-    //
-    //     // ssFilePath: null,
-    //     ssBuilderName:'中铁一局',
-    //     ssProjectId: 2,
-    //     ssProjectName: '犀安路翻新',
-    //     // ssBuilderId: 1,
-    //     // ssTrafficStaffId: null,
-    //     // ssDeleteFlag: null,
-    //     // ssVerifyFlag: null,
-    //     // ssVerifyDate: null,
-    //     // ssUpdateFlag: null
-    //   }
-    // ],
-    // this.ployg2=[
-    //   {id: '0000000001',
-    //     name: '天府路施工',
-    //     company:'十七冶',
-    //     principal:'王三',
-    //     money:'50万人民币',
-    //     status:'水泥',
-    //     address: '安徽省马鞍山市',
-    //     point:'103.973144,30.757308;103.980966,30.761484;103.980923,30.761512;103.973059,30.757336;',},
-    //   {id: '0000000002',
-    //     name: '犀安路施工',
-    //     company:'十七冶',
-    //     principal:'王三',
-    //     money:'50万人民币',
-    //     status:'水泥',
-    //     address: '安徽省马鞍山市',
-    //     point:'103.985998,30.755206;103.980665,30.750983;103.980815,30.750974;103.986073,30.755151;',},
-    //
-    //
-    // ],
-    //
-    // this.ployg=[{id: '0000000001',
-    //   name: '校园路有轨电车施工',
-    //   company:'十七冶',
-    //   principal:'王三',
-    //   money:'50万人民币',
-    //   status:'水泥',
-    //   address: '安徽省马鞍山市',
-    //   point:'103.981063,30.761549;103.981476,30.761014;103.98153,30.761028;103.981112,30.761558;',},
-    //   {id: '0000000002',
-    //     name: '天府路施工',
-    //     company:'十七冶',
-    //     principal:'王三',
-    //     money:'50万人民币',
-    //     status:'水泥',
-    //     address: '安徽省马鞍山市',
-    //     point:'103.980701,30.761388;103.980734,30.761361;103.978652,30.760273;103.978625,30.760282;',},
-    //   {id: '0000000003',
-    //     name: '犀安路施工',
-    //     company:'十七冶',
-    //     principal:'王三',
-    //     money:'50万人民币',
-    //     status:'水泥',
-    //     address: '安徽省马鞍山市',
-    //     point:'103.989255,30.757623;103.987114,30.755982;103.987157,30.755936;103.989266,30.757586;',},
-    //   {id: '0000000004',
-    //     name: '测试',
-    //     company:'十七冶',
-    //     principal:'王三',
-    //     money:'50万人民币',
-    //     status:'水泥',
-    //     address: '安徽省马鞍山市',
-    //     point:'104.083099,30.64344;104.083162,30.643444;104.084355,30.646787;104.084271,30.646822;',},]
-
   },
   methods: {
+    //生成地图上Polygon
+    getPolygon(){
+      listProject().then(response => {
+        //清空覆盖物群体
+        this.overlayGroup2.clearOverlays();
+        //this.ployg = response.rows;
+        this.ployg2=response.rows;
+        // console.log(response);
+        // console.log(this.ployg2);
+        this.createPolygon(this.maps,this.ployg2,this.overlayGroup2);
+        this.maps.add(this.overlayGroup2);
+        this.overlayGroup2.show();
+
+        // console.log(response);
+      });
+    },
     // 地图选择子组件显示
     mapshow(){
       this.pointVisible=true;
@@ -650,10 +578,10 @@ export default {
       });
     },
     /** 否决按钮操作 */
-    handleDisagree(e){
-      console.log(e);
+    handleDisagree(){
+      //console.log(e);
       this.Suggessions= {
-        projectid:e.ssProjectId,
+        projectid:this.schemeListOne.ssProjectId,
         sugge:null,
       }
       this.opendisa = true;
@@ -773,7 +701,8 @@ export default {
           // var myArray=new Array()
           // myArray.push(that.ployg2[parseInt(e.target.content)]);
          that.projectListOne= that.ployg2[parseInt(e.target.content)];
-         // console.log(that.projectListOne)
+         //that.searchQueryParamsSeige.projectId=that.projectListOne.projectId;
+
           // // 数据脱绑
           // that.nomsg=JSON.parse(JSON.stringify(e.target.cont));
           //   var t=document.getElementById("txt");
@@ -920,10 +849,37 @@ export default {
     },
     //下载附件
     handleDownload:function () {
+      var downloadQuery={fileName:this.schemeListOne.children[0].ssFilePath}
+      downloadEnclosure(downloadQuery).then(response => {
+        if (response.code === 200) {
+          this.msgSuccess("修改成功");
 
+        }
+      });
     },
+
+    //查看围蔽详情
     clickSeige:function () {
 
+
+      getIdEnclosure(this.projectListOne.projectId).then(response => {
+        if (response.code === 200) {
+          //console.log(response);
+          this.schemeListOne=response.rows[0];
+          if(this.schemeListOne.ssVerifyFlag=="pass")
+            this.verifyFlag="已通过";
+          if(this.schemeListOne.ssVerifyFlag=="nopass")
+            this.verifyFlag="未通过";
+          if(this.schemeListOne.ssVerifyFlag=="review")
+            this.verifyFlag="待审核";
+          // console.log(this.schemeListOne.children[0].ssSuggessions);
+          this.siegeV = true;
+        }
+      });
+      // //将object转化为array
+      // var myArray=new Array()
+      // myArray.push(this.ployg1[parseInt(this.PId)]);
+      // this.schemeListOne= myArray;
     },
     //项目详情提交
     submitProject:function () {
@@ -938,6 +894,8 @@ export default {
             updateProject(this.projectListOne).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
+                //刷新地图覆盖物
+                this.getPolygon();
                 // this.open = false;
                 // this.getList();
               }
@@ -999,4 +957,16 @@ export default {
   .search{
     background-color: white;
   }
+  .labelSeige
+  {
+    display: inline-block;
+    font-size: medium;
+    line-height: 1.5;
+    font-family: 等线;
+    font-weight:400;
+    width: 15%;
+    text-align: left;
+  ;
+  }
+
 </style>
