@@ -104,7 +104,7 @@ public class SiegeSchemeController extends BaseController
     @GetMapping(value = "/byProjectId/{projectId}")
     public TableDataInfo getInfoByprojectId(@PathVariable("projectId") Long projectId)
     {
-        List<SiegeScheme> list=siegeSchemeService.selectSiegeSchemeByprojectId(projectId);
+        List<SiegeScheme> list=siegeSchemeService.selectSiegeSchemeByprojectIdIncludeProjectId(projectId);
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
         return  getDataTable(sieheSchemeParentVoList);
     }

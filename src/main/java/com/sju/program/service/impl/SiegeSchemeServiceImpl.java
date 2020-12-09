@@ -79,6 +79,11 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     }
 
     @Override
+    public List<SiegeScheme> selectSiegeSchemeByprojectIdIncludeProjectId(Long projectId) {
+        return siegeSchemeMapper.selectSiegeSchemeByprojectIdIncludeProjectId(projectId);
+    }
+
+    @Override
     public List<SieheSchemeParentVo> selectSiegeSchemeBySearch(List<SieheSchemeParentVo> list, String projectInfo) {
         List<SieheSchemeParentVo> sieheSchemeParentVoList=new LinkedList<>();
         for(SieheSchemeParentVo sieheSchemeParentVo:list){

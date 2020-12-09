@@ -42,6 +42,8 @@ public interface ISiegeSchemeService
 
     List<SiegeScheme> selectSiegeSchemeByprojectId(Long projectId);
 
+    List<SiegeScheme> selectSiegeSchemeByprojectIdIncludeProjectId(Long projectId);
+
 
 
 
