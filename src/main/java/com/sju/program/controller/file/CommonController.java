@@ -43,7 +43,7 @@ public class CommonController
      *
      */
     @ApiOperation(value = "下载请求",response = AjaxResult.class)
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
+    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping("common/download")
     public AjaxResult fileDownload(String fileName,  HttpServletResponse response, HttpServletRequest request)
     {
@@ -62,7 +62,7 @@ public class CommonController
             response.setHeader("Content-Disposition",
                     "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, realFileName));
             FileUtils.writeBytes(filePath, response.getOutputStream());
-            return AjaxResult.success("下载成功");
+            return null;
         }
         catch (Exception e)
         {

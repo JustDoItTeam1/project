@@ -153,13 +153,15 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     @Override
     public List<SieheSchemeParentVo> buildSiegeScheme(List<SiegeScheme> siegeSchemes){
-        Map<String,String> map=new HashMap<String, String>();
+        Map<Long,String> map=new HashMap<Long, String>();
         //List<Map<Long,List<SiegeScheme>>> mapList=new ArrayList<>();
         Set<Long> set=new LinkedHashSet<>();
         Long i=0L;
+        String suggestion=null;
         for(SiegeScheme siegeScheme:siegeSchemes){
             set.add(siegeScheme.getSsProjectId());
             i=siegeScheme.getSsId();
+            map.put(siegeScheme.getSsProjectId(),siegeScheme.getSsSuggessions());
         }
 
         List<SieheSchemeParentVo> list=new ArrayList<>();
@@ -177,7 +179,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
             sieheSchemeParentVo.setSsBuilderName(projectMapper.selectBuilderNameByprojectId(projectId));
             sieheSchemeParentVo.setSsProjectId(projectId);
             sieheSchemeParentVo.setSsProjectName(projectMapper.selectProjectNameById(projectId));
-
+            sieheSchemeParentVo.setSsSuggessions(map.get(projectId));
             list.add(sieheSchemeParentVo);
         }
 //           if(map.containsKey(siegeScheme.getSsProjectId())){
