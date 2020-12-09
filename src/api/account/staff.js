@@ -12,7 +12,7 @@ export function listStaff(query) {
 // 查询交管人员用户详细
 export function getStaff(trafficId) {
   return request({
-    url: '/account/staff/' + trafficId,
+    url: '/program/staff/' + trafficId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getStaff(trafficId) {
 // 新增交管人员用户
 export function addStaff(data) {
   return request({
-    url: '/account/staff',
+    url: '/program/staff',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addStaff(data) {
 // 修改交管人员用户
 export function updateStaff(data) {
   return request({
-    url: '/account/staff',
+    url: '/program/staff',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateStaff(data) {
 // 删除交管人员用户
 export function delStaff(trafficId) {
   return request({
-    url: '/account/staff/' + trafficId,
+    url: '/program/staff/' + trafficId,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delStaff(trafficId) {
 // 导出交管人员用户
 export function exportStaff(query) {
   return request({
-    url: '/account/staff/export',
+    url: '/program/police/export',
     method: 'get',
     params: query
   })

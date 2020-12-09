@@ -12,7 +12,7 @@ export function listProject(query) {
 // 查询施工单位列表！！！！！！！！！！！！！！！！！
 // export function listBuilder(query) {
 //   return request({
-//     url: '/project/project/list',
+//     url: '/program/project/list',
 //     method: 'get',
 //   })
 // }
@@ -20,7 +20,7 @@ export function listProject(query) {
 // 查询施工项目详细
 export function getProject(projectId) {
   return request({
-    url: '/project/project/' + projectId,
+    url: '/program/project/' + projectId,
     method: 'get'
   })
 }
@@ -28,7 +28,7 @@ export function getProject(projectId) {
 // 新增施工项目
 export function addProject(data) {
   return request({
-    url: '/program/project/list',
+    url: '/program/project',
     method: 'post',
     data: data
   })
@@ -46,7 +46,7 @@ export function updateProject(data) {
 // 删除施工项目
 export function delProject(projectId) {
   return request({
-    url: '/program/project' + projectId,
+    url: '/program/project/' + projectId,
     method: 'delete'
   })
 }

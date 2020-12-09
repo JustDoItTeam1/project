@@ -12,7 +12,7 @@ export function listAdmin(query) {
 // 查询管理员用户详细
 export function getAdmin(adminId) {
   return request({
-    url: '/account/admin/' + adminId,
+    url: '/program/admin/' + adminId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getAdmin(adminId) {
 // 新增管理员用户
 export function addAdmin(data) {
   return request({
-    url: '/account/admin',
+    url: '/program/admin',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addAdmin(data) {
 // 修改管理员用户
 export function updateAdmin(data) {
   return request({
-    url: '/account/admin',
+    url: '/program/admin',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateAdmin(data) {
 // 删除管理员用户
 export function delAdmin(adminId) {
   return request({
-    url: '/account/admin/' + adminId,
+    url: '/program/admin/' + adminId,
     method: 'delete'
   })
 }

@@ -12,7 +12,7 @@ export function listBuilder(query) {
 // 查询施工单位用户详细
 export function getBuilder(builderId) {
   return request({
-    url: '/account/builder/' + builderId,
+    url: '/program/builder/' + builderId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getBuilder(builderId) {
 // 新增施工单位用户
 export function addBuilder(data) {
   return request({
-    url: '/account/builder',
+    url: '/program/builder',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addBuilder(data) {
 // 修改施工单位用户
 export function updateBuilder(data) {
   return request({
-    url: '/account/builder',
+    url: '/program/builder',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateBuilder(data) {
 // 删除施工单位用户
 export function delBuilder(builderId) {
   return request({
-    url: '/account/builder/' + builderId,
+    url: '/program/builder/' + builderId,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delBuilder(builderId) {
 // 导出施工单位用户
 export function exportBuilder(query) {
   return request({
-    url: '/account/builder/export',
+    url: '/program/builder/export',
     method: 'get',
     params: query
   })
