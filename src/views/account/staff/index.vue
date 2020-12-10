@@ -107,7 +107,7 @@
           <el-input v-model="form.trafficName" placeholder="请输入用户账户" />
         </el-form-item>
         <el-form-item label="密码" prop="trafficPassword">
-          <el-input v-model="form.trafficPassword" placeholder="请输入密码" />
+          <el-input v-model="form.trafficPassword" placeholder="请输入密码" show-password/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

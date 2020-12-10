@@ -160,7 +160,7 @@
           <el-input v-model="form.builderName" placeholder="请输入施工单位名称" />
         </el-form-item>
         <el-form-item label="密码" prop="builderPassword">
-          <el-input v-model="form.builderPassword" placeholder="请输入密码" />
+          <el-input v-model="form.builderPassword" placeholder="请输入密码" show-password />
         </el-form-item>
 
       </el-form>
@@ -178,8 +178,8 @@
         <el-form-item label="施工单位名称" prop="builderName">
           <el-input v-model="form.builderName" placeholder="请输入施工单位名称" />
         </el-form-item>
-        <el-form-item label="原密码" prop="builderPassword">
-          <el-input v-model="form.builderPassword" placeholder="请输入原密码" />
+        <el-form-item label="密码" prop="builderPassword">
+          <el-input v-model="form.builderPassword" placeholder="请输入密码"  show-password/>
         </el-form-item>
         <!--        <el-form-item label="新密码" prop="builderPassword">-->
         <!--          <el-input v-model="form.builderPassword" placeholder="请输入密码" />-->
