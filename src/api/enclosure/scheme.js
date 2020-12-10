@@ -12,7 +12,7 @@ export function listScheme(query) {
 // 查询围蔽信息详细
 export function getScheme(ssId) {
   return request({
-    url: '/enclosure/scheme/' + ssId,
+    url: '/program/scheme/' + ssId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getScheme(ssId) {
 // 新增围蔽信息
 export function addScheme(data) {
   return request({
-    url: '/enclosure/scheme',
+    url: '/program/scheme',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addScheme(data) {
 // 修改围蔽信息
 export function updateScheme(data) {
   return request({
-    url: '/enclosure/scheme',
+    url: '/program/scheme',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateScheme(data) {
 // 删除围蔽信息
 export function delScheme(ssId) {
   return request({
-    url: '/enclosure/scheme/' + ssId,
+    url: '/program/scheme/' + ssId,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delScheme(ssId) {
 // 导出围蔽信息
 export function exportScheme(query) {
   return request({
-    url: '/enclosure/scheme/export',
+    url: '/program/scheme/export',
     method: 'get',
     params: query
   })

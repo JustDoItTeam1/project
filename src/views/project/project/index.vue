@@ -11,15 +11,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label="项目位置" prop="projectLocation">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.projectLocation"-->
-<!--          placeholder="请输入项目位置"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="项目位置" prop="projectLocation">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.projectLocation"-->
+      <!--          placeholder="请输入项目位置"-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <!--      <el-form-item label="项目位置(地图)" prop="projectLongLat">-->
       <!--        <el-input-->
       <!--          v-model="queryParams.projectLongLat"-->
@@ -151,7 +151,7 @@
     <!-- 表格-->
     <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="项目id" align="center" prop="projectId" />-->
+      <!--      <el-table-column label="项目id" align="center" prop="projectId" />-->
       <el-table-column label="项目名称" align="center" prop="projectName" />
       <el-table-column label="项目位置" align="center" prop="projectLocation" />
       <!--      <el-table-column label="项目位置(地图)" align="center" prop="projectLongLat" />-->
@@ -184,7 +184,7 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['project:project:remove']"
           >删除</el-button>
-<!--          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>-->
+          <!--          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>-->
           <el-button
             @click="projectdone(scope.row)"
             type="text"
@@ -314,7 +314,6 @@
         total: 0,
         // 施工项目表格数据
         projectList: [],
-
         // 施工单位表格数据
         builderList: [],
         // 弹出层标题
@@ -347,7 +346,6 @@
             //  { required: true, message: '请输入活动名称', trigger: 'blur' },
             { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' }
           ],
-
         },
         //是否显示ploygon
         pointVisible:false,
@@ -364,7 +362,6 @@
       this.getbuilder();
     },
     methods: {
-
       // 地图选择子组件显示
       mapshow(){
         this.pointVisible=true;
@@ -393,8 +390,15 @@
           });
           //测试
           this.testmbox="已完工";
-          console.log(this.testmbox)
-          this.getList();
+          console.log(this.testmbox);
+          const projectId = e.projectId || this.ids;
+            getProject(projectId).then(response => {
+              this.form = response.data;
+              this.form.projectFinishedFlag="finish";
+              updateProject(this.form);
+              this.getList();
+            });
+
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -404,7 +408,6 @@
           this.testmbox="未设置完工";
           console.log(this.testmbox)
         });
-
       },
       /** 查询施工项目列表 */
       getList() {
