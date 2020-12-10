@@ -11,15 +11,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目位置" prop="projectLocation">
-        <el-input
-          v-model="queryParams.projectLocation"
-          placeholder="请输入项目位置"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="项目位置" prop="projectLocation">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.projectLocation"-->
+<!--          placeholder="请输入项目位置"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <!--      <el-form-item label="项目位置(地图)" prop="projectLongLat">-->
       <!--        <el-input-->
       <!--          v-model="queryParams.projectLongLat"-->
@@ -151,7 +151,7 @@
     <!-- 表格-->
     <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="项目id" align="center" prop="projectId" />
+<!--      <el-table-column label="项目id" align="center" prop="projectId" />-->
       <el-table-column label="项目名称" align="center" prop="projectName" />
       <el-table-column label="项目位置" align="center" prop="projectLocation" />
       <!--      <el-table-column label="项目位置(地图)" align="center" prop="projectLongLat" />-->
@@ -184,7 +184,7 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['project:project:remove']"
           >删除</el-button>
-          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>
+<!--          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>-->
           <el-button
             @click="projectdone(scope.row)"
             type="text"
@@ -420,6 +420,7 @@
         // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
         // console.log(this.builderList);
         listBuilder(this.queryParams).then(response => {
+          this.builderList=[{name:"暂无",id:"暂无"}];
           console.log(this.builderList);
           for ( let i of response.rows) {
             this.builderList.push({name:i.builderUsername,id:i.builderUsername});

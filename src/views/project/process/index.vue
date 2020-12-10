@@ -60,7 +60,7 @@
 
     <el-table v-loading="loading" :data="processList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="施工进度id" align="center" prop="ppId" />
+<!--      <el-table-column label="施工进度id" align="center" prop="ppId" />-->
       <el-table-column label="填写时间" align="center" prop="ppTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.ppTime, '{y}-{m}-{d}') }}</span>
@@ -87,7 +87,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -107,15 +107,15 @@
             placeholder="选择填写时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="项目id" prop="ppProjectId">
-          <el-input v-model="form.ppProjectId" placeholder="请输入项目id" />
-        </el-form-item>
+<!--        <el-form-item label="项目id" prop="ppProjectId">-->
+<!--          <el-input v-model="form.ppProjectId" placeholder="请输入项目id" />-->
+<!--        </el-form-item>-->
         <el-form-item label="施工进度描述" prop="ppDescription">
           <el-input v-model="form.ppDescription" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="删除标识" prop="ppDeleteFlag">
-          <el-input v-model="form.ppDeleteFlag" placeholder="请输入删除标识" />
-        </el-form-item>
+<!--        <el-form-item label="删除标识" prop="ppDeleteFlag">-->
+<!--          <el-input v-model="form.ppDeleteFlag" placeholder="请输入删除标识" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

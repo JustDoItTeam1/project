@@ -69,7 +69,7 @@
 
     <el-table v-loading="loading" :data="staffList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="交管人员id" align="center" prop="trafficId" />
+<!--      <el-table-column label="交管人员id" align="center" prop="trafficId" />-->
       <el-table-column label="用户账户" align="center" prop="trafficName" />
       <!--      <el-table-column label="密码" align="center" prop="trafficPassword" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

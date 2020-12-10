@@ -36,7 +36,7 @@
 
     <el-table v-loading="loading" :data="infoList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="整改信息id" align="center" prop="riId" />
+<!--      <el-table-column label="整改信息id" align="center" prop="riId" />-->
       <el-table-column label="施工项目id" align="center" prop="riProjectId" />
       <el-table-column label="整改截至时间" align="center" prop="riDate" width="180">
         <template slot-scope="scope">

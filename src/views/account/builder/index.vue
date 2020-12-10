@@ -114,7 +114,7 @@
 
     <el-table v-loading="loading" :data="builderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="施工单位id" align="center" prop="builderId" />
+<!--      <el-table-column label="施工单位id" align="center" prop="builderId" />-->
       <el-table-column label="用户账号" align="center" prop="builderUsername" />
       <el-table-column label="施工单位名称" align="center" prop="builderName" />
       <!--      <el-table-column label="密码" align="center" prop="builderPassword" />-->
