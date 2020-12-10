@@ -217,5 +217,25 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 //        }
         return list;
     }
+
+    @Override
+    public List<SiegeScheme> selectSiegeSchemeByFlag(List<SiegeScheme> list, String flag) {
+        List<SiegeScheme> siegeSchemeListPass=new ArrayList<>();
+        List<SiegeScheme> siegeSchemeListNopass=new ArrayList<>();
+        for(SiegeScheme siegeScheme:list){
+            if (siegeScheme.getSsVerifyFlag().equals("pass")){
+                siegeSchemeListPass.add(siegeScheme);
+            }
+            else if (siegeScheme.getSsVerifyFlag().equals("nopass")){
+                siegeSchemeListNopass.add(siegeScheme);
+            }
+        }
+        if (flag.equals("pass")){
+            return siegeSchemeListPass;
+        }
+        else {
+            return siegeSchemeListNopass;
+        }
+    }
 }
 

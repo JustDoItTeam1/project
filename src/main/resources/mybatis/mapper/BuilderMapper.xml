@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBuilderList" parameterType="Builder" resultMap="BuilderResult">
         <include refid="selectBuilderVo"/>
-        where builder_delete_flag!=1
+        where builder_delete_flag!="del"
 <!--        <where>
             <if test="builderUsername != null  and builderUsername != ''"> and builder_username like concat('%', #{builderUsername}, '%')</if>
             <if test="builderName != null  and builderName != ''"> and builder_name like concat('%', #{builderName}, '%')</if>
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderPhone != null">builder_phone,</if>
             <if test="builderAddress != null">builder_address,</if>
             <if test="builderEnterpriseNumber != null">builder_enterprise_number,</if>
-            <if test="builderDeleteFlag != null">builder_delete_flag,</if>
+            builder_delete_flag
 
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderPhone != null">#{builderPhone},</if>
             <if test="builderAddress != null">#{builderAddress},</if>
             <if test="builderEnterpriseNumber != null">#{builderEnterpriseNumber},</if>
-            <if test="builderDeleteFlag != null">#{builderDeleteFlag},</if>
+            "live"
          </trim>
     </insert>
 

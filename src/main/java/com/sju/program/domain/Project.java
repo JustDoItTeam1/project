@@ -67,6 +67,16 @@ public class Project
     /** 模糊查询 */
     @Excel(name = "模糊查询标识")
     private String projectInfo;
+    /** 查看通过或者未通过方案的标识*/
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public String getProjectInfo() {
         return projectInfo;

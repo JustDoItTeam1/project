@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sju.program.domain.SiegeScheme;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.ProjectProcessVo;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
@@ -53,7 +54,8 @@ public class ProjectProcessController extends BaseController
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<ProjectProcess> list=tokenService.getLoginUserProjectProcess(loginUser);
-        return getDataTable(list);
+        List<ProjectProcessVo> projectProcessVoList=projectProcessService.projectProcessVoList(list);
+        return getDataTable(projectProcessVoList);
     }
 
 //    /**

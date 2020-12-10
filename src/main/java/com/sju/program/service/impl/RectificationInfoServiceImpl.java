@@ -1,6 +1,13 @@
 package com.sju.program.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.sju.program.domain.ProjectProcess;
+import com.sju.program.domain.vo.ProjectProcessVo;
+import com.sju.program.domain.vo.RectificationInfoVo;
+import com.sju.program.mapper.PoliceMapper;
+import com.sju.program.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.RectificationInfoMapper;
@@ -19,6 +26,12 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
     @Autowired
     private RectificationInfoMapper rectificationInfoMapper;
 
+    @Autowired
+    private ProjectMapper projectMapper;
+
+    @Autowired
+    private PoliceMapper policeMapper;
+
     /**
      * 查询整改信息
      * 
@@ -26,9 +39,13 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
      * @return 整改信息
      */
     @Override
-    public RectificationInfo selectRectificationInfoById(Long riId)
+    public RectificationInfoVo selectRectificationInfoById(Long riId)
     {
-        return rectificationInfoMapper.selectRectificationInfoById(riId);
+        RectificationInfo rectificationInfo=rectificationInfoMapper.selectRectificationInfoById(riId);
+        RectificationInfoVo rectificationInfoVo=new RectificationInfoVo(rectificationInfo.getRiId(),rectificationInfo.getRiDate(),rectificationInfo.getRiRequirements(),rectificationInfo.getRiPhotoPath(),rectificationInfo.getRiStatus(),rectificationInfo.getRiDeleteFlag());
+        rectificationInfoVo.setRiProjectName(projectMapper.selectProjectById(rectificationInfo.getRiProjectId()).getProjectName());
+        rectificationInfoVo.setRiPoliceName(policeMapper.selectPoliceById(rectificationInfo.getRiPoliceId()).getPoliceName());
+        return rectificationInfoVo;
     }
 
     /**
@@ -56,6 +73,19 @@ public class RectificationInfoServiceImpl implements IRectificationInfoService
     @Override
     public int confirmRectificationInfo(Long riId) {
         return rectificationInfoMapper.confirmRectificationInfo(riId);
+    }
+
+    @Override
+    public List<RectificationInfoVo> rectificationInfoVoList(List<RectificationInfo> list) {
+        List<RectificationInfoVo> rectificationInfoVoList=new ArrayList<>();
+        for(RectificationInfo rectificationInfo:list){
+            RectificationInfoVo rectificationInfoVo=new RectificationInfoVo(rectificationInfo.getRiId(),rectificationInfo.getRiDate(),rectificationInfo.getRiRequirements(),rectificationInfo.getRiPhotoPath(),rectificationInfo.getRiStatus(),rectificationInfo.getRiDeleteFlag());
+            rectificationInfoVo.setRiProjectName(projectMapper.selectProjectById(rectificationInfo.getRiProjectId()).getProjectName());
+            rectificationInfoVo.setRiPoliceName(policeMapper.selectPoliceById(rectificationInfo.getRiPoliceId()).getPoliceName());
+            rectificationInfoVoList.add(rectificationInfoVo);
+        }
+
+        return rectificationInfoVoList;
     }
 
     /**

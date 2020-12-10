@@ -3,6 +3,7 @@ package com.sju.program.controller;
 import java.util.List;
 
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.RectificationInfoVo;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import io.swagger.annotations.Api;
@@ -54,8 +55,8 @@ public class RectificationInfoController extends BaseController
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<RectificationInfo> list =tokenService.getLoginUserRectificationInfo(loginUser);
-                //= rectificationInfoService.selectRectificationInfoList(rectificationInfo);
-        return getDataTable(list);
+        List<RectificationInfoVo> rectificationInfoVoList=rectificationInfoService.rectificationInfoVoList(list);
+        return getDataTable(rectificationInfoVoList);
     }
 
 //    /**
@@ -64,10 +65,10 @@ public class RectificationInfoController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('program:info:export')")
 //    @Log(title = "整改信息", businessType = BusinessType.EXPORT)
 //    @GetMapping("/export")
-//    public AjaxResult export(RectificationInfo rectificationInfo)
+//    public AjaxResult export(RectificationInfoVo rectificationInfo)
 //    {
-//        List<RectificationInfo> list = rectificationInfoService.selectRectificationInfoList(rectificationInfo);
-//        ExcelUtil<RectificationInfo> util = new ExcelUtil<RectificationInfo>(RectificationInfo.class);
+//        List<RectificationInfoVo> list = rectificationInfoService.selectRectificationInfoList(rectificationInfo);
+//        ExcelUtil<RectificationInfoVo> util = new ExcelUtil<RectificationInfoVo>(RectificationInfoVo.class);
 //        return util.exportExcel(list, "info");
 //    }
 

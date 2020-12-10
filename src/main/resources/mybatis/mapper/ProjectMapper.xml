@@ -50,6 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE project_id = #{projectId}
     </select>
 
+
     <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
         where project_name = #{projectName}

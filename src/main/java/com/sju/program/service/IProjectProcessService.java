@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.ProjectProcess;
+import com.sju.program.domain.vo.ProjectProcessVo;
 
 /**
  * 施工进度Service接口
@@ -17,7 +18,7 @@ public interface IProjectProcessService
      * @param ppId 施工进度ID
      * @return 施工进度
      */
-    public ProjectProcess selectProjectProcessById(Long ppId);
+    public ProjectProcessVo selectProjectProcessById(Long ppId);
 
     /**
      * 查询施工进度列表
@@ -30,6 +31,8 @@ public interface IProjectProcessService
     public List<ProjectProcess> selectAllProjectProcessList();
 
     public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId);
+
+    public List<ProjectProcessVo> projectProcessVoList(List<ProjectProcess> list);
 
 
 

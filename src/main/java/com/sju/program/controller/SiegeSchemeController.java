@@ -47,7 +47,7 @@ public class SiegeSchemeController extends BaseController
     /**
      * 查询围蔽方案列表
      */
-    @ApiOperation(value = "查询围蔽方案接口",notes = "根据不同用户信息,查询其围蔽方案")
+    @ApiOperation(value = "查询围蔽方案接口",notes = "1.根据不同用户信息,查询其围蔽方案2.施工单位名称和项目名称进行模糊搜索 3.通过或者未通过围蔽方案查看,请求地址/program/scheme/list?flag=pass|nopass   ，pass代表通过，nopass代表未通过")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping("/list")
     public TableDataInfo list(Project project)
@@ -55,6 +55,10 @@ public class SiegeSchemeController extends BaseController
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<SiegeScheme> list=tokenService.getLoginUserSiegeScheme(loginUser);
+        if (StringUtils.isNotEmpty(project.getFlag())) {
+            list=siegeSchemeService.selectSiegeSchemeByFlag(list,project.getFlag());
+            return getDataTable(siegeSchemeService.buildSiegeScheme(list));
+        }
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
         if (project.getProjectInfo()==null){
             return getDataTable(sieheSchemeParentVoList);
@@ -156,6 +160,4 @@ public class SiegeSchemeController extends BaseController
         }
         return toAjax(siegeSchemeService.passSiegeSchemeByIds(projectId));
     }
-
-
 }

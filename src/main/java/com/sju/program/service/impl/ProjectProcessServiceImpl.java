@@ -1,6 +1,10 @@
 package com.sju.program.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.sju.program.domain.vo.ProjectProcessVo;
+import com.sju.program.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.ProjectProcessMapper;
@@ -19,6 +23,9 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
     @Autowired
     private ProjectProcessMapper projectProcessMapper;
 
+    @Autowired
+    private ProjectMapper projectMapper;
+
     /**
      * 查询施工进度
      * 
@@ -26,9 +33,27 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
      * @return 施工进度
      */
     @Override
-    public ProjectProcess selectProjectProcessById(Long ppId)
+    public ProjectProcessVo selectProjectProcessById(Long ppId)
     {
-        return projectProcessMapper.selectProjectProcessById(ppId);
+		ProjectProcess projectProcess=projectProcessMapper.selectProjectProcessById(ppId);
+		ProjectProcessVo projectProcessVo=new ProjectProcessVo(projectProcess.getPpId(),projectProcess.getPpTime(),projectProcess.getPpDescription(),projectProcess.getPpDeleteFlag());
+		projectProcessVo.setPpProjectName(projectMapper.selectProjectById(ppId).getProjectName());
+        return projectProcessVo;
+    }
+
+    @Override
+    public List<ProjectProcessVo> projectProcessVoList(List<ProjectProcess> list) {
+        List<ProjectProcessVo> projectProcessVolist=new ArrayList<>();
+        for(ProjectProcess projectProcess:list){
+            ProjectProcessVo projectProcessVo=new ProjectProcessVo();
+            projectProcessVo.setPpId(projectProcess.getPpId());
+            projectProcessVo.setPpTime(projectProcess.getPpTime());
+            projectProcessVo.setPpDescription(projectProcess.getPpDescription());
+            projectProcessVo.setPpProjectName(projectMapper.selectProjectById(projectProcess.getPpProjectId()).getProjectName());
+            projectProcessVo.setPpDeleteFlag(projectProcess.getPpDeleteFlag());
+            projectProcessVolist.add(projectProcessVo);
+        }
+        return projectProcessVolist;
     }
 
     /**

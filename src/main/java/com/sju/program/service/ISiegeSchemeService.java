@@ -48,6 +48,8 @@ public interface ISiegeSchemeService
 
     int nopassSiegeSchemeById(Long id,String suggestion);
 
+    List<SiegeScheme> selectSiegeSchemeByFlag(List<SiegeScheme> list,String flag);
+
 
 
 

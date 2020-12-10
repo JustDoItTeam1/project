@@ -43,12 +43,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="adminUsername != null">admin_username,</if>
             <if test="adminPassword != null">admin_password,</if>
-            <if test="adminDeleteFlag != null">admin_delete_flag,</if>
+            admin_delete_flag
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="adminUsername != null">#{adminUsername},</if>
             <if test="adminPassword != null">#{adminPassword},</if>
-            <if test="adminDeleteFlag != null">#{adminDeleteFlag},</if>
+            #{adminDeleteFlag}
          </trim>
     </insert>
 

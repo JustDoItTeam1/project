@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.RectificationInfo;
+import com.sju.program.domain.vo.RectificationInfoVo;
 
 /**
  * 整改信息Service接口
@@ -17,12 +18,14 @@ public interface IRectificationInfoService
      * @param riId 整改信息ID
      * @return 整改信息
      */
-    public RectificationInfo selectRectificationInfoById(Long riId);
+    public RectificationInfoVo selectRectificationInfoById(Long riId);
 
     public List<RectificationInfo> selectRectificationInfoByBuilderId(Long riId);
 
 
     public int confirmRectificationInfo(Long riId);
+
+    public List<RectificationInfoVo> rectificationInfoVoList(List<RectificationInfo> list);
 
 
 
