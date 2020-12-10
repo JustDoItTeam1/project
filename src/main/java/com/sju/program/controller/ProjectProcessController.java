@@ -47,7 +47,7 @@ public class ProjectProcessController extends BaseController
      * 查询施工进度列表
      */
     @ApiOperation("获取进度列表")
-    @PreAuthorize("@ss.hasPermi('program:process:list')")
+    //@PreAuthorize("@ss.hasPermi('program:process:list')")
     @GetMapping("/list")
     public TableDataInfo list(ProjectProcess projectProcess)
     {

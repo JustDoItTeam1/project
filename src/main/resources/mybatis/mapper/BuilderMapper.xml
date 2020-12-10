@@ -98,12 +98,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <update id="deleteBuilderById" parameterType="Long">
-        update builder SET builder_delete_flag = 1
+        update builder SET builder_delete_flag = "del"
         where builder_id = #{builderId}
     </update>
 
     <update id="deleteBuilderByIds" parameterType="String">
-        update builder SET builder_delete_flag = 1 where builder_id in
+        update builder SET builder_delete_flag = "del" where builder_id in
         <foreach item="builderId" collection="array" open="(" separator="," close=")">
             #{builderId}
         </foreach>

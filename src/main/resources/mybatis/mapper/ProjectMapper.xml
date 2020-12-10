@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectList" parameterType="Project" resultMap="ProjectResult">
         <include refid="selectProjectVo"/>
-        where project_delete_flag!=1
+        where project_delete_flag!="del"
         <!--<where>
         <where>
             <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
@@ -47,38 +47,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectProjectById" parameterType="Long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        WHERE project_id = #{projectId}
+        WHERE project_id = #{projectId} AND project_delete_flag!="del"
     </select>
 
 
     <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
-        where project_name = #{projectName}
+        where project_name = #{projectName} AND project_delete_flag!="del"
     </select>
 
     <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        where project_builder_id = #{projectBuilderId}
+        where project_builder_id = #{projectBuilderId} AND project_delete_flag!="del"
     </select>
 
     <select id="selectAllProjectList"  resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
+        WHERE project_delete_flag!="del"
     </select>
 
     <select id="selectProjectByLocation" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
-        where project_location = #{projectLocation}
+        where project_location = #{projectLocation} AND project_delete_flag!="del"
     </select>
 
     <select id="selectBuilderNameByprojectId" parameterType="Long" resultType="String">
         SELECT builder_username FROM builder
         LEFT JOIN project p ON builder.builder_id = p.project_builder_id
-        where project_id = #{projectId}
+        where project_id = #{projectId} AND project_delete_flag!="del"
     </select>
 
     <select id="selectProjectNameById" parameterType="Long" resultType="String">
         SELECT project_name FROM project
-        where project_id = #{projectId}
+        where project_id = #{projectId} AND project_delete_flag!="del"
     </select>
 
 
@@ -86,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="searchProjectByManager" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
-        where project_manager = #{projectManager}
+        where project_manager = #{projectManager} AND project_delete_flag!="del"
     </select>
         
     <insert id="insertProject" parameterType="Project" useGeneratedKeys="true" keyProperty="projectId">
@@ -137,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <update id="updateProjectById" parameterType="Long">
-        update project SET project_delete_flag = 1
+        update project SET project_delete_flag = "del"
         where project_id = #{projectId}
     </update>
     <update id="updateProjectByIds" parameterType="String">
