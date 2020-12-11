@@ -61,16 +61,16 @@
       </el-table-column>
       <el-table-column label="围蔽性质" align="center" prop="ssProperties"  width="120"/>
       <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>
-      <el-table-column label="查看围蔽区域" align="center" class-name="small-padding fixed-width" width="150">
-        <template slot-scope="scope" >
-          <el-button size="mini"
-                     type="text"
-                     @click="handleMapview(scope.row)"
-                     v-hasPermi="['system:menu:mapview']"
-                     v-if=scope.row.ssmap
-          >查看地图</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="查看围蔽区域" align="center" class-name="small-padding fixed-width" width="150">-->
+<!--        <template slot-scope="scope" >-->
+<!--          <el-button size="mini"-->
+<!--                     type="text"-->
+<!--                     @click="handleMapview(scope.row)"-->
+<!--                     v-hasPermi="['system:menu:mapview']"-->
+<!--                     v-if=scope.row.ssmap-->
+<!--          >查看地图</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
 <!--      <el-table-column label="围蔽拒绝建议" align="center" prop="ssSuggessions" />-->
 <!--      <el-table-column label="围蔽文件路径" align="center" prop="ssFilePath" />-->

@@ -193,16 +193,16 @@
       </el-table-column>
       <el-table-column label="围蔽性质" align="center" prop="ssProperties" width="120" />
       <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>
-      <el-table-column label="查看围蔽区域" align="center" class-name="small-padding fixed-width" width="150">
-        <template slot-scope="scope" >
-          <el-button size="mini"
-                     type="text"
-                     @click="handleMapview(scope.row)"
-                     v-hasPermi="['enclosure:scheme:mapview']"
-                     v-if=scope.row.ssmap
-          >查看地图</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="查看围蔽区域" align="center" class-name="small-padding fixed-width" width="150">-->
+<!--        <template slot-scope="scope" >-->
+<!--          <el-button size="mini"-->
+<!--                     type="text"-->
+<!--                     @click="handleMapview(scope.row)"-->
+<!--                     v-hasPermi="['enclosure:scheme:mapview']"-->
+<!--                     v-if=scope.row.ssmap-->
+<!--          >查看地图</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
