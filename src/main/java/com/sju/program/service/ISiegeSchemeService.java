@@ -44,9 +44,9 @@ public interface ISiegeSchemeService
 
     List<SiegeScheme> selectSiegeSchemeByprojectIdIncludeProjectId(Long projectId);
 
-    int passSiegeSchemeByIds(Long id);
+    int passSiegeSchemeByIds(Long id,Long teafficId);
 
-    int nopassSiegeSchemeById(Long id,String suggestion);
+    int nopassSiegeSchemeById(Long id,Long teafficId,String suggestion);
 
     List<SiegeScheme> selectSiegeSchemeByFlag(List<SiegeScheme> list,String flag);
 

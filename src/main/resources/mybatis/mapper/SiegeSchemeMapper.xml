@@ -168,11 +168,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <update id="passSiegeSchemeByIds" parameterType="Long">
-        UPDATE siege_scheme SET ss_verify_flag="pass" WHERE ss_project_id=#{id}
+        UPDATE siege_scheme SET ss_verify_flag="pass" ,ss_verify_date=sysdate(),ss_traffic_staff_id=#{arg1}
+        WHERE ss_project_id=#{arg0}
     </update>
 
     <update id="nopassSiegeSchemeById" >
-        UPDATE siege_scheme SET ss_verify_flag="nopass" , ss_suggessions=#{arg1}
+        UPDATE siege_scheme SET ss_verify_flag="nopass" , ss_suggessions=#{arg2},ss_verify_date=sysdate(),ss_traffic_staff_id=#{arg1}
         WHERE ss_project_id=#{arg0}
     </update>
 

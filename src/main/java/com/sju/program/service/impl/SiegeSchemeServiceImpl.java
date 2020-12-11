@@ -152,13 +152,13 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     }
 
     @Override
-    public int passSiegeSchemeByIds(Long id) {
-        return siegeSchemeMapper.passSiegeSchemeByIds(id);
+    public int passSiegeSchemeByIds(Long id,Long teafficId) {
+        return siegeSchemeMapper.passSiegeSchemeByIds(id,teafficId);
     }
 
     @Override
-    public int nopassSiegeSchemeById(Long id, String suggestion) {
-        return siegeSchemeMapper.nopassSiegeSchemeById(id,suggestion);
+    public int nopassSiegeSchemeById(Long id, Long teafficId,String suggestion) {
+        return siegeSchemeMapper.nopassSiegeSchemeById(id,teafficId,suggestion);
     }
 
     @Override
