@@ -100,11 +100,18 @@ public class SiegeSchemeController extends BaseController
     @ApiOperation(value = "根据项目id获取围蔽方案详细信息")
     @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping(value = "/byProjectId/{projectId}")
-    public TableDataInfo getInfoByprojectId(@PathVariable("projectId") Long projectId)
+    public AjaxResult getInfoByprojectId(@PathVariable("projectId") Long projectId)
     {
         List<SiegeScheme> list=siegeSchemeService.selectSiegeSchemeByprojectIdIncludeProjectId(projectId);
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
-        return  getDataTable(sieheSchemeParentVoList);
+        if (StringUtils.isNotEmpty(sieheSchemeParentVoList)){
+            return  AjaxResult.success(sieheSchemeParentVoList);
+        }
+        else {
+            return AjaxResult.error("暂无围蔽方案");
+        }
+
+
     }
 
     /**
