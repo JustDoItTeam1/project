@@ -216,6 +216,7 @@
         loading: true,
         // 选中数组
         ids: [],
+        names:[],
         // 非单个禁用
         single: true,
         // 非多个禁用
@@ -300,6 +301,7 @@
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.builderId)
+        this.names = selection.map(item => item.builderUsername)
         this.single = selection.length!==1
         this.multiple = !selection.length
       },
@@ -345,8 +347,9 @@
       },
       /** 删除按钮操作 */
       handleDelete(row) {
-        const builderIds = row.builderId || this.ids;
-        this.$confirm('是否确认删除施工单位用户编号为"' + builderIds + '"的数据项?', "警告", {
+        const builderIds=row.builderName||this.ids;
+        const builderUsernames = row.builderUsername || this.names;
+        this.$confirm('是否确认删除施工单位用户账号为"' + builderUsernames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

@@ -306,6 +306,7 @@
         // 遮罩层
         loading: true,
         // 选中数组
+        names:[],
         ids: [],
         // 非单个禁用
         single: true,
@@ -468,6 +469,7 @@
       },
       // 多选框选中数据
       handleSelectionChange(selection) {
+        this.names=selection.map(item => item.projectName)
         this.ids = selection.map(item => item.projectId)
         this.single = selection.length!==1
         this.multiple = !selection.length
@@ -515,7 +517,8 @@
       /** 删除按钮操作 */
       handleDelete(row) {
         const projectIds = row.projectId || this.ids;
-        this.$confirm('是否确认删除施工单位编号为"' + projectIds + '"的数据项?', "警告", {
+        const projectNames=row.projectName|| this.names;
+        this.$confirm('是否确认删除项目名称为"' +projectNames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
