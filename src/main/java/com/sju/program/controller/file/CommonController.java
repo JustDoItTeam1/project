@@ -43,7 +43,7 @@ public class CommonController
      *
      */
     @ApiOperation(value = "下载请求",response = AjaxResult.class)
-    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:download')")
     @GetMapping("common/download")
     public AjaxResult fileDownload(String fileName,  HttpServletResponse response, HttpServletRequest request)
     {

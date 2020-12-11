@@ -17,26 +17,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTrafficeStaffList" parameterType="TrafficeStaff" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"/>
-        <where>  
-            <if test="trafficName != null  and trafficName != ''"> and traffic_name like concat('%', #{trafficName}, '%')</if>
-            <if test="trafficPassword != null  and trafficPassword != ''"> and traffic_password = #{trafficPassword}</if>
-            <if test="trafficDeleteFlag != null  and trafficDeleteFlag != ''"> and traffic_delete_flag = #{trafficDeleteFlag}</if>
-
-        </where>
+        WHERE traffic_delete_flag !="del"
     </select>
 
     <select id="selectAllTrafficeStaffList" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"></include>
+        WHERE traffic_delete_flag !="del"
     </select>
     
     <select id="selectTrafficeStaffById" parameterType="Long" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"/>
-        where traffic_id = #{trafficId}
+        where traffic_id = #{trafficId} AND traffic_delete_flag !="del"
     </select>
 
     <select id="selectTrafficeStaffByUsername" parameterType="String" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"></include>
-        WHERE traffic_name=#{trafficName}
+        WHERE traffic_name=#{trafficName} AND  traffic_delete_flag !="del"
     </select>
         
     <insert id="insertTrafficeStaff" parameterType="TrafficeStaff" useGeneratedKeys="true" keyProperty="trafficId">

@@ -87,7 +87,7 @@ public class SiegeSchemeController extends BaseController
      * 获取围蔽方案详细信息
      */
     @ApiOperation(value = "查询单个围蔽方案接口")
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:query')")
+    @PreAuthorize("@ss.hasPermi('enclosure:allscheme:list')")
     @GetMapping(value = "/{ssId}")
     public AjaxResult getInfo(@PathVariable("ssId") Long ssId)
     {
@@ -98,7 +98,7 @@ public class SiegeSchemeController extends BaseController
      * 根据项目id获取围蔽方案详细信息
      */
     @ApiOperation(value = "根据项目id获取围蔽方案详细信息")
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:query')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:list')")
     @GetMapping(value = "/byProjectId/{projectId}")
     public TableDataInfo getInfoByprojectId(@PathVariable("projectId") Long projectId)
     {
@@ -155,7 +155,7 @@ public class SiegeSchemeController extends BaseController
     @PutMapping("/{projectId}")
     public AjaxResult pass(@PathVariable Long projectId,@RequestParam(name = "trafficId") Long trafficId, @RequestParam(name = "suggestion") String suggestion)
     {
-        if (!suggestion.equals("null")){
+        if (StringUtils.isNotEmpty(suggestion)){
             return toAjax(siegeSchemeService.nopassSiegeSchemeById(projectId,trafficId,suggestion));
         }
         return toAjax(siegeSchemeService.passSiegeSchemeByIds(projectId,trafficId));
