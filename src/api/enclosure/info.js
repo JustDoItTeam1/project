@@ -3,7 +3,8 @@ import request from '@/utils/request'
 // 查询整改信息列表
 export function listInfo(query) {
   return request({
-    url: '/program/info/list',
+    url: '/program/info/list?flag=nopass',
+    // url: '/program/info/list',
     method: 'get',
     params: query
   })

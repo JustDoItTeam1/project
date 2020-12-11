@@ -3,7 +3,8 @@ import request from '@/utils/request'
 // 查询围蔽信息列表
 export function listAllscheme(query) {
   return request({
-    url: '/program/allscheme/list',
+    url: '/program/scheme/list?flag=pass',
+    // url: '/program/allscheme/list',
     method: 'get',
     params: query
   })
