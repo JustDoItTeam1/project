@@ -69,7 +69,7 @@
 
     <el-table v-loading="loading" :data="adminList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="账号" align="center" prop="adminId" />
+<!--      <el-table-column label="账号" align="center" prop="adminId" />-->
       <el-table-column label="用户账户" align="center" prop="adminUsername" />
       <!--      <el-table-column label="密码" align="center" prop="adminPassword" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -107,7 +107,7 @@
           <el-input v-model="form.adminUsername" placeholder="请输入用户账户" />
         </el-form-item>
         <el-form-item label="密码" prop="adminPassword">
-          <el-input v-model="form.adminPassword" placeholder="请输入密码" />
+          <el-input v-model="form.adminPassword" placeholder="请输入密码"show-password />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

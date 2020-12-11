@@ -54,7 +54,7 @@ export function delProject(projectId) {
 // 导出施工项目
 export function exportProject(query) {
   return request({
-    url: '/project/project/export',
+    url: '/program/project/export',
     method: 'get',
     params: query
   })

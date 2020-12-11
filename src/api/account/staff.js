@@ -46,7 +46,7 @@ export function delStaff(trafficId) {
 // 导出交管人员用户
 export function exportStaff(query) {
   return request({
-    url: '/program/police/export',
+    url: '/program/staff/export',
     method: 'get',
     params: query
   })

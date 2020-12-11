@@ -69,7 +69,7 @@
 
     <el-table v-loading="loading" :data="staffList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="交管人员id" align="center" prop="trafficId" />
+<!--      <el-table-column label="交管人员id" align="center" prop="trafficId" />-->
       <el-table-column label="用户账户" align="center" prop="trafficName" />
       <!--      <el-table-column label="密码" align="center" prop="trafficPassword" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -107,7 +107,7 @@
           <el-input v-model="form.trafficName" placeholder="请输入用户账户" />
         </el-form-item>
         <el-form-item label="密码" prop="trafficPassword">
-          <el-input v-model="form.trafficPassword" placeholder="请输入密码" />
+          <el-input v-model="form.trafficPassword" placeholder="请输入密码" show-password/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -129,6 +129,7 @@
         loading: true,
         // 选中数组
         ids: [],
+        names:[],
         // 非单个禁用
         single: true,
         // 非多个禁用
@@ -198,6 +199,7 @@
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.trafficId)
+        this.names=selection.map(item => item.trafficName)
         this.single = selection.length!==1
         this.multiple = !selection.length
       },
@@ -244,7 +246,8 @@
       /** 删除按钮操作 */
       handleDelete(row) {
         const trafficIds = row.trafficId || this.ids;
-        this.$confirm('是否确认删除交管人员用户编号为"' + trafficIds + '"的数据项?', "警告", {
+        const trafficNames=row.trafficName || this.names;
+        this.$confirm('是否确认删除交管人员用户账户为"' + trafficNames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

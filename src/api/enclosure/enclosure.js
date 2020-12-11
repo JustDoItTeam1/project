@@ -43,7 +43,7 @@ export function getEnclosure(ssId) {
 // 新增围蔽信息
 export function addEnclosure(data) {
   return request({
-    url: '/enclosure/scheme',
+    url: '/program/scheme',
     method: 'post',
     data: data
   })
@@ -52,7 +52,7 @@ export function addEnclosure(data) {
 // 修改围蔽信息
 export function updateEnclosure(data) {
   return request({
-    url: '/enclosure/scheme',
+    url: '/program/scheme',
     method: 'put',
     data: data
   })
@@ -61,7 +61,7 @@ export function updateEnclosure(data) {
 // 删除围蔽信息
 export function delEnclosure(ssId) {
   return request({
-    url: '/enclosure/scheme/' + ssId,
+    url: '/program/scheme/' + ssId,
     method: 'delete'
   })
 }
@@ -69,7 +69,7 @@ export function delEnclosure(ssId) {
 // 导出围蔽信息
 export function exportEnclosure(query) {
   return request({
-    url: '/enclosure/scheme/export',
+    url: '/program/scheme/export',
     method: 'get',
     params: query
   })

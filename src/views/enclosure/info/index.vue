@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="110px">
-      <el-form-item label="施工项目id" prop="riProjectId">
+      <el-form-item label="施工项目名称" prop="riProjectName">
         <el-input
-          v-model="queryParams.riProjectId"
-          placeholder="请输入施工项目id"
+          v-model="queryParams.riProjectName"
+          placeholder="请输入施工项目名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -36,8 +36,8 @@
 
     <el-table v-loading="loading" :data="infoList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="整改信息id" align="center" prop="riId" />
-      <el-table-column label="施工项目id" align="center" prop="riProjectId" />
+<!--      <el-table-column label="整改信息id" align="center" prop="riId" />-->
+      <el-table-column label="施工项目名称" align="center" prop="riProjectName" />
       <el-table-column label="整改截至时间" align="center" prop="riDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.riDate, '{y}-{m}-{d}') }}</span>
@@ -68,7 +68,7 @@
     <!-- 添加或修改整改信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="项目id" prop="riProjectId">
+        <el-form-item label="项目名称" prop="riProjectName">
           <el-input v-model="form.riProjectId" placeholder="请输入项目id" />
         </el-form-item>
         <el-form-item label="整改截至时间" prop="riDate">
@@ -149,7 +149,8 @@ export default {
         riPhotoPath: null,
         riStatus: null,
         riDeleteFlag: null,
-        riUpdateFlag: null
+        riUpdateFlag: null,
+        riProjectName:null,
       },
       // 表单参数
       form: {},
@@ -187,7 +188,8 @@ export default {
         riPhotoPath: null,
         riStatus: "0",
         riDeleteFlag: null,
-        riUpdateFlag: null
+        riUpdateFlag: null,
+        riProjectName:null,
       };
       this.resetForm("form");
     },

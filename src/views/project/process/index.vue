@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="项目id" prop="ppProjectId">
+      <el-form-item label="项目名称" prop="ppProjectName">
         <el-input
-          v-model="queryParams.ppProjectId"
-          placeholder="请输入项目id"
+          v-model="queryParams.ppProjectName"
+          placeholder="请输入项目名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -60,13 +60,13 @@
 
     <el-table v-loading="loading" :data="processList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="施工进度id" align="center" prop="ppId" />
+<!--      <el-table-column label="施工进度id" align="center" prop="ppId" />-->
       <el-table-column label="填写时间" align="center" prop="ppTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.ppTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目id" align="center" prop="ppProjectId" />
+      <el-table-column label="项目名称" align="center" prop="ppProjectName" />
       <el-table-column label="施工进度描述" align="center" prop="ppDescription" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -87,7 +87,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -107,15 +107,18 @@
             placeholder="选择填写时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="项目id" prop="ppProjectId">
-          <el-input v-model="form.ppProjectId" placeholder="请输入项目id" />
+        <el-form-item label="项目名称" prop="ppProjectId">
+          <el-select v-model="form.ppProjectId" placeholder="请选择项目名称" clearable size="small" >
+            <el-option v-for="item in projectList"  :value="item.id" :label="item.name" >{{ item.name }}</el-option>
+          </el-select>
         </el-form-item>
+
         <el-form-item label="施工进度描述" prop="ppDescription">
           <el-input v-model="form.ppDescription" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="删除标识" prop="ppDeleteFlag">
-          <el-input v-model="form.ppDeleteFlag" placeholder="请输入删除标识" />
-        </el-form-item>
+<!--        <el-form-item label="删除标识" prop="ppDeleteFlag">-->
+<!--          <el-input v-model="form.ppDeleteFlag" placeholder="请输入删除标识" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -127,6 +130,7 @@
 
 <script>
 import { listProcess, getProcess, delProcess, addProcess, updateProcess, exportProcess } from "@/api/project/process";
+import {listProject} from "@/api/project/project";
 
 export default {
   name: "Process",
@@ -136,6 +140,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      names:[],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -144,6 +149,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      projectList: [],
       // 施工进度表格数据
       processList: [],
       // 弹出层标题
@@ -155,6 +161,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         ppProjectId: null,
+        ppProjectName:null,
       },
       // 表单参数
       form: {},
@@ -165,6 +172,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getproject();
   },
   methods: {
     /** 查询施工进度列表 */
@@ -174,6 +182,17 @@ export default {
         this.processList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getproject() {
+      // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
+      // console.log(this.builderList);
+      listProject(this.queryParams).then(response => {
+        // this.projectList=[{name:"暂无",id:"0"}];
+        console.log(this.projectList);
+        for ( let i of response.rows) {
+          this.projectList.push({name:i.projectName,id:i.projectId});
+        }
       });
     },
     // 取消按钮
@@ -188,7 +207,8 @@ export default {
         ppTime: null,
         ppProjectId: null,
         ppDescription: null,
-        ppDeleteFlag: null
+        ppDeleteFlag: null,
+        ppProjectName:null,
       };
       this.resetForm("form");
     },
@@ -205,6 +225,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.ppId)
+      this.names = selection.map(item => item.ppProjectName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -251,7 +272,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ppIds = row.ppId || this.ids;
-      this.$confirm('是否确认删除施工进度编号为"' + ppIds + '"的数据项?', "警告", {
+      const ppProjectNames = row.ppProjectName|| this.names;
+      this.$confirm('是否确认删除项目名称为"' +ppProjectNames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

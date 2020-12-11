@@ -114,7 +114,7 @@
 
     <el-table v-loading="loading" :data="builderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="施工单位id" align="center" prop="builderId" />
+<!--      <el-table-column label="施工单位id" align="center" prop="builderId" />-->
       <el-table-column label="用户账号" align="center" prop="builderUsername" />
       <el-table-column label="施工单位名称" align="center" prop="builderName" />
       <!--      <el-table-column label="密码" align="center" prop="builderPassword" />-->
@@ -160,7 +160,7 @@
           <el-input v-model="form.builderName" placeholder="请输入施工单位名称" />
         </el-form-item>
         <el-form-item label="密码" prop="builderPassword">
-          <el-input v-model="form.builderPassword" placeholder="请输入密码" />
+          <el-input v-model="form.builderPassword" placeholder="请输入密码" show-password />
         </el-form-item>
 
       </el-form>
@@ -178,8 +178,8 @@
         <el-form-item label="施工单位名称" prop="builderName">
           <el-input v-model="form.builderName" placeholder="请输入施工单位名称" />
         </el-form-item>
-        <el-form-item label="原密码" prop="builderPassword">
-          <el-input v-model="form.builderPassword" placeholder="请输入原密码" />
+        <el-form-item label="密码" prop="builderPassword">
+          <el-input v-model="form.builderPassword" placeholder="请输入密码"  show-password/>
         </el-form-item>
         <!--        <el-form-item label="新密码" prop="builderPassword">-->
         <!--          <el-input v-model="form.builderPassword" placeholder="请输入密码" />-->
@@ -216,6 +216,7 @@
         loading: true,
         // 选中数组
         ids: [],
+        names:[],
         // 非单个禁用
         single: true,
         // 非多个禁用
@@ -247,6 +248,10 @@
         form: {},
         // 表单校验
         rules: {
+          builderPhone: [
+            //  { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' }
+          ],
         }
       };
     },
@@ -296,6 +301,7 @@
       // 多选框选中数据
       handleSelectionChange(selection) {
         this.ids = selection.map(item => item.builderId)
+        this.names = selection.map(item => item.builderUsername)
         this.single = selection.length!==1
         this.multiple = !selection.length
       },
@@ -341,8 +347,9 @@
       },
       /** 删除按钮操作 */
       handleDelete(row) {
-        const builderIds = row.builderId || this.ids;
-        this.$confirm('是否确认删除施工单位用户编号为"' + builderIds + '"的数据项?', "警告", {
+        const builderIds=row.builderName||this.ids;
+        const builderUsernames = row.builderUsername || this.names;
+        this.$confirm('是否确认删除施工单位用户账号为"' + builderUsernames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

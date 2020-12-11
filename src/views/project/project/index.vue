@@ -11,15 +11,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目位置" prop="projectLocation">
-        <el-input
-          v-model="queryParams.projectLocation"
-          placeholder="请输入项目位置"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+      <!--      <el-form-item label="项目位置" prop="projectLocation">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.projectLocation"-->
+      <!--          placeholder="请输入项目位置"-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <!--      <el-form-item label="项目位置(地图)" prop="projectLongLat">-->
       <!--        <el-input-->
       <!--          v-model="queryParams.projectLongLat"-->
@@ -151,7 +151,7 @@
     <!-- 表格-->
     <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="项目id" align="center" prop="projectId" />
+      <!--      <el-table-column label="项目id" align="center" prop="projectId" />-->
       <el-table-column label="项目名称" align="center" prop="projectName" />
       <el-table-column label="项目位置" align="center" prop="projectLocation" />
       <!--      <el-table-column label="项目位置(地图)" align="center" prop="projectLongLat" />-->
@@ -184,7 +184,7 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['project:project:remove']"
           >删除</el-button>
-          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>
+          <!--          <el-button @click="mapView(scope.row)"type="text" size="small">查看地图</el-button>-->
           <el-button
             @click="projectdone(scope.row)"
             type="text"
@@ -248,8 +248,11 @@
           <el-input v-model="form.projectPhone" placeholder="请输入联系电话" />
         </el-form-item>
         <el-form-item label="施工单位名称" prop="projectBuilderName">
-          <el-input v-model="form.projectBuilderName" placeholder="请输入施工单位名称" />
+          <el-select v-model="form.projectBuilderName" placeholder="请选择施工单位名称" clearable size="small" >
+            <el-option v-for="item in builderList"  :value="item.id" >{{ item.name }}</el-option>
+          </el-select>
         </el-form-item>
+
         <!--        <el-form-item label="施工单位id" prop="projectBuilderId">-->
         <!--          <el-input v-model="form.projectBuilderId" placeholder="请输入施工单位id" />-->
         <!--        </el-form-item>-->
@@ -303,6 +306,7 @@
         // 遮罩层
         loading: true,
         // 选中数组
+        names:[],
         ids: [],
         // 非单个禁用
         single: true,
@@ -314,7 +318,6 @@
         total: 0,
         // 施工项目表格数据
         projectList: [],
-
         // 施工单位表格数据
         builderList: [],
         // 弹出层标题
@@ -347,7 +350,6 @@
             //  { required: true, message: '请输入活动名称', trigger: 'blur' },
             { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' }
           ],
-
         },
         //是否显示ploygon
         pointVisible:false,
@@ -364,7 +366,6 @@
       this.getbuilder();
     },
     methods: {
-
       // 地图选择子组件显示
       mapshow(){
         this.pointVisible=true;
@@ -393,8 +394,15 @@
           });
           //测试
           this.testmbox="已完工";
-          console.log(this.testmbox)
-          this.getList();
+          console.log(this.testmbox);
+          const projectId = e.projectId || this.ids;
+            getProject(projectId).then(response => {
+              this.form = response.data;
+              this.form.projectFinishedFlag="finish";
+              updateProject(this.form);
+              this.getList();
+            });
+
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -404,7 +412,6 @@
           this.testmbox="未设置完工";
           console.log(this.testmbox)
         });
-
       },
       /** 查询施工项目列表 */
       getList() {
@@ -420,6 +427,7 @@
         // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
         // console.log(this.builderList);
         listBuilder(this.queryParams).then(response => {
+          this.builderList=[{name:"暂无",id:"暂无"}];
           console.log(this.builderList);
           for ( let i of response.rows) {
             this.builderList.push({name:i.builderUsername,id:i.builderUsername});
@@ -461,6 +469,7 @@
       },
       // 多选框选中数据
       handleSelectionChange(selection) {
+        this.names=selection.map(item => item.projectName)
         this.ids = selection.map(item => item.projectId)
         this.single = selection.length!==1
         this.multiple = !selection.length
@@ -508,7 +517,8 @@
       /** 删除按钮操作 */
       handleDelete(row) {
         const projectIds = row.projectId || this.ids;
-        this.$confirm('是否确认删除施工单位编号为"' + projectIds + '"的数据项?', "警告", {
+        const projectNames=row.projectName|| this.names;
+        this.$confirm('是否确认删除项目名称为"' +projectNames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
