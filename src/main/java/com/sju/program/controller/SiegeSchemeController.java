@@ -150,7 +150,7 @@ public class SiegeSchemeController extends BaseController
      * 确认或者否决围蔽方案
      */
     @ApiOperation(value = "确认或者否决围蔽方案接口")
-    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:review')")
+    @PreAuthorize("@ss.hasPermi('enclosure:scheme:review')")
     @Log(title = "围蔽方案", businessType = BusinessType.DELETE)
     @PutMapping("/{projectId}")
     public AjaxResult pass(@PathVariable Long projectId,@RequestParam(name = "trafficId") Long trafficId, @RequestParam(name = "suggestion") String suggestion)

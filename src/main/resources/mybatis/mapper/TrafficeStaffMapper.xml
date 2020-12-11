@@ -80,11 +80,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from traffice_staff where traffic_id = #{trafficId}
     </delete>
 
-    <delete id="deleteTrafficeStaffByIds" parameterType="String">
-        delete from traffice_staff where traffic_id in 
+    <update id="deleteTrafficeStaffByIds" parameterType="String">
+        UPDATE  traffice_staff SET traffic_delete_flag="del" WHERE traffic_id in
         <foreach item="trafficId" collection="array" open="(" separator="," close=")">
             #{trafficId}
         </foreach>
-    </delete>
+    </update>
     
 </mapper>

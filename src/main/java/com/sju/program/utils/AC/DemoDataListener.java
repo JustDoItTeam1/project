@@ -22,7 +22,7 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 	 * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
 	 */
 	private static final int BATCH_COUNT = 10000;
-	List<DemoData> list = new ArrayList<DemoData>();
+	List<String> list = new ArrayList<String>();
 	AcNode root=new AcNode();
 	/**
 	 * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
@@ -50,7 +50,7 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 	@Override
 	public void invoke(DemoData data, AnalysisContext context) {
 		LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
-		list.add(data);
+		list.add(data.getData());
 		// 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
 //		if (list.size() >= BATCH_COUNT) {
 //			saveData(root,list);
@@ -69,10 +69,12 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 		System.out.println(list.size());
 		AcNode root=new AcNode();
 		StringBuffer stringBuffer=new StringBuffer();
-//		Iterator iterator=new
-//			stringBuffer.append(list.iterator().next().getData()+",");
-//		}
-//		System.out.println(stringBuffer.toString());
+		Iterator iterator=list.iterator();
+		while (iterator.hasNext()){
+			stringBuffer.append(iterator.next()+",");
+		}
+
+		System.out.println(stringBuffer.toString());
 
 		LOGGER.info("所有数据解析完成！");
 	}
