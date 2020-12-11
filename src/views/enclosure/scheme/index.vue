@@ -514,10 +514,13 @@
                           placeholder="选择结束时间">
           </el-date-picker>
         </el-form-item>
+<!--        <el-form-item label="围蔽区域(地图)" prop="ssRange">-->
+<!--          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />-->
+<!--        </el-form-item>-->
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
-          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />
+          <el-input v-model="form.ssRange" placeholder="请选择围蔽区域(地图)" />
+          <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
         </el-form-item>
-
         <el-form-item label="围蔽性质" prop="ssProperties">
           <el-select v-model="form.ssProperties" placeholder="请选择围蔽性质">
             <el-option label="全封闭" value="全封闭" />
@@ -531,7 +534,9 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
+    <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
+      <Ploygon v-if="pointVisible" ref="Ploygon" :msg="form.ssRange" @myfun="myf"></Ploygon>
+    </el-dialog>
     <!--mapview子组件，显示地图中位置-->
     <el-dialog width="80%"   :visible.sync="mapVisible" append-to-body>
       <mapView v-if="mapVisible" ref="mapView" :msg="epolygon" ></mapView>
@@ -560,9 +565,10 @@ import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
 import {listProject} from "@/api/project/project";
 import {downloadEnclosure} from "../../../api/enclosure/enclosure";
+import Ploygon from "../../test/components/Ploygon";
 export default {
   name: "Scheme",
-  components:{mapView},
+  components:{Ploygon,mapView},
   data() {
     return {
       // 遮罩层
@@ -613,6 +619,8 @@ export default {
       // wbn:[],
       // //表格合并的列数
       // wbl:[0,1,2,11],
+      //是否显示ploygon
+      pointVisible:false,
       //是否显示map
       mapVisible:false,
       //传递给子组件mapview的地图ploygon
@@ -670,7 +678,18 @@ export default {
          }
       });
     },
-
+    mapshow(){
+      this.pointVisible=true;
+    },
+    myf(ms) {
+      this.form.ssRange=ms;
+      console.log(this.form.ploygon);
+    },
+    mapView:function(e){
+      this.mapVisible=true;
+      this.epolygon=e.ssRange;
+      console.log(e.ssRange);
+    },
     // onClose() {
     //   this.$refs['elForm'].resetFields()
     // },
