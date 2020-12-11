@@ -248,8 +248,11 @@
           <el-input v-model="form.projectPhone" placeholder="请输入联系电话" />
         </el-form-item>
         <el-form-item label="施工单位名称" prop="projectBuilderName">
-          <el-input v-model="form.projectBuilderName" placeholder="请输入施工单位名称" />
+          <el-select v-model="form.projectBuilderName" placeholder="请选择施工单位名称" clearable size="small" >
+            <el-option v-for="item in builderList"  :value="item.id" >{{ item.name }}</el-option>
+          </el-select>
         </el-form-item>
+
         <!--        <el-form-item label="施工单位id" prop="projectBuilderId">-->
         <!--          <el-input v-model="form.projectBuilderId" placeholder="请输入施工单位id" />-->
         <!--        </el-form-item>-->

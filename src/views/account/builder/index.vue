@@ -247,6 +247,10 @@
         form: {},
         // 表单校验
         rules: {
+          builderPhone: [
+            //  { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 11, max: 11, message: '长度为11个数字', trigger: 'blur' }
+          ],
         }
       };
     },
