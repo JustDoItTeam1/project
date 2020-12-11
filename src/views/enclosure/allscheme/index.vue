@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="110px">
 
-      <el-form-item label="施工项目名称" prop="ssProjectId">
+      <el-form-item label="施工项目名称" prop="ssProjectName">
         <el-input
           v-model="queryParams.ssProjectName"
           placeholder="请输入施工项目名称"
@@ -11,7 +11,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="施工单位名称" prop="ssBuilderId">
+      <el-form-item label="施工单位名称" prop="ssBuilderName">
         <el-input
           v-model="queryParams.ssBuilderId"
           placeholder="请输入施工单位名称"
@@ -20,7 +20,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
+      <el-form-item>
+        <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
 
     </el-form>
 
@@ -40,7 +43,7 @@
     <el-table v-loading="loading" :data="allschemeList" @selection-change="handleSelectionChange" row-key="ssId"  :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="围蔽方案id" align="center" prop="ssId" />-->
-      <el-table-column label="施工项目id" align="center" prop="ssProjectId"  width="110" />
+<!--      <el-table-column label="施工项目id" align="center" prop="ssProjectId"  width="110" />-->
       <el-table-column label="施工项目名称" align="center" prop="ssProjectName"  width="110" />
       <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
       <el-table-column label="围蔽状态" align="center" prop="ssStatus" width="170" />
@@ -249,7 +252,9 @@ export default {
         ssDeleteFlag: null,
         ssVerifyFlag: null,
         ssVerifyDate: null,
-        ssUpdateFlag: null
+        ssUpdateFlag: null,
+        ssBuilderName:null,
+        ssProjectName:null,
       },
       // 表单参数
       form: {},
@@ -293,287 +298,288 @@ export default {
     getList() {
       this.loading = true;
       listAllscheme(this.queryParams).then(response => {
-        //this.allschemeList = response.rows;
+        this.allschemeList = response.rows;
         this.total = response.total;
+          this.loading = false;
         //假数据
-
-        this.wbnum=[2,3,2],
-          this.wbn=[0,2,5],
-          this.allschemeList=[
-            {
-              children:[
-                {
-
-                  ss:false,
-                  ssmap:true,
-                  ssId:11,
-                  ssStatus: '修筑路基',
-                  ssLane: '左二、三车道',
-                  ssStage: '1',
-                  ssStartTime: '2020-11-14',
-                  ssEndTime: '2020-12-14',
-                  ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-                  ssProperties: '全封闭',
-                  // ssSuggessions: null,
-
-                  // ssFilePath: null,
-                  ssBuilderName:null,
-                  ssProjectId: null,
-                  ssProjectName: null,
-                },
-                {
-                  ss:false,
-                  ssmap:true,
-                  ssId:12,
-                  ssStatus: '修筑排水设施',
-                  ssLane: '左二、三车道',
-                  ssStage: '2',
-                  ssStartTime: '2020-12-14',
-                  ssEndTime: '2020-12-30',
-                  ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-                  ssProperties: '全封闭',
-                  // ssSuggessions: null,
-
-                  // ssFilePath: null,
-                  ssBuilderName:null,
-                  ssProjectId: null,
-                  ssProjectName: null,
-                }
-              ],
-              ss:true,
-              ssmap:false,
-              childrennum:2,
-              ssId: 1,
-              ssStatus: null,
-              ssLane: null,
-              ssStage: null,
-              ssStartTime: null,
-              ssEndTime: null,
-              ssRange: null,
-              ssProperties: null,
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 1,
-              ssProjectName: '行陈路翻新',
-              // ssBuilderId: 1,
-              // ssTrafficStaffId: null,
-              // ssDeleteFlag: null,
-              // ssVerifyFlag: null,
-              // ssVerifyDate: null,
-              // ssUpdateFlag: null
-            },
-            {
-              children:[
-                {
-                  ss:false,
-                  ssmap:true,
-                  ssId:21,
-                  ssStatus: '修筑路基',
-                  ssLane: '左二、三车道',
-                  ssStage: '1',
-                  ssStartTime: '2020-11-14',
-                  ssEndTime: '2020-12-14',
-                  ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-                  ssProperties: '全封闭',
-                  // ssSuggessions: null,
-
-                  // ssFilePath: null,
-                  ssBuilderName:null,
-                  ssProjectId: null,
-                  ssProjectName: null,
-                },
-                {
-                  ss:false,
-                  ssmap:true,
-                  ssId:22,
-                  ssStatus: '修筑排水设施',
-                  ssLane: '左二、三车道',
-                  ssStage: '2',
-                  ssStartTime: '2020-12-14',
-                  ssEndTime: '2020-12-30',
-                  ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-                  ssProperties: '全封闭',
-                  // ssSuggessions: null,
-
-                  // ssFilePath: null,
-                  ssBuilderName:null,
-                  ssProjectId: null,
-                  ssProjectName: null,
-                },
-                {
-                  ss:false,
-                  ssmap:true,
-                  ssId:23,
-                  ssStatus: '修筑排水设施',
-                  ssLane: '左二、三车道',
-                  ssStage: '3',
-                  ssStartTime: '2020-12-14',
-                  ssEndTime: '2020-12-30',
-                  ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-                  ssProperties: '全封闭',
-                  // ssSuggessions: null,
-
-                  // ssFilePath: null,
-                  ssBuilderName:null,
-                  ssProjectId: null,
-                  ssProjectName: null,
-                }
-              ],
-              ss:true,
-              ssmap:false,
-              ssId: 2,
-              childrennum:3,
-              ssStatus: null,
-              ssLane: null,
-              ssStage: null,
-              ssStartTime: null,
-              ssEndTime: null,
-              ssRange: null,
-              ssProperties: null,
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 2,
-              ssProjectName: '校园路翻新',
-              // ssBuilderId: 1,
-              // ssTrafficStaffId: null,
-              // ssDeleteFlag: null,
-              // ssVerifyFlag: null,
-              // ssVerifyDate: null,
-              // ssUpdateFlag: null
-            }
-          ],
-          this.allschemeList1=[
-            {
-              ss:'false',
-              ssId:11,
-              ssStatus: '修筑路基',
-              ssLane: '左二、三车道',
-              ssStage: '1',
-              ssStartTime: '2020-11-14',
-              ssEndTime: '2020-12-14',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 1,
-              ssProjectName: '行陈路翻新',
-            },
-            {
-              ss:'false',
-              ssId:2,
-              ssStatus: '修筑排水设施',
-              ssLane: '左二、三车道',
-              ssStage: '2',
-              ssStartTime: '2020-12-14',
-              ssEndTime: '2020-12-30',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 1,
-              ssProjectName: '行陈路翻新',
-            },
-
-            {
-              ssId:3,
-              ssStatus: '修筑路基',
-              ssLane: '左二、三车道',
-              ssStage: '1',
-              ssStartTime: '2020-11-14',
-              ssEndTime: '2020-12-14',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              ssBuilderName:'中铁三局',
-              ssProjectId: 2,
-              ssProjectName: '校园路翻新',
-
-            },
-            {
-              ssId:22,
-              ssStatus: '修筑排水设施',
-              ssLane: '左二、三车道',
-              ssStage: '2',
-              ssStartTime: '2020-12-14',
-              ssEndTime: '2020-12-30',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              ssBuilderName:'中铁一局',
-              ssProjectId: 2,
-              ssProjectName: '校园路翻新',
-
-            },
-            {
-              ssId:23,
-              ssStatus: '修筑排水设施',
-              ssLane: '左二、三车道',
-              ssStage: '2',
-              ssStartTime: '2020-12-14',
-              ssEndTime: '2020-12-30',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-              ssProperties: '全封闭',
-              ssBuilderName:'中铁一局',
-              ssProjectId: 2,
-              ssProjectName: '校园路翻新',
-
-            },
-            {
-              ss:'false',
-              ssId:31,
-              ssStatus: '修筑路基',
-              ssLane: '左二、三车道',
-              ssStage: '1',
-              ssStartTime: '2020-11-14',
-              ssEndTime: '2020-12-14',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 3,
-              ssProjectName: '犀安路翻新',
-            },
-            {
-              ss:'false',
-              ssId:32,
-              ssStatus: '修筑路基',
-              ssLane: '左二、三车道',
-              ssStage: '1',
-              ssStartTime: '2020-11-14',
-              ssEndTime: '2020-12-14',
-              ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
-
-              ssProperties: '全封闭',
-              // ssSuggessions: null,
-
-              // ssFilePath: null,
-              ssBuilderName:'中铁一局',
-              ssProjectId: 3,
-              ssProjectName: '犀安路翻新',
-            },
-          ],
-          this.total=2,
-
-
-        this.loading = false;
+      //
+      //   this.wbnum=[2,3,2],
+      //     this.wbn=[0,2,5],
+      //     this.allschemeList=[
+      //       {
+      //         children:[
+      //           {
+      //
+      //             ss:false,
+      //             ssmap:true,
+      //             ssId:11,
+      //             ssStatus: '修筑路基',
+      //             ssLane: '左二、三车道',
+      //             ssStage: '1',
+      //             ssStartTime: '2020-11-14',
+      //             ssEndTime: '2020-12-14',
+      //             ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //             ssProperties: '全封闭',
+      //             // ssSuggessions: null,
+      //
+      //             // ssFilePath: null,
+      //             ssBuilderName:null,
+      //             ssProjectId: null,
+      //             ssProjectName: null,
+      //           },
+      //           {
+      //             ss:false,
+      //             ssmap:true,
+      //             ssId:12,
+      //             ssStatus: '修筑排水设施',
+      //             ssLane: '左二、三车道',
+      //             ssStage: '2',
+      //             ssStartTime: '2020-12-14',
+      //             ssEndTime: '2020-12-30',
+      //             ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //             ssProperties: '全封闭',
+      //             // ssSuggessions: null,
+      //
+      //             // ssFilePath: null,
+      //             ssBuilderName:null,
+      //             ssProjectId: null,
+      //             ssProjectName: null,
+      //           }
+      //         ],
+      //         ss:true,
+      //         ssmap:false,
+      //         childrennum:2,
+      //         ssId: 1,
+      //         ssStatus: null,
+      //         ssLane: null,
+      //         ssStage: null,
+      //         ssStartTime: null,
+      //         ssEndTime: null,
+      //         ssRange: null,
+      //         ssProperties: null,
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 1,
+      //         ssProjectName: '行陈路翻新',
+      //         // ssBuilderId: 1,
+      //         // ssTrafficStaffId: null,
+      //         // ssDeleteFlag: null,
+      //         // ssVerifyFlag: null,
+      //         // ssVerifyDate: null,
+      //         // ssUpdateFlag: null
+      //       },
+      //       {
+      //         children:[
+      //           {
+      //             ss:false,
+      //             ssmap:true,
+      //             ssId:21,
+      //             ssStatus: '修筑路基',
+      //             ssLane: '左二、三车道',
+      //             ssStage: '1',
+      //             ssStartTime: '2020-11-14',
+      //             ssEndTime: '2020-12-14',
+      //             ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //             ssProperties: '全封闭',
+      //             // ssSuggessions: null,
+      //
+      //             // ssFilePath: null,
+      //             ssBuilderName:null,
+      //             ssProjectId: null,
+      //             ssProjectName: null,
+      //           },
+      //           {
+      //             ss:false,
+      //             ssmap:true,
+      //             ssId:22,
+      //             ssStatus: '修筑排水设施',
+      //             ssLane: '左二、三车道',
+      //             ssStage: '2',
+      //             ssStartTime: '2020-12-14',
+      //             ssEndTime: '2020-12-30',
+      //             ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //             ssProperties: '全封闭',
+      //             // ssSuggessions: null,
+      //
+      //             // ssFilePath: null,
+      //             ssBuilderName:null,
+      //             ssProjectId: null,
+      //             ssProjectName: null,
+      //           },
+      //           {
+      //             ss:false,
+      //             ssmap:true,
+      //             ssId:23,
+      //             ssStatus: '修筑排水设施',
+      //             ssLane: '左二、三车道',
+      //             ssStage: '3',
+      //             ssStartTime: '2020-12-14',
+      //             ssEndTime: '2020-12-30',
+      //             ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //             ssProperties: '全封闭',
+      //             // ssSuggessions: null,
+      //
+      //             // ssFilePath: null,
+      //             ssBuilderName:null,
+      //             ssProjectId: null,
+      //             ssProjectName: null,
+      //           }
+      //         ],
+      //         ss:true,
+      //         ssmap:false,
+      //         ssId: 2,
+      //         childrennum:3,
+      //         ssStatus: null,
+      //         ssLane: null,
+      //         ssStage: null,
+      //         ssStartTime: null,
+      //         ssEndTime: null,
+      //         ssRange: null,
+      //         ssProperties: null,
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 2,
+      //         ssProjectName: '校园路翻新',
+      //         // ssBuilderId: 1,
+      //         // ssTrafficStaffId: null,
+      //         // ssDeleteFlag: null,
+      //         // ssVerifyFlag: null,
+      //         // ssVerifyDate: null,
+      //         // ssUpdateFlag: null
+      //       }
+      //     ],
+      //     this.allschemeList1=[
+      //       {
+      //         ss:'false',
+      //         ssId:11,
+      //         ssStatus: '修筑路基',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '1',
+      //         ssStartTime: '2020-11-14',
+      //         ssEndTime: '2020-12-14',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 1,
+      //         ssProjectName: '行陈路翻新',
+      //       },
+      //       {
+      //         ss:'false',
+      //         ssId:2,
+      //         ssStatus: '修筑排水设施',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '2',
+      //         ssStartTime: '2020-12-14',
+      //         ssEndTime: '2020-12-30',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 1,
+      //         ssProjectName: '行陈路翻新',
+      //       },
+      //
+      //       {
+      //         ssId:3,
+      //         ssStatus: '修筑路基',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '1',
+      //         ssStartTime: '2020-11-14',
+      //         ssEndTime: '2020-12-14',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         ssBuilderName:'中铁三局',
+      //         ssProjectId: 2,
+      //         ssProjectName: '校园路翻新',
+      //
+      //       },
+      //       {
+      //         ssId:22,
+      //         ssStatus: '修筑排水设施',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '2',
+      //         ssStartTime: '2020-12-14',
+      //         ssEndTime: '2020-12-30',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 2,
+      //         ssProjectName: '校园路翻新',
+      //
+      //       },
+      //       {
+      //         ssId:23,
+      //         ssStatus: '修筑排水设施',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '2',
+      //         ssStartTime: '2020-12-14',
+      //         ssEndTime: '2020-12-30',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //         ssProperties: '全封闭',
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 2,
+      //         ssProjectName: '校园路翻新',
+      //
+      //       },
+      //       {
+      //         ss:'false',
+      //         ssId:31,
+      //         ssStatus: '修筑路基',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '1',
+      //         ssStartTime: '2020-11-14',
+      //         ssEndTime: '2020-12-14',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 3,
+      //         ssProjectName: '犀安路翻新',
+      //       },
+      //       {
+      //         ss:'false',
+      //         ssId:32,
+      //         ssStatus: '修筑路基',
+      //         ssLane: '左二、三车道',
+      //         ssStage: '1',
+      //         ssStartTime: '2020-11-14',
+      //         ssEndTime: '2020-12-14',
+      //         ssRange: '103.98622,30.755411;103.991016,30.759071;103.991177,30.758997;103.986296,30.755319;',
+      //
+      //         ssProperties: '全封闭',
+      //         // ssSuggessions: null,
+      //
+      //         // ssFilePath: null,
+      //         ssBuilderName:'中铁一局',
+      //         ssProjectId: 3,
+      //         ssProjectName: '犀安路翻新',
+      //       },
+      //     ],
+      //     this.total=2,
+      //
+      //
+      //   this.loading = false;
       });
     },
     /** 查看地图按钮操作 */
