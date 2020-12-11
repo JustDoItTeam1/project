@@ -5,6 +5,7 @@ import java.util.prefs.BackingStoreException;
 
 import com.sju.program.domain.SiegeScheme;
 import com.sju.program.domain.model.BaseUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 围蔽方案Mapper接口
@@ -49,9 +50,9 @@ public interface SiegeSchemeMapper
 
     int updateSiegeSchemeDeleteFlagByIds(Long[] ssId);
 
-    int passSiegeSchemeByIds(Long id,Long teafficId);
+    int passSiegeSchemeByIds(@Param("id") Long id, @Param("trafficId")Long trafficId);
 
-    int nopassSiegeSchemeById(Long id,Long teafficId,String suggestion);
+    int nopassSiegeSchemeById(@Param("id")Long id,@Param("trafficId")Long trafficId,@Param("suggestion")String suggestion);
 
 
 
