@@ -49,7 +49,7 @@
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
-      <el-form-item label="施工项目名称" prop="ssProjectId" width="110px">
+      <el-form-item label="施工项目名称" prop="ssProjectName" width="110px">
         <el-input
           v-model="queryParams.ssProjectName"
           placeholder="请输入施工项目名称"
@@ -72,9 +72,9 @@
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
-      <el-form-item label="施工单位名称" prop="ssBuilderId" width="110px">
+      <el-form-item label="施工单位名称" prop="ssBuilderName" width="110px">
         <el-input
-          v-model="queryParams.ssBuilderId"
+          v-model="queryParams.ssBuilderName"
           placeholder="请输入施工单位名称"
           clearable
           size="small"
@@ -114,7 +114,6 @@
           v-hasPermi="['enclosure:scheme:add']"
         >新增</el-button>
       </el-col>
-
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -175,7 +174,7 @@
 <!--        </template>-->
 
 <!--      </el-table-column>-->
-      <el-table-column label="施工项目id" align="center" prop="ssProjectId" width="110" />
+<!--      <el-table-column label="施工项目id" align="center" prop="ssId" width="110" />-->
       <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
       <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
       <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
@@ -204,6 +203,7 @@
           >查看地图</el-button>
         </template>
       </el-table-column>
+
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
 
@@ -466,17 +466,17 @@
 <!--        <el-button @click="cancel">取 消</el-button>-->
 <!--      </div>-->
 <!--    </el-dialog>-->
-
+<!--新增-->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="施工项目名称" prop="ssProjectName">
-          <el-select v-model="form.ssProjectName" placeholder="请选择项目名称" clearable size="small" >
-            <el-option v-for="item in projectList"  :value="item.id" >{{ item.name }}</el-option>
+          <el-select v-model="form.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
+            <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="施工单位名称" prop="ssBuilderName">
-          <el-select v-model="form.ssBuilderName" placeholder="请选择施工单位名称" clearable size="small" >
-            <el-option v-for="item in builderList"  :value="item.id" >{{ item.name }}</el-option>
+        <el-form-item label="施工单位名称" prop="ssBuilderId">
+          <el-select v-model="form.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" >
+            <el-option v-for="item in builderList"  :value="item.id" :label="item.name">{{ item.name }}</el-option>
           </el-select>
         </el-form-item>
 
@@ -557,6 +557,9 @@
 <script>
 import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure } from "@/api/enclosure/enclosure";
 import mapView from "../../map/components/mapView";
+import {listBuilder,getBuilder} from "@/api/account/builder";
+import {listProject} from "@/api/project/project";
+import {downloadEnclosure} from "../../../api/enclosure/enclosure";
 export default {
   name: "Scheme",
   components:{mapView},
@@ -595,6 +598,8 @@ export default {
         ssBuilderId: null,
         ssVerifyFlag: null,
         ssVerifyDate: null,
+        ssBuilderName:null,
+        ssProjectName:null,
       },
 
       // 围蔽信息表格数据
@@ -628,6 +633,7 @@ export default {
       // },
       // 施工项目表格数据
       projectList: [],
+      projectIdList:[],
       // 施工单位表格数据
       builderList: [],
 
@@ -638,23 +644,31 @@ export default {
   },
   created() {
     this.getList();
+    this.getproject();
+    this.getbuilder();
   },
   methods: {
     /** 查询施工单位列表 ！！！！！！！*/
     getbuilder() {
-      this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
-      console.log(this.builderList)
-      // listBuilder(this.queryParams).then(response => {
-      //   this.builderList = response.rows;
-      // });
+      // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
+      // console.log(this.builderList)
+      listBuilder(this.queryParams).then(response => {
+        this.builderList=[{name:"暂无",id:"0"}];
+        for ( let i of response.rows) {
+          this.builderList.push({name:i.builderUsername,id:i.builderId});
+        }
+      });
     },
     /** 查询项目单位列表 ！！！！！！！*/
     getproject() {
-      this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
-      console.log(this.builderList)
-      // listBuilder(this.queryParams).then(response => {
-      //   this.builderList = response.rows;
-      // });
+      // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
+      // console.log(this.builderList)
+       listProject(this.queryParams).then(response => {
+         this.projectList=[{name:"暂无",id:"0"}];
+         for(let i of response.rows){
+           this.projectList.push({name:i.projectName,id:i.projectId});
+         }
+      });
     },
 
     // onClose() {
@@ -716,10 +730,10 @@ export default {
 
 
         //console.log(this.schemeList);
-
-        this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
+        // this.getbuilder();
+        // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
         //假数据
-        this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
+        // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
 
         // this.wbnum=[2,3,2],
         // this.wbn=[0,2,5],
@@ -1033,7 +1047,9 @@ export default {
         ssDeleteFlag: null,
         ssVerifyFlag: null,
         ssVerifyDate: null,
-        ssUpdateFlag: null
+        ssUpdateFlag: null,
+        ssBuilderName:null,
+        ssProjectName:null,
       };
       this.resetForm("form");
     },
@@ -1053,14 +1069,12 @@ export default {
           type: 'success',
           message: '该围蔽方案成功设置为已通过!'
         });
-
         this.getList();
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消设置'
         });
-
       });
     },
     /** 否决按钮操作 */
