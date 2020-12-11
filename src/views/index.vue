@@ -266,7 +266,7 @@
           <el-button
             size="small"
             type="info"
-            style="position: absolute;left: 55%;"
+            style="position: absolute;left: 90%;"
             @click="handleDownload"
             v-hasPermi="['enclosure:scheme:download']"
             round
@@ -283,9 +283,9 @@
           <el-button
             size="small"
             type="warning"
-            style="position: absolute;left: 88%;"
+            style="position: absolute;left: 58%;"
             @click="handleDisagree"
-            v-hasPermi="['nclosure:scheme:disagree']"
+            v-hasPermi="['enclosure:scheme:disagree']"
             v-if="schemeListOne.ssVerifyFlag=='review'"
             round
           >否决</el-button>
@@ -294,10 +294,12 @@
 
         <br>
         <br>
-<!--        <div v-if="schemeListOne.children[0].ssSuggessions!=null">-->
-<!--          <label class="labelSeige" style="font-weight: 700;width: 120px" >拒绝理由:</label>-->
-<!--          <label class="labelSeige" style="width: 560px">{{schemeListOne.children[0].ssSuggessions}}</label><br>-->
-<!--        </div>-->
+        <br>
+        <br>
+        <div v-if="schemeListOne.ssSuggessions!=null">
+          <label class="labelSeige" style="font-weight: 700;width: 120px" >拒绝理由:</label>
+          <label class="labelSeige" style="width: 560px">{{schemeListOne.ssSuggessions}}</label><br>
+        </div>
         <br>
      <div v-for="(key,index) in schemeListOne.children" >
        <br>
@@ -360,8 +362,8 @@
 <!--否决弹窗-->
     <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
       <el-form ref="elForm" :model="Suggessions"  size="medium" label-width="100px">
-        <el-form-item label="原因或建议" prop="sugge">
-          <el-input v-model="Suggessions.sugge" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
+        <el-form-item label="原因或建议" prop="suggestion">
+          <el-input v-model="Suggessions.suggestion" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
                     :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
         </el-form-item>
       </el-form>
@@ -383,8 +385,9 @@
 
 <script>
 import {listProject,updateProject} from "../api/project/project";
+import {getInfo} from "../api/login";
 import Ploygon from "./test/components/Ploygon";
-import {getIdEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
+import {getIdEnclosure,reviewEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
 import detailForm from "./test/components/detailForm";
 export default {
   name: "index",
@@ -446,7 +449,10 @@ export default {
       //拒绝理由弹窗
       opendisa:false,
       //拒绝理由
-      Suggessions:{},
+      Suggessions:{
+        suggestion:null,
+        trafficId:null,
+      },
       // 总条数
       total: 0,
       updataSeige:{
@@ -555,19 +561,25 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        for(var i=0;i<e.children.len;i++)
-        {
-          this. updataSeige.ssId=e.children[i].ssId;
-          updateEnclosure(this. updataSeige).then(response => {
+        //获取操作人员id
+        getInfo().then(response => {
+          if(response.roles=="admin"){
+            this.Suggessions.trafficId=0;
+          }
+          else
+            this.Suggessions.trafficId=response.user.id;
+        })
 
-            // console.log(response)
+          this.Suggessions.suggestion="";
+          reviewEnclosure(this. schemeListOne.ssProjectId,this.Suggessions).then(response => {
+            if (response.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '该围蔽方案成功设置为已通过!'
+              });
+            }
+
           });
-        }
-        this.$message({
-          type: 'success',
-          message: '该围蔽方案成功设置为已通过!'
-        });
-
         // this.getList();
       }).catch(() => {
         this.$message({
@@ -580,29 +592,48 @@ export default {
     /** 否决按钮操作 */
     handleDisagree(){
       //console.log(e);
-      this.Suggessions= {
-        projectid:this.schemeListOne.ssProjectId,
-        sugge:null,
-      }
+      this.Suggessions.suggestion=null;
       this.opendisa = true;
     },
     //否决取消
     close(){
       this.opendisa = false;
-      this.Suggessions={
-        projectid:null,
-        sugge:null,
-      };
+      this.Suggessions.suggestion=null;
     },
-    /** 否决确定操作 */
+
+
+
+/** 否决确定操作 */
     handelConfirmReason() {
+      //获取操作人员id
+      getInfo().then(response => {
+        if(response.roles=="admin"){
+          this.Suggessions.trafficId=1000000;
+        }
+        else
+          this.Suggessions.trafficId=response.user.id;
+        // console.log(response.roles)
+        // console.log(this.Suggessions.trafficId)
+
+
       this.$refs['elForm'].validate(valid => {
         if (valid) {
-          this.msgSuccess("否决围蔽方案成功");
-          this.opendisa = false;
-        }
+          // console.log(this.getCookie("username"));
+          //this.Suggessions.suggestion=getQueryString(this.Suggessions.suggestion,"utf8");
+          // console.log(this.Suggessions.suggestion)
+          reviewEnclosure(this. schemeListOne.ssProjectId,this.Suggessions).then(response => {
+            if (response.code === 200) {
+              this.msgSuccess("否决围蔽方案成功");
+              this.opendisa = false;
+            }
+              });
+            }
+
+          });
       })
-    },
+        },
+    //   })
+    // },
 //     //切换图层  radio点击事件
 //     radioChange:function(){
 //       this.searchName=null;

@@ -15,6 +15,15 @@ export function getIdEnclosure(ssId) {
     method: 'get'
   })
 }
+// 围蔽方案审核
+export function reviewEnclosure(ssId,query) {
+  return request({
+    url: '/program/scheme/'+ ssId,
+    method: 'put',
+    params: query
+  })
+}
+
 // 下载围蔽方案附件
 export function downloadEnclosure(query) {
   return request({
