@@ -52,17 +52,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProject" parameterType="Long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-         WHERE p.project_id = #{projectId}
+        <if test="projectName != null">#{projectName},</if>
+        <if test="projectLocation != null">#{projectLocation},</if>
     </select>
 
     <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
-        <include refid="selectProjectPI"/>
-        where project_name = #{projectName}
+        <include refid="selectProjectVo"></include>
+        WHERE project_name LIKE concat(%,#{projectName},%)
     </select>
 
-    <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
+    <select id="selectProjectByBuilder" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        where p.project_builder_id = #{projectBuilderId}
+        WHERE project_builder_name LIKE concat(%,#{projectBuilderName},%)
     </select>
 
     <select id="selectAllProjectList"  resultMap="ProjectResult">
@@ -76,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectByManager" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
-        where project_manager = #{projectManager}
+        WHERE project_manger LIKE concat(%,#{projectManger},%)
     </select>
         
     <insert id="insertProject" parameterType="Project" useGeneratedKeys="true" keyProperty="projectId">

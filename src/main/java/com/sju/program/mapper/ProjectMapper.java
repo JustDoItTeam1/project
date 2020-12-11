@@ -65,4 +65,7 @@ public interface ProjectMapper
     List<Project> selectAllProjectList();
 
     List<Project> selectProject(Long projectId);
+
+    List<Object> selectProjectByBuilder(String projectBuilderName);
+    List<Object> selectProjectByManger(String projectManger);
 }

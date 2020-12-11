@@ -38,8 +38,13 @@ public class ProjectServiceImpl implements IProjectService
     }
 
     @Override
-    public List<Project> selectProjectByBuilderId(Long builderId) {
-        return projectMapper.selectProjectByBuilderId(builderId);
+    public List<Object> selectProjectByBuilder(String projectBuilderName) {
+        return projectMapper.selectProjectByBuilder(projectBuilderName);
+    }
+
+    @Override
+    public List<Object> selectProjectByManger(String projectManger) {
+        return projectMapper.selectProjectByManger(projectManger);
     }
 
     @Override

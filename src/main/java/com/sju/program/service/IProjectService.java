@@ -70,4 +70,8 @@ public interface IProjectService
     List<Project> selectAllProjectList();
 
     List<Project> selectProject(Long projectId);
+
+    List<Object> selectProjectByBuilder(String projectLocation);
+
+    List<Object> selectProjectByManger(String projectManger);
 }
