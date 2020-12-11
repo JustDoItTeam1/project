@@ -4,6 +4,7 @@ import com.sju.program.constant.Constants;
 import com.sju.program.domain.*;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.IBuilderService;
 import com.sju.program.service.IRectificationInfoService;
 import com.sju.program.service.ISiegeSchemeService;
 import com.sju.program.utils.JwtUtils;
@@ -56,6 +57,8 @@ public class TokenService
     ISiegeSchemeService siegeSchemeService;
     @Autowired
     IRectificationInfoService rectificationInfoService;
+    @Autowired
+    IBuilderService builderService;
 
     public List<SiegeScheme> getLoginUserSiegeScheme(LoginUser loginUser){
         List<SiegeScheme> list=null;
@@ -91,6 +94,20 @@ public class TokenService
          }
         return rectificationInfoList;
      }
+
+    public List<Builder> getLoginUserBuilder (LoginUser loginUser){
+        List<Builder> list = null;
+        BaseUser baseUser = (BaseUser)loginUser.getUser();
+        switch(baseUser.getAuthenticate()){
+            case 1:
+            case 3:
+                list=builderService.selectAllBuilderList();
+                break;
+            case 4:
+                list= builderService.selectBuilderByBuilderId(baseUser.getId());
+                break;
+        }
+        return list;
 
 
     /**

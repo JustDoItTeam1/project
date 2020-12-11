@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.Builder;
+import com.sju.program.domain.Project;
 
 /**
  * 施工单位Service接口
@@ -29,6 +30,8 @@ public interface IBuilderService
      * @return 施工单位集合
      */
     public List<Builder> selectBuilderList(Builder builder);
+
+    public List<Builder> selectAllBuilderList();
 
     /**
      * 新增施工单位
@@ -61,4 +64,8 @@ public interface IBuilderService
      * @return 结果
      */
     public int deleteBuilderById(Long builderId);
+
+    public List<Builder> selectBuilderByBuilderId(Long builderId);
+
+    public List<Builder> selectBuilderBySearch(List<Builder> list,String builderInfo);
 }

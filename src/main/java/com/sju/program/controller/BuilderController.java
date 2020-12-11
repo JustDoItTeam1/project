@@ -2,6 +2,10 @@ package com.sju.program.controller;
 
 import java.util.List;
 
+import com.sju.program.domain.model.LoginUser;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
+import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +40,9 @@ BuilderController extends BaseController
 {
     @Autowired
     private IBuilderService builderService;
+    @Autowired
+    private TokenService tokenService;
+
 
     /**
      * 查询施工单位列表
@@ -72,6 +79,20 @@ BuilderController extends BaseController
     public AjaxResult getInfo(@PathVariable("builderId") Long builderId)
     {
         return AjaxResult.success(builderService.selectBuilderById(builderId));
+    }
+
+    @ApiOperation("模糊查询施工单位")
+    //@PreAuthorize("@ss.hasPermi('program:builder:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(Builder builder)
+    {
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        List<Builder> list = tokenService.getLoginUserBuilder(loginUser);
+        if (StringUtils.isNotEmpty(builder.getBuilderInfo())){
+            return getDataTable(builderService.selectBuilderBySearch(list,builder.getBuilderInfo()));
+        }
+        return getDataTable(list);
     }
 
     /**

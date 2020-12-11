@@ -1,6 +1,9 @@
 package com.sju.program.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.sju.program.domain.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.BuilderMapper;
@@ -36,6 +39,22 @@ public class BuilderServiceImpl implements IBuilderService
         return builderMapper.selectBuilderByUsername(username);
     }
 
+    @Override
+    public List<Builder> selectBuilderByBuilderId(Long builderId) {
+        return builderMapper.selectBuilderByBuilderId(builderId);
+    }
+
+    @Override
+    public List<Builder> selectBuilderBySearch(List<Builder> list,String builderInfo) {
+        List<Builder> builderList=new ArrayList<>();
+        for(Builder builder:list){
+            if(builder.getBuilderUsername().contains(builderInfo)||builder.getBuilderName().contains(builderInfo)){
+                builderList.add(builder);
+            }
+        }
+        return builderList;
+    }
+
     /**
      * 查询施工单位列表
      * 
@@ -48,6 +67,10 @@ public class BuilderServiceImpl implements IBuilderService
         return builderMapper.selectBuilderList(builder);
     }
 
+    @Override
+    public List<Builder> selectAllBuilderList() {
+        return builderMapper.selectAllBuilderList();
+    }
     /**
      * 新增施工单位
      * 

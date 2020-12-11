@@ -60,6 +60,15 @@ public class Builder extends BaseUser
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+
+    /** 模糊查询 */
+    @Excel(name = "模糊查询标识")
+    private String builderInfo;
+
+    public String getBuilderInfo() {
+        return builderInfo;
+    }
+
     private Date builderUpdateFlag;
 
     private int authenticate;

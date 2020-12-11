@@ -36,6 +36,10 @@ public interface BuilderMapper
      */
     public List<Builder> selectBuilderList(Builder builder);
 
+    public List<Builder> selectAllBuilderList();
+
+    List<Builder> selectBuilderByBuilderId(long builderId);
+
     /**
      * 新增施工单位
      * 
@@ -67,4 +71,6 @@ public interface BuilderMapper
      * @return 结果
      */
     public int deleteBuilderByIds(Long[] builderIds);
+
+
 }
