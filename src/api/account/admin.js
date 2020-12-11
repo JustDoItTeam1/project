@@ -46,7 +46,7 @@ export function delAdmin(adminId) {
 // 导出管理员用户
 export function exportAdmin(query) {
   return request({
-    url: '/account/admin/export',
+    url: '/program/admin/export',
     method: 'get',
     params: query
   })
