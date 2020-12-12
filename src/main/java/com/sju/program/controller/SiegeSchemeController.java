@@ -104,12 +104,7 @@ public class SiegeSchemeController extends BaseController
     {
         List<SiegeScheme> list=siegeSchemeService.selectSiegeSchemeByprojectIdIncludeProjectId(projectId);
         List<SieheSchemeParentVo> sieheSchemeParentVoList=siegeSchemeService.buildSiegeScheme(list);
-        if (StringUtils.isNotEmpty(sieheSchemeParentVoList)){
-            return  AjaxResult.success(sieheSchemeParentVoList);
-        }
-        else {
-            return AjaxResult.error("暂无围蔽方案");
-        }
+        return AjaxResult.success(sieheSchemeParentVoList);
 
 
     }
