@@ -37,7 +37,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="info"  @click="clickSeige" style="float: left" round>查看围蔽详情</el-button>
+        <el-button type="info"  @click="clickSeige" style="float: left" v-if="siegeVV" round>查看围蔽详情</el-button>
+        <el-button type="info"  @click="clickSeigeAdd" style="float: left" v-if="addSiegeVV" round>新增围蔽方案</el-button>
         <el-button type="primary" @click="submitProject">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
@@ -248,16 +249,16 @@
     <el-dialog :visible.sync="siegeV" width="750px"  append-to-body title="围蔽信息详情" >
       <el-form style="position: relative">
 
-        <label class="labelSeige" style="font-weight: 700;">施工项目id:</label>
-        <label class="labelSeige" style="width: 70px;font-weight: 900;">{{schemeListOne.ssProjectId}}</label>
+<!--        <label class="labelSeige" style="font-weight: 700;">施工项目id:</label>-->
+<!--        <label class="labelSeige" style="width: 70px;font-weight: 900;">{{schemeListOne.ssProjectId}}</label>-->
 <!--        </div>-->
 <!--        <div style="position: absolute;left: 27%;top:20px;">-->
         <label class="labelSeige" style="font-weight: 700">施工项目名称:</label>
-        <label class="labelSeige" style="width: 160px;font-weight: 900;">{{schemeListOne.ssProjectName}}</label>
+        <label class="labelSeige" style="width: 250px;font-weight: 900;">{{schemeListOne.ssProjectName}}</label>
 <!--        </div>-->
 <!--        <div style="position: absolute;left: 65%;top:20px;">-->
         <label class="labelSeige" style="font-weight: 700">施工单位名称:</label>
-        <label class="labelSeige" style="width: 160px;font-weight: 900;">{{schemeListOne.ssBuilderName}}</label>
+        <label class="labelSeige" style="width: 200px;font-weight: 900;">{{schemeListOne.ssBuilderName}}</label>
 <!--        </div>-->
         <br>
         <div style="position: absolute;top:35px;width: 90%">
@@ -276,7 +277,7 @@
             type="primary"
             style="position: absolute;left: 73%"
             @click="handleAgree"
-            v-hasPermi="['enclosure:scheme:agree']"
+            v-hasPermi="['enclosure:scheme:review']"
             v-if="schemeListOne.ssVerifyFlag=='review'"
             round
           >通过</el-button>
@@ -285,7 +286,7 @@
             type="warning"
             style="position: absolute;left: 58%;"
             @click="handleDisagree"
-            v-hasPermi="['enclosure:scheme:disagree']"
+            v-hasPermi="['enclosure:scheme:review']"
             v-if="schemeListOne.ssVerifyFlag=='review'"
             round
           >否决</el-button>
@@ -433,8 +434,13 @@ export default {
       projectListOne:[],
 
 
+      //新增围蔽窗口
+      addSiegeV:false,
+      addSiegeVV:false,
       //围蔽详情弹窗
       siegeV:false,
+      siegeVV:false,
+
       ploy1:[],
       ploy2:[],
       temp:[],
@@ -568,7 +574,7 @@ export default {
           }
           else
             this.Suggessions.trafficId=response.user.id;
-        })
+
 
           this.Suggessions.suggestion="";
           reviewEnclosure(this. schemeListOne.ssProjectId,this.Suggessions).then(response => {
@@ -577,9 +583,12 @@ export default {
                 type: 'success',
                 message: '该围蔽方案成功设置为已通过!'
               });
+              this.verifyFlag="已通过";
+              this.schemeListOne.ssVerifyFlag="pass"
             }
 
           });
+        })
         // this.getList();
       }).catch(() => {
         this.$message({
@@ -608,7 +617,7 @@ export default {
       //获取操作人员id
       getInfo().then(response => {
         if(response.roles=="admin"){
-          this.Suggessions.trafficId=1000000;
+          this.Suggessions.trafficId=0;
         }
         else
           this.Suggessions.trafficId=response.user.id;
@@ -625,6 +634,9 @@ export default {
             if (response.code === 200) {
               this.msgSuccess("否决围蔽方案成功");
               this.opendisa = false;
+
+              this.verifyFlag="未通过";
+              this.schemeListOne.ssVerifyFlag="nopass"
             }
               });
             }
@@ -732,6 +744,7 @@ export default {
           // var myArray=new Array()
           // myArray.push(that.ployg2[parseInt(e.target.content)]);
          that.projectListOne= that.ployg2[parseInt(e.target.content)];
+         that.searchIdSeige();
          //that.searchQueryParamsSeige.projectId=that.projectListOne.projectId;
 
           // // 数据脱绑
@@ -889,14 +902,43 @@ export default {
       });
     },
 
-    //查看围蔽详情
-    clickSeige:function () {
+    //新增围蔽
+    clickSeigeAdd:function(){
 
+    },
+    //查看围蔽详情
+    clickSeige:function(){
 
       getIdEnclosure(this.projectListOne.projectId).then(response => {
+
+        if (response.code === 200) {
+          this.schemeListOne=response.data[0];
+          if(this.schemeListOne.ssVerifyFlag=="pass")
+            this.verifyFlag="已通过";
+          if(this.schemeListOne.ssVerifyFlag=="nopass")
+            this.verifyFlag="未通过";
+          if(this.schemeListOne.ssVerifyFlag=="review")
+            this.verifyFlag="待审核";
+
+        }
+      });
+      this.addSiegeV=false;
+      this.siegeV = true;
+
+    },
+
+    //按id查询围蔽详情
+     searchIdSeige:function () {
+
+      getIdEnclosure(this.projectListOne.projectId).then(response => {
+
+        if (response.msg=="暂无围蔽方案") {
+          this.addSiegeVV=true;
+          this.siegeVV = false;
+        }
         if (response.code === 200) {
           //console.log(response);
-          this.schemeListOne=response.rows[0];
+          this.schemeListOne=response.data[0];
           if(this.schemeListOne.ssVerifyFlag=="pass")
             this.verifyFlag="已通过";
           if(this.schemeListOne.ssVerifyFlag=="nopass")
@@ -904,7 +946,8 @@ export default {
           if(this.schemeListOne.ssVerifyFlag=="review")
             this.verifyFlag="待审核";
           // console.log(this.schemeListOne.children[0].ssSuggessions);
-          this.siegeV = true;
+          this.siegeVV = true;
+          this.addSiegeVV=false;
         }
       });
       // //将object转化为array
