@@ -75,4 +75,6 @@ public interface BuilderMapper
     public int deleteBuilderByIds(Long[] builderIds);
 
     public int saveAllBuilder(List<Builder> list);
+
+    public int checkUserNameUnique(String builderName);
 }

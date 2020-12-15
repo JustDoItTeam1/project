@@ -8,9 +8,11 @@ import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.sju.program.constant.UserConstants;
 import com.sju.program.domain.TrafficeStaff;
 import com.sju.program.listener.PoliceListener;
 import com.sju.program.listener.TrafficStaffListener;
+import com.sju.program.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +114,10 @@ public class PoliceController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Police police)
     {
+        if (UserConstants.NOT_UNIQUE.equals(policeService.checkUserNameUnique(police.getPoliceName()))){
+            return AjaxResult.error("新增失败，登录账号已存在");
+        }
+        police.setPolicePassword(SecurityUtils.encryptPassword(police.getPolicePassword()));
         return toAjax(policeService.insertPolice(police));
     }
 

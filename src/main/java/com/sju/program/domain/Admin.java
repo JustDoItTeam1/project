@@ -78,6 +78,11 @@ public class Admin extends BaseUser
     public String getUserPassword(){
         return  adminPassword;
     }
+
+    @Override
+    public String getUserName(){
+        return adminUsername;
+    }
     public void setAdminId(Long adminId) 
     {
         this.adminId = adminId;

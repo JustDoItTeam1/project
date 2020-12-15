@@ -8,9 +8,11 @@ import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.sju.program.constant.UserConstants;
 import com.sju.program.domain.Police;
 import com.sju.program.listener.BuilderListener;
 import com.sju.program.listener.PoliceListener;
+import com.sju.program.utils.SecurityUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +110,10 @@ BuilderController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Builder builder)
     {
+        if (UserConstants.NOT_UNIQUE.equals(builderService.checkUserNameUnique(builder.getBuilderName()))){
+            return AjaxResult.error("新增失败，登录账号已存在");
+        }
+        builder.setBuilderPassword(SecurityUtils.encryptPassword(builder.getUserPassword()));
         return toAjax(builderService.insertBuilder(builder));
     }
 

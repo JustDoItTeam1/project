@@ -9,7 +9,9 @@ import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.sju.program.constant.UserConstants;
 import com.sju.program.listener.TrafficStaffListener;
+import com.sju.program.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -104,6 +106,10 @@ public class TrafficeStaffController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TrafficeStaff trafficeStaff)
     {
+        if (UserConstants.NOT_UNIQUE.equals(trafficeStaffService.checkUserNameUnique(trafficeStaff.getTrafficName()))){
+            return AjaxResult.error("新增失败，登录账号已存在");
+        }
+        trafficeStaff.setTrafficPassword(SecurityUtils.encryptPassword(trafficeStaff.getTrafficPassword()));
         return toAjax(trafficeStaffService.insertTrafficeStaff(trafficeStaff));
     }
 

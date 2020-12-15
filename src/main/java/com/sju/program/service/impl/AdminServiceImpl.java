@@ -95,4 +95,9 @@ public class AdminServiceImpl implements IAdminService
     {
         return adminMapper.deleteAdminById(adminId);
     }
+
+    @Override
+    public int resetUserPwd(String username, String newPassword) {
+        return adminMapper.resetUserPwd(username,newPassword);
+    }
 }

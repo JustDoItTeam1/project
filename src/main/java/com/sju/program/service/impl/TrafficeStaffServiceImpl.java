@@ -1,6 +1,8 @@
 package com.sju.program.service.impl;
 
 import java.util.List;
+
+import com.sju.program.constant.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.TrafficeStaffMapper;
@@ -39,6 +41,15 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
     @Override
     public List<TrafficeStaff> selectAllTrafficeStaffList() {
         return trafficeStaffMapper.selectAllTrafficeStaffList();
+    }
+
+    @Override
+    public String checkUserNameUnique(String name) {
+        int count= trafficeStaffMapper.checkUserNameUnique(name);
+        if (count>0){
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 
     /**

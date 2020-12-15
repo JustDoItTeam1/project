@@ -1,6 +1,8 @@
 package com.sju.program.service.impl;
 
 import java.util.List;
+
+import com.sju.program.constant.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.BuilderMapper;
@@ -14,20 +16,18 @@ import com.sju.program.service.IBuilderService;
  * @date 2020-11-03
  */
 @Service
-public class BuilderServiceImpl implements IBuilderService 
-{
+public class BuilderServiceImpl implements IBuilderService {
     @Autowired
     private BuilderMapper builderMapper;
 
     /**
      * 查询施工单位
-     * 
+     *
      * @param builderId 施工单位ID
      * @return 施工单位
      */
     @Override
-    public Builder selectBuilderById(Long builderId)
-    {
+    public Builder selectBuilderById(Long builderId) {
         return builderMapper.selectBuilderById(builderId);
     }
 
@@ -38,13 +38,12 @@ public class BuilderServiceImpl implements IBuilderService
 
     /**
      * 查询施工单位列表
-     * 
+     *
      * @param builder 施工单位
      * @return 施工单位
      */
     @Override
-    public List<Builder> selectBuilderList(Builder builder)
-    {
+    public List<Builder> selectBuilderList(Builder builder) {
         return builderMapper.selectBuilderList(builder);
     }
 
@@ -55,54 +54,61 @@ public class BuilderServiceImpl implements IBuilderService
 
     /**
      * 新增施工单位
-     * 
+     *
      * @param builder 施工单位
      * @return 结果
      */
     @Override
-    public int insertBuilder(Builder builder)
-    {
+    public int insertBuilder(Builder builder) {
         return builderMapper.insertBuilder(builder);
     }
 
     /**
      * 修改施工单位
-     * 
+     *
      * @param builder 施工单位
      * @return 结果
      */
     @Override
-    public int updateBuilder(Builder builder)
-    {
+    public int updateBuilder(Builder builder) {
         return builderMapper.updateBuilder(builder);
     }
 
     /**
      * 批量删除施工单位
-     * 
+     *
      * @param builderIds 需要删除的施工单位ID
      * @return 结果
      */
     @Override
-    public int deleteBuilderByIds(Long[] builderIds)
-    {
+    public int deleteBuilderByIds(Long[] builderIds) {
         return builderMapper.deleteBuilderByIds(builderIds);
     }
 
     /**
      * 删除施工单位信息
-     * 
+     *
      * @param builderId 施工单位ID
      * @return 结果
      */
     @Override
-    public int deleteBuilderById(Long builderId)
-    {
+    public int deleteBuilderById(Long builderId) {
         return builderMapper.deleteBuilderById(builderId);
     }
 
     @Override
     public int save(List<Builder> list) {
         return builderMapper.saveAllBuilder(list);
+    }
+
+    @Override
+    public String checkUserNameUnique(String builderName) {
+        int conut = builderMapper.checkUserNameUnique(builderName);
+        if (conut > 0) {
+            return UserConstants.NOT_UNIQUE;
+        }
+        else {
+            return UserConstants.UNIQUE;
+        }
     }
 }

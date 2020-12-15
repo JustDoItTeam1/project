@@ -5,6 +5,7 @@ import com.sju.program.security.JwtAuthenticationTokenFilter;
 import com.sju.program.security.provider.BuilderUsernamePasswordAuthrnticationProvider;
 import com.sju.program.security.provider.PoliceUsernamePasswordAuthenticationProvider;
 import com.sju.program.security.provider.TrafficStaffUsernamePasswordAuthrnticationProvider;
+import com.sju.program.service.impl.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("TrafficStaffDetailsServiceImpl")
     private UserDetailsService trafficStaffDetailsServiceImpl;
+
+    @Autowired
+    private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
    // @Autowired
    // private JwtAuthenticationTokenFilter authenticationTokenFilter;
@@ -96,6 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
+                http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
     }
 
     /**

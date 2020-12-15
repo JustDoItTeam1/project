@@ -149,6 +149,7 @@ public class TokenService
             // 解析用户信息
             Object userId=(claims.get("userId"));
             String userName=(String)claims.get("userName");
+            String password=(String)claims.get("password");
             String delete_flag=(String)claims.get("delete_flag");
             Object authenticate=claims.get("authenticate");
             System.out.println(claims.get("permissions").getClass());
@@ -158,6 +159,7 @@ public class TokenService
                 Admin user=new Admin();
                 user.setAdminId(Long.valueOf(String.valueOf(userId)) );
                 user.setAdminUsername(userName);
+                user.setAdminPassword(password);
                 user.setAdminDeleteFlag(delete_flag);
                 user.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
                // user.setPermissions(permissions);
@@ -169,6 +171,7 @@ public class TokenService
                 Police police=new Police();
                 police.setPoliceId(Long.valueOf(String.valueOf(userId)) );
                 police.setPoliceName(userName);
+                police.setPolicePassword(password);
                 police.setPoliceDeleteFlag(delete_flag);
                 police.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
                 police.setPermissions(permissions);
@@ -180,6 +183,7 @@ public class TokenService
                 TrafficeStaff trafficeStaff=new TrafficeStaff();
                 trafficeStaff.setTrafficId(Long.valueOf(String.valueOf(userId)) );
                 trafficeStaff.setTrafficName(userName);
+                trafficeStaff.setTrafficPassword(password);
                 trafficeStaff.setTrafficDeleteFlag(delete_flag);
                 trafficeStaff.setPermissions(permissions);
                 trafficeStaff.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
@@ -198,6 +202,7 @@ public class TokenService
                 builder.setBuilderId(Long.valueOf(String.valueOf(userId)) );
                 builder.setBuilderUsername(builder_username);
                 builder.setBuilderName(userName);
+                builder.setBuilderPassword(password);
                 builder.setBuilderDeleteFlag(delete_flag);
                 builder.setAuthenticate(Integer.valueOf(String.valueOf(authenticate)));
                 builder.setUserName(builder_username);

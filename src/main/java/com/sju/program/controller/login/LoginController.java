@@ -94,6 +94,7 @@ public class LoginController  {
 					}
 					playload.put("userId",admin.getAdminId());
 					playload.put("userName",admin.getAdminUsername());
+					playload.put("password",admin.getAdminPassword());
 					playload.put("delete_flag",admin.getAdminDeleteFlag());
 					playload.put("permissions",arrayList);
 				}catch (ClassCastException e){
@@ -122,6 +123,7 @@ public class LoginController  {
 					}
 					playload.put("userId", trafficeStaff.getTrafficId());
 					playload.put("userName", trafficeStaff.getTrafficName());
+					playload.put("password",trafficeStaff.getTrafficPassword());
 					playload.put("delete_flag", trafficeStaff.getTrafficDeleteFlag());
 					playload.put("permissions", loginUser.getPermissions());
 				}catch (ClassCastException e){
@@ -152,6 +154,7 @@ public class LoginController  {
 					playload.put("userId", builder.getBuilderId());
 					playload.put("userName", builder.getBuilderName());
 					playload.put("builder_username", builder.getBuilderUsername());
+					playload.put("password",builder.getBuilderPassword());
 					playload.put("builder_corporate", builder.getBuilderCorporate());
 					playload.put("builder_phone", builder.getBuilderPhone());
 					playload.put("builder_address", builder.getBuilderAddress());
@@ -185,6 +188,7 @@ public class LoginController  {
 					}
 					playload.put("userId", police.getPoliceId());
 					playload.put("userName", police.getPoliceName());
+					playload.put("password",police.getPolicePassword());
 					playload.put("delete_flag", police.getPoliceDeleteFlag());
 					playload.put("permissions", loginUser.getPermissions());
 				}catch (ClassCastException e){

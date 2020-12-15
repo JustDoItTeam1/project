@@ -22,6 +22,8 @@ public interface ITrafficeStaffService
 
     public List<TrafficeStaff> selectAllTrafficeStaffList();
 
+    public String checkUserNameUnique(String name);
+
 
 
     /**

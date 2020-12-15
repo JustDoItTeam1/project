@@ -1,6 +1,8 @@
 package com.sju.program.service.impl;
 
 import java.util.List;
+
+import com.sju.program.constant.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.PoliceMapper;
@@ -104,5 +106,14 @@ public class PoliceServiceImpl implements IPoliceService
     @Override
     public int save(List<Police> police) {
         return policeMapper.saveAllPolices(police);
+    }
+
+    @Override
+    public String checkUserNameUnique(String name) {
+        int conut= policeMapper.checkUserNameUnique(name);
+        if (conut>0){
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 }

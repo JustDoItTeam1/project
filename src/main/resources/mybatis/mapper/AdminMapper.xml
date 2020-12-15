@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectAdminById" parameterType="Long" resultMap="AdminResult">
-        <include refid="selectAdminVo"/>
+        select admin_id, admin_username, admin_password,admin_password, admin_delete_flag from admin
         where admin_id = #{adminId}
     </select>
 
@@ -61,6 +61,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </trim>
         where admin_id = #{adminId}
+    </update>
+
+    <update id="resetUserPwd">
+        UPDATE admin SET admin_password=#{newPassword} WHERE admin_username=#{username}
     </update>
 
     <update id="deleteAdminById" parameterType="Long">

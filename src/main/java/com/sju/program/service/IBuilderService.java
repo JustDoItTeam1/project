@@ -65,4 +65,6 @@ public interface IBuilderService
     public int deleteBuilderById(Long builderId);
 
     public int save(List<Builder> list);
+
+    public String checkUserNameUnique(String builderName);
 }

@@ -3,9 +3,12 @@ package com.sju.program.utils.AC;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
+import com.sju.program.utils.SpringUtils;
 import com.sun.org.apache.bcel.internal.generic.LUSHR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.SocketUtils;
+import sun.security.util.Length;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,8 +25,9 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 	 * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
 	 */
 	private static final int BATCH_COUNT = 10000;
-	List<String> list = new ArrayList<String>();
-	AcNode root=new AcNode();
+	public static List<String> list = new ArrayList<String>();
+	public static AcNode root=new AcNode();
+	public int length=0;
 	/**
 	 * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
 	 */
@@ -50,6 +54,8 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 	@Override
 	public void invoke(DemoData data, AnalysisContext context) {
 		LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
+		Algorithm.insert(root,data.getData());
+		length= length+data.getData().length();
 		list.add(data.getData());
 		// 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
 //		if (list.size() >= BATCH_COUNT) {
@@ -66,16 +72,27 @@ public class DemoDataListener extends AnalysisEventListener<DemoData> {
 	@Override
 	public void doAfterAllAnalysed(AnalysisContext context) {
 		// 这里也要保存数据，确保最后遗留的数据也存储到数据库
-		System.out.println(list.size());
-		AcNode root=new AcNode();
+
+//		AcNode root=new AcNode();
+//		StringBuffer stringBuffer=new StringBuffer();
+//		Iterator iterator=list.iterator();
+//		while (iterator.hasNext()){
+//			stringBuffer.append(iterator.next()+",");
+//			Algorithm.insert(root, iterator.next().toString());
+//		}
+		//System.out.println(stringBuffer.toString());
+		Algorithm.buildFailPath(root);
+		long start=System.currentTimeMillis();
 		StringBuffer stringBuffer=new StringBuffer();
-		Iterator iterator=list.iterator();
-		while (iterator.hasNext()){
-			stringBuffer.append(iterator.next()+",");
+		for (int i=0;i<350;i++){
+			stringBuffer.append(Algorithm.s1);
 		}
-
-		System.out.println(stringBuffer.toString());
-
+		Algorithm.query(root,stringBuffer.toString());
+		long end=System.currentTimeMillis();
+		System.out.println("查找时间"+(end-start)/1000F);
+		System.out.println("搜索串的长度为："+stringBuffer.length());
+		System.out.println("共"+list.size()+"条数据,敏感词平均长度为"+length/list.size());
+		//System.out.println(length);
 		LOGGER.info("所有数据解析完成！");
 	}
 

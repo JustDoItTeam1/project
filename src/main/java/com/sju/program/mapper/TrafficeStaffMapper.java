@@ -72,4 +72,6 @@ public interface TrafficeStaffMapper
 
     public int saveTrafficeStaff(List<TrafficeStaff> trafficeStaffs);
 
+    public int checkUserNameUnique(String name);
+
 }

@@ -66,4 +66,6 @@ public interface IAdminService
      * @return 结果
      */
     public int deleteAdminById(Long adminId);
+
+    public int resetUserPwd(String username,String newPassword);
 }

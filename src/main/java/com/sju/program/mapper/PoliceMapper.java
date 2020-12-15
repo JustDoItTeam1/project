@@ -1,5 +1,6 @@
 package com.sju.program.mapper;
 
+import java.awt.geom.PathIterator;
 import java.util.List;
 import com.sju.program.domain.Police;
 
@@ -24,6 +25,8 @@ public interface PoliceMapper
     public int saveAllPolices(List<Police> police);
 
     public List<Police> selectAllPolice();
+
+    public int checkUserNameUnique(String name);
 
     /**
      * 查询交警人员列表

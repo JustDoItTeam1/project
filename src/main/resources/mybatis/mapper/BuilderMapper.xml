@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBuilderVo">
-        select builder_id, builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag from builder
+        select builder_id, builder_username, builder_name, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag from builder
     </sql>
 
     <select id="selectBuilderList" parameterType="Builder" resultMap="BuilderResult">
@@ -44,6 +44,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBuilderNameById" parameterType="Long" resultMap="BuilderResult">
         SELECT builder_name FROM builder
         where builder_id = #{builderId}
+    </select>
+
+    <select id="checkUserNameUnique" parameterType="String" resultType="int">
+      SELECT COUNT(1) FROM builder WHERE builder_name=#{builderName}
     </select>
 
 

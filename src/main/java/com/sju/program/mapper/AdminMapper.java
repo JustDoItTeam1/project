@@ -2,6 +2,7 @@ package com.sju.program.mapper;
 
 import java.util.List;
 import com.sju.program.domain.Admin;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 管理员账户Mapper接口
@@ -67,4 +68,6 @@ public interface AdminMapper
      * @return 结果
      */
     public int deleteAdminByIds(Long[] adminIds);
+
+    int resetUserPwd(@Param("username") String username,@Param("newPassword") String newPassword);
 }

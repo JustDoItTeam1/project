@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPoliceVo">
-        select police_id, police_name, police_password, police_delete_flag from police
+        select police_id, police_name, police_delete_flag from police
     </sql>
 
     <select id="selectPoliceList" parameterType="Police" resultMap="PoliceResult">
@@ -40,19 +40,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectAllPolice" resultMap="PoliceResult">
        select police_name, police_password, police_delete_flag from police
     </select>
+
+    <select id="checkUserNameUnique" parameterType="String" resultType="int">
+        SELECT COUNT(1) FROM police WHERE police_name=#{name}
+    </select>
         
     <insert id="insertPolice" parameterType="Police" useGeneratedKeys="true" keyProperty="policeId">
         insert into police
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="policeName != null">police_name,</if>
             <if test="policePassword != null">police_password,</if>
-            <if test="policeDeleteFlag != null">police_delete_flag,</if>
+            police_delete_flag
 
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="policeName != null">#{policeName},</if>
             <if test="policePassword != null">#{policePassword},</if>
-            <if test="policeDeleteFlag != null">#{policeDeleteFlag},</if>
+            "live"
 
          </trim>
     </insert>

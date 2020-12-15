@@ -71,4 +71,6 @@ public interface IPoliceService
     public int deletePoliceById(Long policeId);
 
     public int save(List<Police> police);
+
+    public String checkUserNameUnique(String name);
 }
