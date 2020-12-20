@@ -175,6 +175,7 @@
 
 <!--      </el-table-column>-->
 <!--      <el-table-column label="施工项目id" align="center" prop="ssId" width="110" />-->
+<!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
       <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
       <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
@@ -560,12 +561,13 @@
 </template>
 
 <script>
-import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure } from "@/api/enclosure/enclosure";
+import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure} from "@/api/enclosure/enclosure";
 import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
 import {listProject} from "@/api/project/project";
-import {downloadEnclosure} from "../../../api/enclosure/enclosure";
+import {downloadEnclosure, reviewEnclosure} from "../../../api/enclosure/enclosure";
 import Ploygon from "../../test/components/Ploygon";
+import {getInfo} from "../../../api/login";
 export default {
   name: "Scheme",
   components:{Ploygon,mapView},
@@ -583,7 +585,12 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-
+      //围蔽是否通过
+      verifyFlag:null,
+      // 一个施工项目的围蔽详情
+      schemeListOne:[],
+      // 一个施工项目的详情
+      projectListOne:[],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -1078,17 +1085,34 @@ export default {
     },
     /** 通过按钮操作 */
     handleAgree(e){
-      console.log(e);
-      this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '该围蔽方案成功设置为已通过!'
-        });
-        this.getList();
+        console.log(e);
+        this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        //获取操作人员id
+        getInfo().then(response => {
+          if(response.roles=="admin"){
+            this.Suggessions.trafficId=0;
+          }
+          else
+            this.Suggessions.trafficId=response.user.id;
+          this.Suggessions.suggestion="";
+          // console.log(this.ssProjectId)
+          reviewEnclosure(e.ssProjectId,this.Suggessions).then(response => {
+            if (response.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '该围蔽方案成功设置为已通过!'
+              });
+              this.verifyFlag="已通过";
+              this.ssVerifyFlag="pass"
+            }
+
+          });
+        })
+        // this.getList();
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -1099,19 +1123,34 @@ export default {
     /** 否决按钮操作 */
     handleDisagree(e){
       console.log(e);
-      this.Suggessions= {
-        projectid:e.ssProjectId,
-        sugge:null,
-      }
+      this.Suggessions.suggestion=null;
       this.opendisa = true;
+      this.schemeListOne.ssProjectId=e.ssProjectId
     },
     /** 否决确定操作 */
     handelConfirmReason() {
-      this.$refs['elForm'].validate(valid => {
-        if (valid) {
-          this.msgSuccess("否决围蔽方案成功");
-          this.opendisa = false;
-        }
+      //获取操作人员id
+      getInfo().then(response => {
+        if (response.roles == "admin") {
+          this.Suggessions.trafficId = 0;
+        } else
+          this.Suggessions.trafficId = response.user.id;
+        // console.log(response.roles)
+        // console.log(this.Suggessions.trafficId)
+        this.$refs['elForm'].validate(valid => {
+          if (valid) {
+            let g = this.schemeListOne;
+            console.log(g);
+            reviewEnclosure(this.schemeListOne.ssProjectId, this.Suggessions).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("否决围蔽方案成功");
+                this.opendisa = false;
+                this.verifyFlag = "未通过";
+                this.schemeListOne.ssVerifyFlag = "nopass"
+              }
+            });
+          }
+        })
       })
     },
     /** 查看地图按钮操作 */
