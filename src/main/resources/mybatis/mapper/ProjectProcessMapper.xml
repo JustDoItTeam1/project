@@ -31,6 +31,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT pp_id, pp_time, pp_project_id, pp_description, pp_delete_flag FROM project_process
         WHERE pp_delete_flag!="del"
     </select>
+
+    <select id="selectProjectProcessByTime" resultMap="ProjectProcessResult">
+        SELECT t.*FROM (SELECT pp_project_id,max(pp_time) as pp_time FROM project_process GROUP BY pp_project_id) a LEFT JOIN project_process t ON t.pp_project_id=a.pp_project_id and t.pp_time=a.pp_time WHERE DATEDIFF(NOW(),t.pp_time)>60
+    </select>
     
     <select id="selectProjectProcessById" parameterType="Long" resultMap="ProjectProcessResult">
         <include refid="selectProjectProcessVo"/>

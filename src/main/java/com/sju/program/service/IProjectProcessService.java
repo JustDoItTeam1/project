@@ -34,6 +34,10 @@ public interface IProjectProcessService
 
     public List<ProjectProcessVo> projectProcessVoList(List<ProjectProcess> list);
 
+    public List<ProjectProcess> selectProjectProcessByTime();
+
+
+
 
 
 

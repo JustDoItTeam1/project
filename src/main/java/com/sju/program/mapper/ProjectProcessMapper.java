@@ -29,7 +29,11 @@ public interface ProjectProcessMapper
 
     public List<ProjectProcess> selectAllProjectProcessList();
 
+    public List<ProjectProcess> selectProjectProcessByTime();
+
     public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId);
+
+
 
 
 

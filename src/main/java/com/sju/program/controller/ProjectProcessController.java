@@ -117,4 +117,10 @@ public class ProjectProcessController extends BaseController
     {
         return toAjax(projectProcessService.deleteProjectProcessByIds(ppIds));
     }
+
+    @GetMapping("/get")
+    public TableDataInfo get(){
+        List<ProjectProcess> list=projectProcessService.selectProjectProcessByTime();
+        return getDataTable(list);
+    }
 }
