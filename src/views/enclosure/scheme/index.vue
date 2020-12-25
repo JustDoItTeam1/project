@@ -220,13 +220,13 @@
                      type="text"
                      @click="handleAgree(scope.row)"
                      v-hasPermi="['enclosure:scheme:agree']"
-                     v-if="scope.row.ssVerifyFlag='review'"
+                     v-if=scope.row.ss
           >通过</el-button>
           <el-button size="mini"
                      type="text"
                      @click="handleDisagree(scope.row)"
                      v-hasPermi="['enclosure:scheme:disagree']"
-                     v-if="scope.row.ssVerifyFlag='review'"
+                     v-if=scope.row.ss
           >否决</el-button>
 
 
