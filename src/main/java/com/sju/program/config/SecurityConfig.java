@@ -77,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/program/builder/upload").permitAll()
                 .antMatchers("/program/staff/upload").permitAll()
                 .antMatchers("/program/police/upload").permitAll()
+                .antMatchers("/program/admin/t").permitAll()
+
 
 
 //                .antMatchers("/program/staff/export").permitAll()

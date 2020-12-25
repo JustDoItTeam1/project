@@ -1,6 +1,8 @@
 package com.sju.program.controller;
 
 import java.util.List;
+
+import com.sju.program.utils.Result;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,5 +99,10 @@ public class AdminController extends BaseController
     public AjaxResult remove(@PathVariable Long[] adminIds)
     {
         return toAjax(adminService.deleteAdminByIds(adminIds));
+    }
+
+    @GetMapping("/t")
+    public Result<String> test(){
+        return Result.success("123");
     }
 }
