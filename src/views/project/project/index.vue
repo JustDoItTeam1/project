@@ -190,6 +190,7 @@
             type="text"
             size="small"
             v-hasPermi="['project:project:finish']"
+            v-if="scope.row.projectFinishedFlag=='continue'"
           >项目完工</el-button>
         </template>
       </el-table-column>

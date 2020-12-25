@@ -220,13 +220,13 @@
                      type="text"
                      @click="handleAgree(scope.row)"
                      v-hasPermi="['enclosure:scheme:agree']"
-                     v-if=scope.row.ss
+                     v-if="scope.row.ssVerifyFlag='review'"
           >通过</el-button>
           <el-button size="mini"
                      type="text"
                      @click="handleDisagree(scope.row)"
                      v-hasPermi="['enclosure:scheme:disagree']"
-                     v-if=scope.row.ss
+                     v-if="scope.row.ssVerifyFlag='review'"
           >否决</el-button>
 
 
@@ -546,8 +546,8 @@
 
     <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
       <el-form ref="elForm" :model="Suggessions"  size="medium" label-width="100px">
-        <el-form-item label="原因或建议" prop="sugge">
-          <el-input v-model="Suggessions.sugge" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
+        <el-form-item label="原因或建议" prop="suggestion">
+          <el-input v-model="Suggessions.suggestion" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
                     :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
         </el-form-item>
       </el-form>
@@ -1081,7 +1081,15 @@ export default {
     },
     /** 下载附件按钮操作 */
     handleDownload(e){
-      console.log(e);
+      // console.log(e.children[0])
+      console.log(e.children[0].ssFilePath);
+      var downloadQuery={fileName:e.children[0].ssFilePath}
+      downloadEnclosure(downloadQuery).then(response => {
+        if (response.code === 200) {
+          this.msgSuccess("修改成功");
+
+        }
+      });
     },
     /** 通过按钮操作 */
     handleAgree(e){
@@ -1094,11 +1102,12 @@ export default {
         //获取操作人员id
         getInfo().then(response => {
           if(response.roles=="admin"){
-            this.Suggessions.trafficId=0;
+            this.Suggessions.trafficId=1;
           }
           else
             this.Suggessions.trafficId=response.user.id;
           this.Suggessions.suggestion="";
+          this.Suggessions.trafficId=1;
           // console.log(this.ssProjectId)
           reviewEnclosure(e.ssProjectId,this.Suggessions).then(response => {
             if (response.code === 200) {
@@ -1132,11 +1141,11 @@ export default {
       //获取操作人员id
       getInfo().then(response => {
         if (response.roles == "admin") {
-          this.Suggessions.trafficId = 0;
+          this.Suggessions.trafficId = 1;
         } else
           this.Suggessions.trafficId = response.user.id;
         // console.log(response.roles)
-        // console.log(this.Suggessions.trafficId)
+        this.Suggessions.trafficId = 1;
         this.$refs['elForm'].validate(valid => {
           if (valid) {
             let g = this.schemeListOne;
