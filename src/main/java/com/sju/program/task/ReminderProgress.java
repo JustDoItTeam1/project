@@ -1,11 +1,14 @@
 package com.sju.program.task;
 
+import com.sju.program.domain.Project;
 import com.sju.program.domain.ProjectProcess;
+import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.service.IProjectProcessService;
 import com.sju.program.service.IProjectService;
 import com.sju.program.utils.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +24,17 @@ import java.util.Set;
 public class ReminderProgress {
 	@Autowired
 	private IProjectProcessService projectProcessService;
+	@Autowired
+	private IProjectService projectService;
 
-	@Test
-	@Scheduled(cron = "0 0 23 0 1/2 ? ")
+	@Scheduled(cron = "*/10 * * * * ?")
 	public void reminder(){
+		NoticeToBuilder noticeToBuilder=new NoticeToBuilder();
 		Set<Integer> set=new HashSet<>();
-		List<ProjectProcess> list=projectProcessService.selectProjectProcessByTime();
+		List<Integer> list=projectService.selectProjectProcessByTime();
 		if (StringUtils.isNotEmpty(list)){
-
+			int result=projectService.updateSubmiteprocessFlag(list);
+			System.out.println(result);
 		}
-
 	}
 }

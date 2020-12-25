@@ -32,6 +32,12 @@ public interface ProjectMapper
 
     public String selectProjectNameById(Long projectId);
 
+    public List<Integer> selectProjectProcessByTime();
+
+    public int updateSubmiteprocessFlag(List<Integer> list);
+
+    List<Project> selectProjectListBySubmiteprocessFlag();
+
 
 
 

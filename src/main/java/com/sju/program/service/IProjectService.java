@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.Project;
+import io.swagger.models.auth.In;
 
 /**
  * 施工项目Service接口
@@ -70,4 +71,12 @@ public interface IProjectService
     List<Project> selectAllProjectList();
 
     List<Project> selectSiegeSchemeBySearch(List<Project> list,String projectInfo);
+
+    List<Integer> selectProjectProcessByTime();
+
+    int updateSubmiteprocessFlag(List<Integer> list);
+
+    List<Project> selectProjectListBySubmiteprocessFlag();
+
+
 }

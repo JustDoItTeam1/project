@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="projectTrafficStaffId"    column="project_traffic_staff_id"    />
         <result property="projectFinishedFlag"    column="project_finished_flag"    />
         <result property="projectDeleteFlag"    column="project_delete_flag"    />
+        <result property="projectSubmiteprocessFlag" column="project_submitprocess_flag"></result>
     </resultMap>
 
     <sql id="selectProjectVo">
@@ -50,6 +51,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE project_id = #{projectId} AND project_delete_flag!="del"
     </select>
 
+    <select id="selectProjectProcessByTime" resultType="int">
+        SELECT p.project_id FROM (SELECT pp_project_id,max(pp_time) as pp_time FROM project_process GROUP BY pp_project_id) a LEFT JOIN project_process t ON t.pp_project_id=a.pp_project_id and t.pp_time=a.pp_time left JOIN project p on p.project_id=a.pp_project_id WHERE DATEDIFF(NOW(),t.pp_time)>60
+    </select>
+
+
 
     <select id="selectProjectByName" parameterType="String" resultMap="ProjectResult">
         <include refid="selectProjectPI"/>
@@ -82,6 +88,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_id = #{projectId} AND project_delete_flag!="del"
     </select>
 
+    <select id="selectProjectListBySubmiteprocessFlag" resultMap="ProjectResult">
+        select * from project
+        where project_submitprocess_flag="false" and project_delete_flag!="del"
+    </select>
+
 
 
 
@@ -102,8 +113,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderId != null">project_builder_id,</if>
             <if test="projectTrafficStaffId != null">project_traffic_staff_id,</if>
             project_finished_flag,
-            project_delete_flag
-
+            project_delete_flag,
+            prohect_submiteprocess_flag
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null">#{projectName},</if>
@@ -115,7 +126,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderId != null">#{projectBuilderId},</if>
             <if test="projectTrafficStaffId != null">#{projectTrafficStaffId},</if>
             "continue",
-            "live"
+            "live",
+            "true"
          </trim>
     </insert>
 
@@ -145,6 +157,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE project SET project_delete_flag = "del" where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
+        </foreach>
+    </update>
+
+    <update id="updateSubmiteprocessFlag" parameterType="Integer">
+        update project set project_submitprocess_flag="false" where project_id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </update>
     <delete id="deleteProjectById" parameterType="Long">

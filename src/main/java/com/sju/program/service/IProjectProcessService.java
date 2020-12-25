@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.ProjectProcess;
+import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.domain.vo.ProjectProcessVo;
 
 /**
@@ -34,7 +35,7 @@ public interface IProjectProcessService
 
     public List<ProjectProcessVo> projectProcessVoList(List<ProjectProcess> list);
 
-    public List<ProjectProcess> selectProjectProcessByTime();
+    public List<NoticeToBuilder> selectProjectProcessByTime();
 
 
 

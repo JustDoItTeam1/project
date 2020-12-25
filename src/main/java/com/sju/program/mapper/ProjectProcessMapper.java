@@ -2,6 +2,7 @@ package com.sju.program.mapper;
 
 import java.util.List;
 import com.sju.program.domain.ProjectProcess;
+import com.sju.program.domain.vo.NoticeToBuilder;
 
 /**
  * 施工进度Mapper接口
@@ -29,7 +30,7 @@ public interface ProjectProcessMapper
 
     public List<ProjectProcess> selectAllProjectProcessList();
 
-    public List<ProjectProcess> selectProjectProcessByTime();
+    public List<NoticeToBuilder> selectProjectProcessByTime();
 
     public List<ProjectProcess> selectProjectProcessByBuilderId(Long builderId);
 

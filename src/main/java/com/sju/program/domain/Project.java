@@ -59,6 +59,9 @@ public class Project
     @Excel(name = "删除标识")
     private String projectDeleteFlag;
 
+    /** 项目是否按时提交进度的标识*/
+    private String projectSubmiteprocessFlag;
+
 //    /** 更新时间 */
 //    @JsonFormat(pattern = "yyyy-MM-dd")
 //    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -69,6 +72,14 @@ public class Project
     private String projectInfo;
     /** 查看通过或者未通过方案的标识*/
     private String flag;
+
+    public String getProjectSubmiteprocessFlag() {
+        return projectSubmiteprocessFlag;
+    }
+
+    public void setProjectSubmiteprocessFlag(String projectSubmiteprocessFlag) {
+        this.projectSubmiteprocessFlag = projectSubmiteprocessFlag;
+    }
 
     public String getFlag() {
         return flag;

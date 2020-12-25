@@ -3,6 +3,7 @@ package com.sju.program.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.domain.vo.ProjectProcessVo;
 import com.sju.program.mapper.ProjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
     }
 
     @Override
-    public List<ProjectProcess> selectProjectProcessByTime() {
+    public List<NoticeToBuilder> selectProjectProcessByTime() {
         return projectProcessMapper.selectProjectProcessByTime();
     }
 }

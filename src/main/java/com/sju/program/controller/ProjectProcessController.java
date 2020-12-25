@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sju.program.domain.SiegeScheme;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.domain.vo.ProjectProcessVo;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
@@ -120,7 +121,8 @@ public class ProjectProcessController extends BaseController
 
     @GetMapping("/get")
     public TableDataInfo get(){
-        List<ProjectProcess> list=projectProcessService.selectProjectProcessByTime();
-        return getDataTable(list);
+        //List<NoticeToBuilder> list=projectProcessService.selectProjectProcessByTime();
+        //return getDataTable(list);
+        return null;
     }
 }

@@ -2,6 +2,8 @@ package com.sju.program.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.ProjectMapper;
@@ -57,6 +59,21 @@ public class ProjectServiceImpl implements IProjectService
             }
         }
         return projectList;
+    }
+
+    @Override
+    public List<Integer> selectProjectProcessByTime() {
+        return projectMapper.selectProjectProcessByTime();
+    }
+
+    @Override
+    public int updateSubmiteprocessFlag(List<Integer> list) {
+        return projectMapper.updateSubmiteprocessFlag(list);
+    }
+
+    @Override
+    public List<Project> selectProjectListBySubmiteprocessFlag() {
+        return projectMapper.selectProjectListBySubmiteprocessFlag();
     }
 
     /**

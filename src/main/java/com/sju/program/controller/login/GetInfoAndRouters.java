@@ -4,6 +4,7 @@ import com.sju.program.domain.*;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.service.IMenuService;
+import com.sju.program.service.IProjectService;
 import com.sju.program.service.login.PermissionService;
 import com.sju.program.service.login.SysPermissionService;
 import com.sju.program.service.login.TokenService;
@@ -29,6 +30,8 @@ public class GetInfoAndRouters {
 
     @Autowired
     private SysPermissionService permissionService;
+    @Autowired
+    private IProjectService projectService;
 
 
     @ApiOperation(value = "获取路由接口",notes = "获取菜单返回")
@@ -63,7 +66,7 @@ public class GetInfoAndRouters {
      *
      * @return 用户信息
      */
-    @ApiOperation(value = "获取管理员用户信息接口",notes = "获取权限和用户信息返回")
+    @ApiOperation(value = "获取用户信息接口",notes = "获取权限和用户信息返回")
     @GetMapping("/getInfo")
     public AjaxResult getInfo()
     {
@@ -84,10 +87,12 @@ public class GetInfoAndRouters {
             Builder builder=(Builder) loginUser.getUser();
             // 权限集合
             permissions = permissionService.getMenuPermission(builder.getAuthenticate());
+            List<Project> list=projectService.selectProjectListBySubmiteprocessFlag();
             builder.setPermissions(permissions);
             ajax.put("user", builder);
             ajax.put("permissions",permissions);
             ajax.put("roles","common");
+            ajax.put("OverdueProjectInformation",list);
         }
         if (loginUser.getUser().getClass()==TrafficeStaff.class){
             TrafficeStaff trafficeStaff=(TrafficeStaff) loginUser.getUser();
@@ -110,10 +115,4 @@ public class GetInfoAndRouters {
         return ajax;
     }
 
-    @ApiOperation("获取逾期未提交的项目接口")
-    @GetMapping("/getProject")
-    public List<Project> getProgect(){
-        LoginUser loginUser=tokenService.getLoginUser(ServletUtils.getRequest());
-        return null;
-    }
 }
