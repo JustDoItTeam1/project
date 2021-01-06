@@ -11,6 +11,7 @@ import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.SecurityUtils;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.file.FileUploadUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import java.io.IOException;
  * 
  * @author ruoyi
  */
+@Api(tags = "管理员修改密码")
 @RestController
 @RequestMapping("/system/user/profile")
 public class SysProfileController
