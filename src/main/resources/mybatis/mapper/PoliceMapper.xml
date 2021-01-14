@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPoliceVo">
-        select police_id, police_name, police_delete_flag from police
+        select police_id, police_name,builder_password, police_delete_flag from police
     </sql>
 
     <select id="selectPoliceList" parameterType="Police" resultMap="PoliceResult">

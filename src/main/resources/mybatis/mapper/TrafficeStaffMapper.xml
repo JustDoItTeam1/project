@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTrafficeStaffVo">
-        select traffic_id, traffic_name,  traffic_delete_flag from traffice_staff
+        select traffic_id, traffic_name, traffic_password, traffic_delete_flag from traffice_staff
     </sql>
 
     <select id="selectTrafficeStaffList" parameterType="TrafficeStaff" resultMap="TrafficeStaffResult">
