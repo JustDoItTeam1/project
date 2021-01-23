@@ -3,8 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.MenuMapper">
-    
-    <resultMap type="Menu" id="MenuResult">
+
+    <resultMap type="com.sju.program.domain.Menu" id="MenuResult">
         <result property="menuId"    column="menu_id"    />
         <result property="menuName"    column="menu_name"    />
         <result property="menuParentId"    column="menu_parent_id"    />
@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectMenuList" parameterType="Menu" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
-        <where>  
+        <where>
             <if test="menuName != null  and menuName != ''"> and menu_name like concat('%', #{menuName}, '%')</if>
             <if test="menuParentId != null "> and menu_parent_id = #{menuParentId}</if>
             <if test="menuOrderNum != null "> and menu_order_num = #{menuOrderNum}</if>
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
-    
+
     <select id="selectMenuById" parameterType="Long" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
         where menu_id = #{menuId}
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE m.role_id=#{auth}
     </select>
 
-        
+
     <insert id="insertMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="menuId">
         insert into menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -117,5 +117,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{menuId}
         </foreach>
     </delete>
-    
+
 </mapper>

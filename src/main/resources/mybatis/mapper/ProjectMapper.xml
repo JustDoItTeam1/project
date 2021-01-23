@@ -3,7 +3,6 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.ProjectMapper">
-    
     <resultMap type="Project" id="ProjectResult">
         <result property="projectId"    column="project_id"    />
         <result property="projectName"    column="project_name"    />
@@ -45,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectUpdateFlag != null "> and project_update_flag = #{projectUpdateFlag}</if>
         </where>-->
     </select>
-    
+
     <select id="selectProjectById" parameterType="Long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
         WHERE project_id = #{projectId} AND project_delete_flag!="del"
@@ -100,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectProjectPI"/>
         where project_manager = #{projectManager} AND project_delete_flag!="del"
     </select>
-        
+
     <insert id="insertProject" parameterType="Project" useGeneratedKeys="true" keyProperty="projectId">
         insert into project
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -112,9 +111,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderName != null">project_builder_name,</if>
             <if test="projectBuilderId != null">project_builder_id,</if>
             <if test="projectTrafficStaffId != null">project_traffic_staff_id,</if>
-            project_finished_flag,
-            project_delete_flag,
-            prohect_submiteprocess_flag
+<!--            <if test="projectFinishedFlag != null">project_finished_flag,</if>-->
+<!--            project_delete_flag,-->
+<!--            <if test="projectSubmiteprocessFlag != null">project_submitprocess_flag,</if>-->
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null">#{projectName},</if>
@@ -125,9 +124,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="projectBuilderName != null">#{projectBuilderName},</if>
             <if test="projectBuilderId != null">#{projectBuilderId},</if>
             <if test="projectTrafficStaffId != null">#{projectTrafficStaffId},</if>
-            "continue",
-            "live",
-            "true"
+<!--            <if test="projectFinishedFlag != null">"continue",</if>-->
+<!--             "live",-->
+<!--            <if test="projectSubmiteprocessFlag != null">"true",</if>-->
          </trim>
     </insert>
 

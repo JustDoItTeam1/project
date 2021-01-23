@@ -7,4 +7,18 @@
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+    <typeAliases>
+            <typeAlias alias="Project" type="com.sju.program.domain.Project"/>
+            <typeAlias alias="Admin" type="com.sju.program.domain.Admin"/>
+            <typeAlias alias="Builder" type="com.sju.program.domain.Builder"/>
+            <typeAlias alias="Menu" type="com.sju.program.domain.Menu"/>
+            <typeAlias alias="Police" type="com.sju.program.domain.Police"/>
+            <typeAlias alias="ProjectProcess" type="com.sju.program.domain.ProjectProcess"/>
+            <typeAlias alias="RectificationInfo" type="com.sju.program.domain.RectificationInfo"/>
+            <typeAlias alias="Role" type="com.sju.program.domain.Role"/>
+            <typeAlias alias="RoleMenu" type="com.sju.program.domain.RoleMenu"/>
+            <typeAlias alias="SiegeScheme" type="com.sju.program.domain.SiegeScheme"/>
+            <typeAlias alias="TrafficeStaff" type="com.sju.program.domain.TrafficeStaff"/>
+
+    </typeAliases>
 </configuration>

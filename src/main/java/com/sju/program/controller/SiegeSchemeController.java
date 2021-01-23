@@ -29,7 +29,7 @@ import com.sju.program.service.ISiegeSchemeService;
 
 /**
  * 围蔽方案Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -113,7 +113,7 @@ public class SiegeSchemeController extends BaseController
      * 新增围蔽方案
      */
     @ApiOperation(value = "新增围蔽方案接口",notes = "围蔽阶段或围蔽状态信息已存在则新增失败")
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:add')")
+    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:add')")
     @Log(title = "围蔽方案", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SiegeScheme siegeScheme)

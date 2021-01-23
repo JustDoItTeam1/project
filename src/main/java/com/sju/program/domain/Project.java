@@ -8,7 +8,7 @@ import com.sju.program.annotation.Excel;
 
 /**
  * 施工项目对象 project
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -102,97 +102,97 @@ public class Project
         this.projectId = projectId;
     }
 
-    public Long getProjectId() 
+    public Long getProjectId()
     {
         return projectId;
     }
-    public void setProjectName(String projectName) 
+    public void setProjectName(String projectName)
     {
         this.projectName = projectName;
     }
 
-    public String getProjectName() 
+    public String getProjectName()
     {
         return projectName;
     }
-    public void setProjectLocation(String projectLocation) 
+    public void setProjectLocation(String projectLocation)
     {
         this.projectLocation = projectLocation;
     }
 
-    public String getProjectLocation() 
+    public String getProjectLocation()
     {
         return projectLocation;
     }
-    public void setProjectLongLat(String projectLongLat) 
+    public void setProjectLongLat(String projectLongLat)
     {
         this.projectLongLat = projectLongLat;
     }
 
-    public String getProjectLongLat() 
+    public String getProjectLongLat()
     {
         return projectLongLat;
     }
-    public void setProjectManger(String projectManger) 
+    public void setProjectManger(String projectManger)
     {
         this.projectManger = projectManger;
     }
 
-    public String getProjectManger() 
+    public String getProjectManger()
     {
         return projectManger;
     }
-    public void setProjectPhone(String projectPhone) 
+    public void setProjectPhone(String projectPhone)
     {
         this.projectPhone = projectPhone;
     }
 
-    public String getProjectPhone() 
+    public String getProjectPhone()
     {
         return projectPhone;
     }
-    public void setProjectBuilderName(String projectBuilderName) 
+    public void setProjectBuilderName(String projectBuilderName)
     {
         this.projectBuilderName = projectBuilderName;
     }
 
-    public String getProjectBuilderName() 
+    public String getProjectBuilderName()
     {
         return projectBuilderName;
     }
-    public void setProjectBuilderId(Long projectBuilderId) 
+    public void setProjectBuilderId(Long projectBuilderId)
     {
         this.projectBuilderId = projectBuilderId;
     }
 
-    public Long getProjectBuilderId() 
+    public Long getProjectBuilderId()
     {
         return projectBuilderId;
     }
-    public void setProjectTrafficStaffId(Long projectTrafficStaffId) 
+    public void setProjectTrafficStaffId(Long projectTrafficStaffId)
     {
         this.projectTrafficStaffId = projectTrafficStaffId;
     }
 
-    public Long getProjectTrafficStaffId() 
+    public Long getProjectTrafficStaffId()
     {
         return projectTrafficStaffId;
     }
-    public void setProjectFinishedFlag(String projectFinishedFlag) 
+    public void setProjectFinishedFlag(String projectFinishedFlag)
     {
         this.projectFinishedFlag = projectFinishedFlag;
     }
 
-    public String getProjectFinishedFlag() 
+    public String getProjectFinishedFlag()
     {
         return projectFinishedFlag;
     }
-    public void setProjectDeleteFlag(String projectDeleteFlag) 
+    public void setProjectDeleteFlag(String projectDeleteFlag)
     {
         this.projectDeleteFlag = projectDeleteFlag;
     }
 
-    public String getProjectDeleteFlag() 
+    public String getProjectDeleteFlag()
     {
         return projectDeleteFlag;
     }

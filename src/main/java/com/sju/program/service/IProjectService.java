@@ -6,15 +6,15 @@ import io.swagger.models.auth.In;
 
 /**
  * 施工项目Service接口
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public interface IProjectService 
+public interface IProjectService
 {
     /**
      * 查询施工项目
-     * 
+     *
      * @param projectId 施工项目ID
      * @return 施工项目
      */
@@ -22,7 +22,7 @@ public interface IProjectService
 
     /**
      * 查询施工项目列表
-     * 
+     *
      * @param project 施工项目
      * @return 施工项目集合
      */
@@ -30,7 +30,7 @@ public interface IProjectService
 
     /**
      * 新增施工项目
-     * 
+     *
      * @param project 施工项目
      * @return 结果
      */
@@ -38,7 +38,7 @@ public interface IProjectService
 
     /**
      * 修改施工项目
-     * 
+     *
      * @param project 施工项目
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface IProjectService
 
     /**
      * 批量删除施工项目
-     * 
+     *
      * @param projectIds 需要删除的施工项目ID
      * @return 结果
      */
@@ -54,7 +54,7 @@ public interface IProjectService
 
     /**
      * 删除施工项目信息
-     * 
+     *
      * @param projectId 施工项目ID
      * @return 结果
      */
@@ -72,7 +72,7 @@ public interface IProjectService
 
     List<Project> selectSiegeSchemeBySearch(List<Project> list,String projectInfo);
 
-    List<Integer> selectProjectProcessByTime();
+    List<Integer> selectProjectProcessByTime1();
 
     int updateSubmiteprocessFlag(List<Integer> list);
 

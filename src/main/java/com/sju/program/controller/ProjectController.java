@@ -27,7 +27,7 @@ import com.sju.program.service.IProjectService;
 
 /**
  * 施工项目Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -76,7 +76,7 @@ public class ProjectController extends BaseController
      * 获取施工项目详细信息
      */
     @ApiOperation("获取id为x的施工项目信息")
-    @PreAuthorize("@ss.hasPermi('project:project:query')")
+    @PreAuthorize("@ss.hasPermi('project:project:edit')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
@@ -101,7 +101,7 @@ public class ProjectController extends BaseController
     @ApiOperation("修改施工项目")
     @PreAuthorize("@ss.hasPermi('project:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PutMapping()
     public AjaxResult edit(@RequestBody Project project)
     {
         return toAjax(projectService.updateProject(project));

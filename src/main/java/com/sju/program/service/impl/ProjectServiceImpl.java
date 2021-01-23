@@ -12,19 +12,19 @@ import com.sju.program.service.IProjectService;
 
 /**
  * 施工项目Service业务层处理
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
 @Service
-public class ProjectServiceImpl implements IProjectService 
+public class ProjectServiceImpl implements IProjectService
 {
     @Autowired
     private ProjectMapper projectMapper;
 
     /**
      * 查询施工项目
-     * 
+     *
      * @param projectId 施工项目ID
      * @return 施工项目
      */
@@ -62,7 +62,8 @@ public class ProjectServiceImpl implements IProjectService
     }
 
     @Override
-    public List<Integer> selectProjectProcessByTime() {
+    public List<Integer> selectProjectProcessByTime1() {
+       // return null;
         return projectMapper.selectProjectProcessByTime();
     }
 
@@ -78,7 +79,7 @@ public class ProjectServiceImpl implements IProjectService
 
     /**
      * 查询施工项目列表
-     * 
+     *
      * @param project 施工项目
      * @return 施工项目
      */
@@ -90,19 +91,20 @@ public class ProjectServiceImpl implements IProjectService
 
     /**
      * 新增施工项目
-     * 
+     *
      * @param project 施工项目
      * @return 结果
      */
     @Override
     public int insertProject(Project project)
     {
+        //return projectMapper.insert(project);
         return projectMapper.insertProject(project);
     }
 
     /**
      * 修改施工项目
-     * 
+     *
      * @param project 施工项目
      * @return 结果
      */
@@ -114,7 +116,7 @@ public class ProjectServiceImpl implements IProjectService
 
     /**
      * 批量删除施工项目
-     * 
+     *
      * @param projectIds 需要删除的施工项目ID
      * @return 结果
      */
@@ -126,7 +128,7 @@ public class ProjectServiceImpl implements IProjectService
 
     /**
      * 删除施工项目信息
-     * 
+     *
      * @param projectId 施工项目ID
      * @return 结果
      */

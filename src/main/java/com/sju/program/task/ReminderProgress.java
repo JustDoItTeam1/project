@@ -24,6 +24,7 @@ import java.util.Set;
 public class ReminderProgress {
 	@Autowired
 	private IProjectProcessService projectProcessService;
+
 	@Autowired
 	private IProjectService projectService;
 
@@ -31,7 +32,7 @@ public class ReminderProgress {
 	public void reminder(){
 		NoticeToBuilder noticeToBuilder=new NoticeToBuilder();
 		Set<Integer> set=new HashSet<>();
-		List<Integer> list=projectService.selectProjectProcessByTime();
+		List<Integer> list=projectService.selectProjectProcessByTime1();
 		if (StringUtils.isNotEmpty(list)){
 			int result=projectService.updateSubmiteprocessFlag(list);
 			System.out.println(result);
