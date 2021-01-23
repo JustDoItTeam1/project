@@ -578,7 +578,7 @@ export default {
 
 
           this.Suggessions.suggestion="";
-          reviewEnclosure(this. schemeListOne.ssProjectId,this.Suggessions).then(response => {
+          reviewEnclosure(this.schemeListOne.ssProjectId,this.Suggessions).then(response => {
             if (response.code === 200) {
               this.$message({
                 type: 'success',
@@ -612,7 +612,6 @@ export default {
     },
 
 
-
 /** 否决确定操作 */
     handelConfirmReason() {
       //获取操作人员id
@@ -622,16 +621,12 @@ export default {
         }
         else
           this.Suggessions.trafficId=response.user.id;
-        // console.log(response.roles)
-        // console.log(this.Suggessions.trafficId)
-
-
       this.$refs['elForm'].validate(valid => {
         if (valid) {
           // console.log(this.getCookie("username"));
           //this.Suggessions.suggestion=getQueryString(this.Suggessions.suggestion,"utf8");
           // console.log(this.Suggessions.suggestion)
-          reviewEnclosure(this. schemeListOne.ssProjectId,this.Suggessions).then(response => {
+          reviewEnclosure(this.schemeListOne.ssProjectId,this.Suggessions).then(response => {
             if (response.code === 200) {
               this.msgSuccess("否决围蔽方案成功");
               this.opendisa = false;

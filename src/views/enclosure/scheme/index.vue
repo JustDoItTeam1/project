@@ -568,13 +568,13 @@
 
     <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
       <el-form ref="elForm" :model="Suggessions"  size="medium" label-width="100px">
-        <el-form-item label="原因或建议" prop="sugge">
-          <el-input v-model="Suggessions.sugge" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
+        <el-form-item label="原因或建议" prop="suggestion">
+          <el-input v-model="Suggessions.suggestion" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
                     :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary" @click="handelConfirmReason">确定</el-button>
+        <el-button type="primary" @click="handelConfirmReason()">确定</el-button>
         <el-button @click="close">取消</el-button>
 
       </div>
@@ -587,8 +587,9 @@ import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosur
 import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
 import {listProject} from "@/api/project/project";
-import {downloadEnclosure} from "../../../api/enclosure/enclosure";
+import {downloadEnclosure, reviewEnclosure} from "../../../api/enclosure/enclosure";
 import Ploygon from "../../test/components/Ploygon";
+import {getInfo} from "../../../api/login";
 export default {
   name: "Scheme",
   components:{Ploygon,mapView},
@@ -653,7 +654,14 @@ export default {
       //拒绝理由弹窗
       opendisa:false,
       //拒绝理由
-      Suggessions:{},
+      //拒绝理由
+      Suggessions:{
+        suggestion:null,
+        trafficId:null,
+      },
+      //拒绝项目id
+      disProjectId:null,
+      //Suggessions:{},
       // 表单校验
       // rules1: {
       //   sugge: [{
@@ -1191,14 +1199,14 @@ export default {
       this.open = false;
       this.reset();
     },
-    //否决取消
-    close(){
-      this.opendisa = false;
-     this.Suggessions={
-       projectid:null,
-       sugge:null,
-     };
-    },
+    // //否决取消
+    // close(){
+    //   this.opendisa = false;
+    //  this.Suggessions={
+    //    projectid:null,
+    //    sugge:null,
+    //  };
+    // },
     // 表单重置
     reset() {
       this.form = {
@@ -1230,17 +1238,34 @@ export default {
     },
     /** 通过按钮操作 */
     handleAgree(e){
-      console.log(e);
+      //console.log(e);
       this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        //获取操作人员id
+        getInfo().then(response => {
+          if(response.roles=="admin"){
+            this.Suggessions.trafficId=0;
+          }
+          else
+            this.Suggessions.trafficId=response.user.id;
 
-        this.$message({
-          type: 'success',
-          message: '该围蔽方案成功设置为已通过!'
-        });
+
+          this.Suggessions.suggestion="";
+          reviewEnclosure(e.ssProjectId,this.Suggessions).then(response => {
+            if (response.code === 200) {
+              this.$message({
+                type: 'success',
+                message: '该围蔽方案成功设置为已通过!'
+              });
+              // this.verifyFlag="已通过";
+              // this.schemeListOne.ssVerifyFlag="pass"
+            }
+
+          });
+        })
         this.getList();
       }).catch(() => {
         this.$message({
@@ -1251,21 +1276,46 @@ export default {
     },
     /** 否决按钮操作 */
     handleDisagree(e){
-      console.log(e);
-      this.Suggessions= {
-        projectid:e.ssProjectId,
-        sugge:null,
-      }
+      //console.log(e);
+      this.Suggessions.suggestion=null;
       this.opendisa = true;
+      this.disProjectId=e.ssProjectId;
+      // this.Suggessions= {
+      //   projectid:e.ssProjectId,
+      //   sugge:null,
+      // }
+      // this.opendisa = true;
     },
     /** 否决确定操作 */
     handelConfirmReason() {
+      //console.log(e)
+      //获取操作人员id
+      getInfo().then(response => {
+          if(response.roles=="admin"){
+            this.Suggessions.trafficId=0;
+          }
+          else
+            this.Suggessions.trafficId=response.user.id;
       this.$refs['elForm'].validate(valid => {
         if (valid) {
-          this.msgSuccess("否决围蔽方案成功");
-          this.opendisa = false;
+          reviewEnclosure(this.disProjectId,this.Suggessions).then(response => {
+            if (response.code === 200) {
+              this.msgSuccess("否决围蔽方案成功");
+              this.opendisa = false;
+
+              // this.verifyFlag="未通过";
+              // this.schemeListOne.ssVerifyFlag="nopass"
+              this.getList();
+            }
+          });
         }
       })
+    })
+    },
+    //否决取消
+    close(){
+      this.opendisa = false;
+      this.Suggessions.suggestion=null;
     },
     /** 查看地图按钮操作 */
     handleMapview(e){
