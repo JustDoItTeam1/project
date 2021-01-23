@@ -175,7 +175,6 @@
 
 <!--      </el-table-column>-->
 <!--      <el-table-column label="施工项目id" align="center" prop="ssId" width="110" />-->
-<!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
       <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
       <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
@@ -219,13 +218,13 @@
           <el-button size="mini"
                      type="text"
                      @click="handleAgree(scope.row)"
-                     v-hasPermi="['enclosure:scheme:agree']"
+                     v-hasPermi="['enclosure:scheme:review']"
                      v-if=scope.row.ss
           >通过</el-button>
           <el-button size="mini"
                      type="text"
                      @click="handleDisagree(scope.row)"
-                     v-hasPermi="['enclosure:scheme:disagree']"
+                     v-hasPermi="['enclosure:scheme:review']"
                      v-if=scope.row.ss
           >否决</el-button>
 
@@ -471,19 +470,41 @@
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="施工项目名称" prop="ssProjectName">
-          <el-select v-model="form.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
+          <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
             <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="施工单位名称" prop="ssBuilderId">
-          <el-select v-model="form.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" >
+          <el-select v-model="addS.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" >
             <el-option v-for="item in builderList"  :value="item.id" :label="item.name">{{ item.name }}</el-option>
           </el-select>
         </el-form-item>
 
+        <el-tag
+          :key="tag"
+          v-for="tag in dynamicTags"
+          closable
+          :disable-transitions="false"
 
+          @close="handleClose(tag)"
+          @click="handleClick(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="small"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
+
+       <div  v-for="stagenum in stage" v-show="stagenum.show" >
         <el-form-item label="围蔽阶段" prop="ssStage">
-          <el-select v-model="form.ssStage" placeholder="请选择围蔽阶段">
+          <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
             <el-option label="1" value="1" />
             <el-option label="2" value="2" />
             <el-option label="3" value="3" />
@@ -493,15 +514,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="围蔽状态" prop="ssStatus">
-          <el-input v-model="form.ssStatus" placeholder="请输入围蔽状态" />
+          <el-input v-model="stagenum.ssStatus" placeholder="请输入围蔽状态" />
         </el-form-item>
         <el-form-item label="围蔽车道" prop="ssLane">
-          <el-input v-model="form.ssLane" placeholder="请输入围蔽车道" />
+          <el-input v-model="stagenum.ssLane" placeholder="请输入围蔽车道" />
         </el-form-item>
 
         <el-form-item label="开始时间" prop="ssStartTime">
           <el-date-picker clearable size="small" style="width: 200px"
-                          v-model="form.ssStartTime"
+                          v-model="stagenum.ssStartTime"
                           type="date"
                           value-format="yyyy-MM-dd"
                           placeholder="选择开始时间">
@@ -509,7 +530,7 @@
         </el-form-item>
         <el-form-item label="结束时间" prop="ssEndTime">
           <el-date-picker clearable size="small" style="width: 200px"
-                          v-model="form.ssEndTime"
+                          v-model="stagenum.ssEndTime"
                           type="date"
                           value-format="yyyy-MM-dd"
                           placeholder="选择结束时间">
@@ -519,15 +540,16 @@
 <!--          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />-->
 <!--        </el-form-item>-->
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
-          <el-input v-model="form.ssRange" placeholder="请选择围蔽区域(地图)" />
+          <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
           <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
         </el-form-item>
         <el-form-item label="围蔽性质" prop="ssProperties">
-          <el-select v-model="form.ssProperties" placeholder="请选择围蔽性质">
+          <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
             <el-option label="全封闭" value="全封闭" />
             <el-option label="半封闭" value="半封闭" />
           </el-select>
         </el-form-item>
+</div>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -546,8 +568,8 @@
 
     <el-dialog :visible.sync="opendisa" width="500px" append-to-body title="请添加拒绝围蔽方案的原因或建议">
       <el-form ref="elForm" :model="Suggessions"  size="medium" label-width="100px">
-        <el-form-item label="原因或建议" prop="suggestion">
-          <el-input v-model="Suggessions.suggestion" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
+        <el-form-item label="原因或建议" prop="sugge">
+          <el-input v-model="Suggessions.sugge" type="textarea" placeholder="请输入拒绝围蔽方案的原因或建议"
                     :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
         </el-form-item>
       </el-form>
@@ -561,13 +583,12 @@
 </template>
 
 <script>
-import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure} from "@/api/enclosure/enclosure";
+import { listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure } from "@/api/enclosure/enclosure";
 import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
 import {listProject} from "@/api/project/project";
-import {downloadEnclosure, reviewEnclosure} from "../../../api/enclosure/enclosure";
+import {downloadEnclosure} from "../../../api/enclosure/enclosure";
 import Ploygon from "../../test/components/Ploygon";
-import {getInfo} from "../../../api/login";
 export default {
   name: "Scheme",
   components:{Ploygon,mapView},
@@ -585,12 +606,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      //围蔽是否通过
-      verifyFlag:null,
-      // 一个施工项目的围蔽详情
-      schemeListOne:[],
-      // 一个施工项目的详情
-      projectListOne:[],
+
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -654,7 +670,63 @@ export default {
 
       // 表单校验
       rules: {
-      }
+      },
+      //新增围蔽的tag
+      dynamicTags: ['阶段1', '阶段2', '阶段3'],
+      inputVisible: false,
+      inputValue: '',
+      addS:{
+        ssProjectId: null,
+        builderList: null,
+       },
+      stage:[
+          {
+          ssStatus: null,
+          ssLane: null,
+          ssStage: null,
+          ssStartTime: null,
+          ssEndTime: null,
+          ssRange: null,
+          ssProperties: null,
+            show:false,
+          },
+        {
+          ssStatus: null,
+          ssLane: null,
+          ssStage: null,
+          ssStartTime: null,
+          ssEndTime: null,
+          ssRange: null,
+          ssProperties: null,
+          show:false,
+        },
+        {
+          ssStatus: null,
+          ssLane: null,
+          ssStage: null,
+          ssStartTime: null,
+          ssEndTime: null,
+          ssRange: null,
+          ssProperties: null,
+          show:false,
+        }],
+      add:{
+        ssStatus: null,
+        ssLane: null,
+        ssStage: null,
+        ssStartTime: null,
+        ssEndTime: null,
+        ssRange: null,
+        ssProperties: null,
+        show:false,
+      },
+      a:0,
+      // stageV1:true,
+      // stageV2:false,
+      // stageV3:false,
+      // stageV4:false,
+
+
     };
   },
   created() {
@@ -663,6 +735,79 @@ export default {
     this.getbuilder();
   },
   methods: {
+    handleClick(tag) {
+     this.a=tag.charAt(tag.length-1)-1;
+      // if(tag=="阶段1"){
+      //   this.stage.stage1.show=true;
+      // }
+      // if(tag=="阶段4"){
+
+      // for (var i=0;i<a;i++)
+      // {
+      //   document.write(cars[i] + "<br>");
+      // }
+
+
+      for (var i=0;i<this.stage.length;i++)
+      {
+        this.stage[i].show=false;
+      }
+      this.stage[this.a].show=true;
+      // // }
+      console.log(this.a)
+      console.log(this.stage[this.a])
+    },
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+      console.log(tag.charAt(tag.length-1)-1);
+      console.log( this.stage[tag.charAt(tag.length-1)-1])
+      this.stage[tag.charAt(tag.length-1)-1].show=false;
+      this.stage[0].show=true;
+      // delete this.stage[tag.charAt(tag.length-1)-1];
+    },
+
+    showInput() {
+       this.inputVisible = true;
+       this.$nextTick(_ => {
+         this.$refs.saveTagInput.$refs.input.focus();
+      });
+
+    },
+
+    handleInputConfirm() {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        this.dynamicTags.push(inputValue);
+        // this.stage.push(this.add);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+
+      // let inputV = this.stage.length+1;
+      //
+      // this.dynamicTags.push("阶段"+inputV);
+
+
+      for (var i=0;i<this.stage.length;i++)
+      {
+        // console.log(i)
+        this.stage[i].show=false;
+        console.log(this.stage[i])
+      }
+
+      //console.log(this.stage)
+      // this.add.show=true;
+      // this.add.ssStage=inputValue;
+      this.stage.push(Object.assign({},this.add));
+      this.stage[this.stage.length-1].show=true;
+      this.stage[this.stage.length-1].ssStage=this.stage.length;
+      //console.log(this.stage.length)
+      //console.log(this.stage)
+      // this.inputVisible = false;
+      // this.inputValue = '';
+
+    },
+
     /** 查询施工单位列表 ！！！！！！！*/
     getbuilder() {
       // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
@@ -689,8 +834,8 @@ export default {
       this.pointVisible=true;
     },
     myf(ms) {
-      this.form.ssRange=ms;
-      console.log(this.form.ploygon);
+      this.stage[this.a].ssRange=ms;
+      // console.log(this.form.ploygon);
     },
     mapView:function(e){
       this.mapVisible=true;
@@ -1081,47 +1226,22 @@ export default {
     },
     /** 下载附件按钮操作 */
     handleDownload(e){
-      // console.log(e.children[0])
-      console.log(e.children[0].ssFilePath);
-      var downloadQuery={fileName:e.children[0].ssFilePath}
-      downloadEnclosure(downloadQuery).then(response => {
-        if (response.code === 200) {
-          this.msgSuccess("修改成功");
-
-        }
-      });
+      console.log(e);
     },
     /** 通过按钮操作 */
     handleAgree(e){
-        console.log(e);
-        this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-        //获取操作人员id
-        getInfo().then(response => {
-          if(response.roles=="admin"){
-            this.Suggessions.trafficId=1;
-          }
-          else
-            this.Suggessions.trafficId=response.user.id;
-          this.Suggessions.suggestion="";
-          this.Suggessions.trafficId=1;
-          // console.log(this.ssProjectId)
-          reviewEnclosure(e.ssProjectId,this.Suggessions).then(response => {
-            if (response.code === 200) {
-              this.$message({
-                type: 'success',
-                message: '该围蔽方案成功设置为已通过!'
-              });
-              this.verifyFlag="已通过";
-              this.ssVerifyFlag="pass"
-            }
+      console.log(e);
+      this.$confirm('此操作将通过该围蔽方案, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
 
-          });
-        })
-        // this.getList();
+        this.$message({
+          type: 'success',
+          message: '该围蔽方案成功设置为已通过!'
+        });
+        this.getList();
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -1132,34 +1252,19 @@ export default {
     /** 否决按钮操作 */
     handleDisagree(e){
       console.log(e);
-      this.Suggessions.suggestion=null;
+      this.Suggessions= {
+        projectid:e.ssProjectId,
+        sugge:null,
+      }
       this.opendisa = true;
-      this.schemeListOne.ssProjectId=e.ssProjectId
     },
     /** 否决确定操作 */
     handelConfirmReason() {
-      //获取操作人员id
-      getInfo().then(response => {
-        if (response.roles == "admin") {
-          this.Suggessions.trafficId = 1;
-        } else
-          this.Suggessions.trafficId = response.user.id;
-        // console.log(response.roles)
-        this.Suggessions.trafficId = 1;
-        this.$refs['elForm'].validate(valid => {
-          if (valid) {
-            let g = this.schemeListOne;
-            console.log(g);
-            reviewEnclosure(this.schemeListOne.ssProjectId, this.Suggessions).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("否决围蔽方案成功");
-                this.opendisa = false;
-                this.verifyFlag = "未通过";
-                this.schemeListOne.ssVerifyFlag = "nopass"
-              }
-            });
-          }
-        })
+      this.$refs['elForm'].validate(valid => {
+        if (valid) {
+          this.msgSuccess("否决围蔽方案成功");
+          this.opendisa = false;
+        }
       })
     },
     /** 查看地图按钮操作 */
@@ -1253,3 +1358,20 @@ export default {
   }
 };
 </script>
+<style>
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
+</style>

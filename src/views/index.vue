@@ -387,6 +387,7 @@
 <script>
 import {listProject,updateProject} from "../api/project/project";
 import {getInfo} from "../api/login";
+import { saveAs } from 'file-saver';
 import Ploygon from "./test/components/Ploygon";
 import {getIdEnclosure,reviewEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
 import detailForm from "./test/components/detailForm";
@@ -894,25 +895,30 @@ export default {
     //下载附件
     handleDownload:function () {
       var downloadQuery={fileName:this.schemeListOne.children[0].ssFilePath}
-      downloadEnclosure(downloadQuery).then(response => {
-        if (response.code === 200) {
-          this.msgSuccess("修改成功");
-
-        }
-      });
+      // downloadEnclosure(downloadQuery).then(response => {
+        //const blob = new Blob([response], { type: 'text/plain;charset=utf-8' })
+        //saveAs(blob, this.schemeListOne.children[0].ssFilePath)
+        // this.download(response.msg);
+        // if (response.code === 200) {
+        //   this.msgSuccess("修改成功");
+        //
+        // }
+      // });
+      return downloadEnclosure(downloadQuery);
     },
 
     //新增围蔽
     clickSeigeAdd:function(){
 
     },
-    //查看围蔽详情
+    //点击查看围蔽详情
     clickSeige:function(){
 
       getIdEnclosure(this.projectListOne.projectId).then(response => {
 
         if (response.code === 200) {
           this.schemeListOne=response.data[0];
+
           if(this.schemeListOne.ssVerifyFlag=="pass")
             this.verifyFlag="已通过";
           if(this.schemeListOne.ssVerifyFlag=="nopass")
@@ -932,22 +938,27 @@ export default {
 
       getIdEnclosure(this.projectListOne.projectId).then(response => {
 
-        if (response.msg=="暂无围蔽方案") {
-          this.addSiegeVV=true;
-          this.siegeVV = false;
-        }
+
         if (response.code === 200) {
+
+          //console.log(response.data.length==0)
+          if (response.data.length==0) {
+            this.addSiegeVV=true;
+            this.siegeVV = false;
+          }
+          else{
           //console.log(response);
-          this.schemeListOne=response.data[0];
-          if(this.schemeListOne.ssVerifyFlag=="pass")
-            this.verifyFlag="已通过";
-          if(this.schemeListOne.ssVerifyFlag=="nopass")
-            this.verifyFlag="未通过";
-          if(this.schemeListOne.ssVerifyFlag=="review")
-            this.verifyFlag="待审核";
-          // console.log(this.schemeListOne.children[0].ssSuggessions);
-          this.siegeVV = true;
-          this.addSiegeVV=false;
+            this.schemeListOne=response.data[0];
+            if(this.schemeListOne.ssVerifyFlag=="pass")
+              this.verifyFlag="已通过";
+            if(this.schemeListOne.ssVerifyFlag=="nopass")
+              this.verifyFlag="未通过";
+            if(this.schemeListOne.ssVerifyFlag=="review")
+              this.verifyFlag="待审核";
+             //console.log(this.schemeListOne.ssVerifyFlag);
+            this.siegeVV = true;
+            this.addSiegeVV=false;
+          }
         }
       });
       // //将object转化为array

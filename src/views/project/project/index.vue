@@ -190,7 +190,6 @@
             type="text"
             size="small"
             v-hasPermi="['project:project:finish']"
-            v-if="scope.row.projectFinishedFlag=='continue'"
           >项目完工</el-button>
         </template>
       </el-table-column>
@@ -204,7 +203,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加施工单位对话框 -->
+    <!-- 添加施工项目对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="项目名称" prop="projectName">
@@ -217,7 +216,7 @@
 
         <el-form-item label="施工单位名称" prop="projectBuilderName">
           <el-select v-model="form.projectBuilderName" placeholder="请选择施工单位名称" clearable size="small" >
-            <el-option v-for="item in builderList"  :value="item.id" >{{ item.name }}</el-option>
+            <el-option v-for="item in builderList"  :value="item.name" >{{ item.name }}</el-option>
           </el-select>
         </el-form-item>
 
@@ -429,9 +428,9 @@
         // console.log(this.builderList);
         listBuilder(this.queryParams).then(response => {
           this.builderList=[{name:"暂无",id:"暂无"}];
-          console.log(this.builderList);
+          //console.log(this.builderList);
           for ( let i of response.rows) {
-            this.builderList.push({name:i.builderUsername,id:i.builderUsername});
+            this.builderList.push({name:i.builderUsername,id:i.builderId});
           }
         });
       },
@@ -504,6 +503,13 @@
                 }
               });
             } else {
+
+              for (var i=0;i<this.builderList.length;i++)
+              {
+                if( this.builderList[i].name==this.form.projectBuilderName){
+                  this.form["projectBuilderId"]= this.builderList.id;
+                }
+              }
               addProject(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
