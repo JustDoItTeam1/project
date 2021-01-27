@@ -514,6 +514,7 @@ export default {
 
     // 获取子组件ploygon传来的值
     myf(ms) {
+      this.pointVisible=false;
       this.projectListOne.projectLongLat=ms;
     },
 
@@ -980,6 +981,7 @@ export default {
                 // this.getList();
               }
             });
+            this.vformVisible=false;
 
         }
       });

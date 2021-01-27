@@ -128,7 +128,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate"
+            @click="handleUpdate(scope.row)"
             v-hasPermi="['account:builder:edit']"
           >修改</el-button>
           <el-button
@@ -270,7 +270,7 @@
       },
       // 取消按钮
       cancel() {
-        this.open = false;
+        this.openupdate = false;
         this.reset();
       },
       // 表单重置

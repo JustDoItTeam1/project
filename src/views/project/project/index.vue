@@ -436,7 +436,7 @@
       },
       // 取消按钮
       cancel() {
-        this.open = false;
+        this.openupd= false;
         this.reset();
       },
       // 表单重置
@@ -487,7 +487,7 @@
         getProject(projectId).then(response => {
           this.form = response.data;
           this.openupd = true;
-          this.title = "修改施工单位";
+          this.title = "修改施工项目详情";
         });
       },
       /** 提交按钮 */
@@ -518,6 +518,7 @@
                 }
               });
             }
+            this.openupd=false;
           }
         });
       },

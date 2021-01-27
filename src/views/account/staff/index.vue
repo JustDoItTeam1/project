@@ -78,14 +78,14 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate"
+            @click="handleUpdate(scope.row)"
             v-hasPermi="['account:staff:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete"
+            @click="handleDelete(scope.row)"
             v-hasPermi="['account:staff:remove']"
           >删除</el-button>
         </template>
@@ -213,6 +213,8 @@
       handleUpdate(row) {
         this.reset();
         const trafficId = row.trafficId || this.ids
+        // console.log(trafficId);
+        // console.log(row.trafficId)
         getStaff(trafficId).then(response => {
           this.form = response.data;
           this.open = true;
@@ -247,6 +249,7 @@
       handleDelete(row) {
         const trafficIds = row.trafficId || this.ids;
         const trafficNames=row.trafficName || this.names;
+
         this.$confirm('是否确认删除交管人员用户账户为"' + trafficNames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
