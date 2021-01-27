@@ -342,6 +342,7 @@
                 }
               });
             }
+            this.openupdate = false;
           }
         });
       },
