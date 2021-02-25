@@ -99,14 +99,14 @@
     <!-- 添加或修改施工进度对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="填写时间" prop="ppTime">
-          <el-date-picker clearable size="small" style="width: 200px"
-            v-model="form.ppTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择填写时间">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="填写时间" prop="ppTime">-->
+<!--          <el-date-picker clearable size="small" style="width: 200px"-->
+<!--            v-model="form.ppTime"-->
+<!--            type="date"-->
+<!--            value-format="yyyy-MM-dd"-->
+<!--            placeholder="选择填写时间">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
         <el-form-item label="项目名称" prop="ppProjectId">
           <el-select v-model="form.ppProjectId" placeholder="请选择项目名称" clearable size="small" >
             <el-option v-for="item in projectList"  :value="item.id" :label="item.name" >{{ item.name }}</el-option>

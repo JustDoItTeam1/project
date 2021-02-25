@@ -26,8 +26,8 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
-      logo: logoImg
+      title: '施工围蔽管理系统',
+      //logo: logoImg  去掉了logo
     }
   }
 }

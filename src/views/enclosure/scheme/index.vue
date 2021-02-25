@@ -502,7 +502,7 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
 
-       <div  v-for="stagenum in stage" v-show="stagenum.show" >
+       <div  v-for="stagenum in addS.stage" v-show="stagenum.show" >
         <el-form-item label="围蔽阶段" prop="ssStage">
           <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
             <el-option label="1" value="1" />
@@ -557,6 +557,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <!--子组件，在地图中获取位置-->
     <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
       <Ploygon v-if="pointVisible" ref="Ploygon" :msg="form.ssRange" @myfun="myf"></Ploygon>
     </el-dialog>
@@ -685,39 +686,70 @@ export default {
       inputValue: '',
       addS:{
         ssProjectId: null,
-        builderList: null,
-       },
-      stage:[
+        //builderList: null,
+        stage:[
           {
-          ssStatus: null,
-          ssLane: null,
-          ssStage: null,
-          ssStartTime: null,
-          ssEndTime: null,
-          ssRange: null,
-          ssProperties: null,
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 1,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:true,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 2,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
             show:false,
           },
-        {
-          ssStatus: null,
-          ssLane: null,
-          ssStage: null,
-          ssStartTime: null,
-          ssEndTime: null,
-          ssRange: null,
-          ssProperties: null,
-          show:false,
-        },
-        {
-          ssStatus: null,
-          ssLane: null,
-          ssStage: null,
-          ssStartTime: null,
-          ssEndTime: null,
-          ssRange: null,
-          ssProperties: null,
-          show:false,
-        }],
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 3,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+          }],
+       },
+      // stage:[
+      //     {
+      //     ssStatus: null,
+      //     ssLane: null,
+      //     ssStage: 1,
+      //     ssStartTime: null,
+      //     ssEndTime: null,
+      //     ssRange: null,
+      //     ssProperties: null,
+      //       show:true,
+      //     },
+      //   {
+      //     ssStatus: null,
+      //     ssLane: null,
+      //     ssStage: 2,
+      //     ssStartTime: null,
+      //     ssEndTime: null,
+      //     ssRange: null,
+      //     ssProperties: null,
+      //     show:false,
+      //   },
+      //   {
+      //     ssStatus: null,
+      //     ssLane: null,
+      //     ssStage: 3,
+      //     ssStartTime: null,
+      //     ssEndTime: null,
+      //     ssRange: null,
+      //     ssProperties: null,
+      //     show:false,
+      //   }],
       add:{
         ssStatus: null,
         ssLane: null,
@@ -756,30 +788,46 @@ export default {
       // }
 
 
-      for (var i=0;i<this.stage.length;i++)
+      for (var i=0;i<this.addS.stage.length;i++)
       {
-        this.stage[i].show=false;
+        this.addS.stage[i].show=false;
       }
-      this.stage[this.a].show=true;
+      this.addS.stage[this.a].show=true;
       // // }
       console.log(this.a)
-      console.log(this.stage[this.a])
+      console.log(this.addS.stage[this.a])
     },
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
       console.log(tag.charAt(tag.length-1)-1);
-      console.log( this.stage[tag.charAt(tag.length-1)-1])
-      this.stage[tag.charAt(tag.length-1)-1].show=false;
-      this.stage[0].show=true;
-      // delete this.stage[tag.charAt(tag.length-1)-1];
+      console.log( this.addS.stage[tag.charAt(tag.length-1)-1])
+      this.addS.stage[tag.charAt(tag.length-1)-1].show=false;
+      this.addS.stage[0].show=true;
+      //delete this.addS.stage[tag.charAt(tag.length-1)-1];
     },
 
     showInput() {
-       this.inputVisible = true;
-       this.$nextTick(_ => {
-         this.$refs.saveTagInput.$refs.input.focus();
-      });
+      //  this.inputVisible = true;
+      //  this.$nextTick(_ => {
+      //    this.$refs.saveTagInput.$refs.input.focus();
+      // });
 
+      let inputV = this.addS.stage.length+1;
+      this.dynamicTags.push("阶段"+inputV);
+
+      for (var i=0;i<this.addS.stage.length;i++)
+      {
+        // console.log(i)
+        this.addS.stage[i].show=false;
+        console.log(this.addS.stage[i])
+      }
+
+      //console.log(this.stage)
+      // this.add.show=true;
+      // this.add.ssStage=inputValue;
+      this.addS.stage.push(Object.assign({},this.add));
+      this.addS.stage[this.addS.stage.length-1].show=true;
+      this.addS.stage[this.addS.stage.length-1].ssStage=this.addS.stage.length;
     },
 
     handleInputConfirm() {
@@ -796,19 +844,19 @@ export default {
       // this.dynamicTags.push("阶段"+inputV);
 
 
-      for (var i=0;i<this.stage.length;i++)
+      for (var i=0;i<this.addS.stage.length;i++)
       {
         // console.log(i)
-        this.stage[i].show=false;
-        console.log(this.stage[i])
+        this.addS.stage[i].show=false;
+        console.log(this.addS.stage[i])
       }
 
       //console.log(this.stage)
       // this.add.show=true;
       // this.add.ssStage=inputValue;
-      this.stage.push(Object.assign({},this.add));
-      this.stage[this.stage.length-1].show=true;
-      this.stage[this.stage.length-1].ssStage=this.stage.length;
+      this.addS.stage.push(Object.assign({},this.add));
+      this.addS.stage[this.addS.stage.length-1].show=true;
+      this.addS.stage[this.addS.stage.length-1].ssStage=this.addS.stage.length;
       //console.log(this.stage.length)
       //console.log(this.stage)
       // this.inputVisible = false;
@@ -821,7 +869,7 @@ export default {
       // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
       // console.log(this.builderList)
       listBuilder(this.queryParams).then(response => {
-        this.builderList=[{name:"暂无",id:"0"}];
+        this.builderList=[{name:"暂无",id:0}];
         for ( let i of response.rows) {
           this.builderList.push({name:i.builderUsername,id:i.builderId});
         }
@@ -832,7 +880,7 @@ export default {
       // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
       // console.log(this.builderList)
        listProject(this.queryParams).then(response => {
-         this.projectList=[{name:"暂无",id:"0"}];
+         this.projectList=[{name:"暂无",id:0}];
          for(let i of response.rows){
            this.projectList.push({name:i.projectName,id:i.projectId});
          }
@@ -842,7 +890,8 @@ export default {
       this.pointVisible=true;
     },
     myf(ms) {
-      this.stage[this.a].ssRange=ms;
+      this.addS.stage[this.a].ssRange=ms;
+      this.pointVisible=false;
       // console.log(this.form.ploygon);
     },
     mapView:function(e){
@@ -1367,6 +1416,7 @@ export default {
               }
             });
           } else {
+            console.log(this.addS);
             addEnclosure(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");

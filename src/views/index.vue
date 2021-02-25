@@ -622,6 +622,7 @@ export default {
         }
         else
           this.Suggessions.trafficId=response.user.id;
+
       this.$refs['elForm'].validate(valid => {
         if (valid) {
           // console.log(this.getCookie("username"));

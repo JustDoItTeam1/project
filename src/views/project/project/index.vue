@@ -297,6 +297,7 @@
   import Ploygon from "../../test/components/Ploygon";
   import mapView from "../../map/components/mapView";
   import {listBuilder} from "@/api/account/builder";
+  import {getInfo} from "../../../api/login";
   export default {
     name: "Project",
     components:{Ploygon,mapView},
@@ -427,7 +428,7 @@
         // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
         // console.log(this.builderList);
         listBuilder(this.queryParams).then(response => {
-          this.builderList=[{name:"暂无",id:"暂无"}];
+          this.builderList=[{name:"暂无",id:"null"}];
           //console.log(this.builderList);
           for ( let i of response.rows) {
             this.builderList.push({name:i.builderUsername,id:i.builderId});
@@ -478,7 +479,7 @@
       handleAdd() {
         this.reset();
         this.open = true;
-        this.title = "添加施工单位";
+        this.title = "添加施工项目";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
@@ -502,20 +503,34 @@
                   this.getList();
                 }
               });
-            } else {
+            } else { //新增
 
               for (var i=0;i<this.builderList.length;i++)
               {
                 if( this.builderList[i].name==this.form.projectBuilderName){
-                  this.form["projectBuilderId"]= this.builderList.id;
+                  //if (i==0)
+                  this.form["projectBuilderId"]= this.builderList[i].id;
                 }
               }
+              //this.form["projectDeleteFlag"]="live";
+
+
+              //获取操作人员id
+              getInfo().then(response => {
+                if (response.roles == "admin") {
+                  this.form["projectTrafficStaffId"] = 0;
+                } else
+                  this.form["projectTrafficStaffId"] = response.user.id;
+                this.form["projectDeleteFlag"]="live";
               addProject(this.form).then(response => {
+
                 if (response.code === 200) {
+                  console.log(this.form);
                   this.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
                 }
+              });
               });
             }
             this.openupd=false;
