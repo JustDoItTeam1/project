@@ -5,10 +5,13 @@ import java.util.*;
 import com.sju.program.constant.UserConstants;
 import com.sju.program.domain.Project;
 import com.sju.program.domain.model.BaseUser;
+import com.sju.program.domain.po.SiegeSchemePo;
+import com.sju.program.domain.po.SiegeSchemePo;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
 import com.sju.program.mapper.BuilderMapper;
 import com.sju.program.mapper.ProjectMapper;
 import com.sju.program.utils.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.SiegeSchemeMapper;
@@ -110,9 +113,28 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
      * @return 结果
      */
     @Override
-    public int insertSiegeScheme(SiegeScheme siegeScheme)
+    public int insertSiegeScheme(SiegeSchemePo siegeSchemePo)
     {
-        return siegeSchemeMapper.insertSiegeScheme(siegeScheme);
+        List<SiegeScheme> siegeSchemeList=siegeSchemePo.getStage();
+        int flag=0;
+        for(int i=0;i<siegeSchemeList.size();i++){
+            if(StringUtils.isNotNull(siegeSchemeList.get(i).getSsLane())){
+                SiegeScheme siegeScheme=siegeSchemeList.get(i);
+                siegeScheme= SiegeScheme.builder()
+                        .ssBuilderId(siegeSchemePo.getSsBuilderId())
+                        .ssProjectId(siegeSchemePo.getSsProjectId())
+                        .ssStartTime(siegeScheme.getSsStartTime())
+                        .ssEndTime(siegeScheme.getSsEndTime())
+                        .ssLane(siegeScheme.getSsLane())
+                        .ssRange(siegeScheme.getSsRange())
+                        .ssStage(siegeScheme.getSsStage())
+                        .ssProperties(siegeScheme.getSsProperties())
+                        .ssStatus(siegeScheme.getSsStatus())
+                        .build();
+                flag=siegeSchemeMapper.insertSiegeScheme(siegeScheme);
+            }
+        }
+        return flag;
     }
 
     /**

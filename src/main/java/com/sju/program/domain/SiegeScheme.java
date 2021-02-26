@@ -4,17 +4,23 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
 
 /**
  * 围蔽方案对象 siege_scheme
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
 @ApiModel(description = "围蔽方案")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SiegeScheme
 {
     private static final long serialVersionUID = 1L;
@@ -127,147 +133,147 @@ public class SiegeScheme
 //    @ApiModelProperty(name = "ssUpdateFlag",value = "更新时间",example = "2020-11-07")
 //    private Date ssUpdateFlag;
 
-    public void setSsId(Long ssId) 
+    public void setSsId(Long ssId)
     {
         this.ssId = ssId;
     }
 
-    public Long getSsId() 
+    public Long getSsId()
     {
         return ssId;
     }
-    public void setSsStatus(String ssStatus) 
+    public void setSsStatus(String ssStatus)
     {
         this.ssStatus = ssStatus;
     }
 
-    public String getSsStatus() 
+    public String getSsStatus()
     {
         return ssStatus;
     }
-    public void setSsLane(String ssLane) 
+    public void setSsLane(String ssLane)
     {
         this.ssLane = ssLane;
     }
 
-    public String getSsLane() 
+    public String getSsLane()
     {
         return ssLane;
     }
-    public void setSsStage(String ssStage) 
+    public void setSsStage(String ssStage)
     {
         this.ssStage = ssStage;
     }
 
-    public String getSsStage() 
+    public String getSsStage()
     {
         return ssStage;
     }
-    public void setSsStartTime(Date ssStartTime) 
+    public void setSsStartTime(Date ssStartTime)
     {
         this.ssStartTime = ssStartTime;
     }
 
-    public Date getSsStartTime() 
+    public Date getSsStartTime()
     {
         return ssStartTime;
     }
-    public void setSsEndTime(Date ssEndTime) 
+    public void setSsEndTime(Date ssEndTime)
     {
         this.ssEndTime = ssEndTime;
     }
 
-    public Date getSsEndTime() 
+    public Date getSsEndTime()
     {
         return ssEndTime;
     }
-    public void setSsRange(String ssRange) 
+    public void setSsRange(String ssRange)
     {
         this.ssRange = ssRange;
     }
 
-    public String getSsRange() 
+    public String getSsRange()
     {
         return ssRange;
     }
-    public void setSsProjectId(Long ssProjectId) 
+    public void setSsProjectId(Long ssProjectId)
     {
         this.ssProjectId = ssProjectId;
     }
 
-    public Long getSsProjectId() 
+    public Long getSsProjectId()
     {
         return ssProjectId;
     }
-    public void setSsProperties(String ssProperties) 
+    public void setSsProperties(String ssProperties)
     {
         this.ssProperties = ssProperties;
     }
 
-    public String getSsProperties() 
+    public String getSsProperties()
     {
         return ssProperties;
     }
-    public void setSsSuggessions(String ssSuggessions) 
+    public void setSsSuggessions(String ssSuggessions)
     {
         this.ssSuggessions = ssSuggessions;
     }
 
-    public String getSsSuggessions() 
+    public String getSsSuggessions()
     {
         return ssSuggessions;
     }
-    public void setSsFilePath(String ssFilePath) 
+    public void setSsFilePath(String ssFilePath)
     {
         this.ssFilePath = ssFilePath;
     }
 
-    public String getSsFilePath() 
+    public String getSsFilePath()
     {
         return ssFilePath;
     }
-    public void setSsBuilderId(Long ssBuilderId) 
+    public void setSsBuilderId(Long ssBuilderId)
     {
         this.ssBuilderId = ssBuilderId;
     }
 
-    public Long getSsBuilderId() 
+    public Long getSsBuilderId()
     {
         return ssBuilderId;
     }
-    public void setSsTrafficStaffId(Long ssTrafficStaffId) 
+    public void setSsTrafficStaffId(Long ssTrafficStaffId)
     {
         this.ssTrafficStaffId = ssTrafficStaffId;
     }
 
-    public Long getSsTrafficStaffId() 
+    public Long getSsTrafficStaffId()
     {
         return ssTrafficStaffId;
     }
-    public void setSsDeleteFlag(String ssDeleteFlag) 
+    public void setSsDeleteFlag(String ssDeleteFlag)
     {
         this.ssDeleteFlag = ssDeleteFlag;
     }
 
-    public String getSsDeleteFlag() 
+    public String getSsDeleteFlag()
     {
         return ssDeleteFlag;
     }
-    public void setSsVerifyFlag(String ssVerifyFlag) 
+    public void setSsVerifyFlag(String ssVerifyFlag)
     {
         this.ssVerifyFlag = ssVerifyFlag;
     }
 
-    public String getSsVerifyFlag() 
+    public String getSsVerifyFlag()
     {
         return ssVerifyFlag;
     }
-    public void setSsVerifyDate(Date ssVerifyDate) 
+    public void setSsVerifyDate(Date ssVerifyDate)
     {
         this.ssVerifyDate = ssVerifyDate;
     }
 
-    public Date getSsVerifyDate() 
+    public Date getSsVerifyDate()
     {
         return ssVerifyDate;
     }

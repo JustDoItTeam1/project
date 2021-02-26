@@ -3,6 +3,7 @@ package com.sju.program.service.impl;
 import java.util.List;
 
 import com.sju.program.constant.UserConstants;
+import com.sju.program.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.BuilderMapper;
@@ -11,7 +12,7 @@ import com.sju.program.service.IBuilderService;
 
 /**
  * 施工单位Service业务层处理
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -71,6 +72,7 @@ public class BuilderServiceImpl implements IBuilderService {
      */
     @Override
     public int updateBuilder(Builder builder) {
+        builder.setBuilderPassword(SecurityUtils.encryptPassword(builder.getUserPassword()));
         return builderMapper.updateBuilder(builder);
     }
 

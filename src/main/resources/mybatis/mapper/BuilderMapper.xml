@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBuilderByUsername" parameterType="String" resultMap="BuilderResult">
         <include refid="selectBuilderVo"></include>
-        WHERE builder_username=#{buildername}
+        WHERE builder_name=#{buildername}
     </select>
 
     <select id="selectAllBuilder" resultMap="BuilderResult">

@@ -8,6 +8,8 @@ import com.sju.program.domain.Admin;
 import com.sju.program.domain.Project;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.po.SiegeSchemePo;
+import com.sju.program.domain.po.SiegeSchemePo;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
 import com.sju.program.message.HttpStatus;
 import com.sju.program.message.Test;
@@ -116,12 +118,15 @@ public class SiegeSchemeController extends BaseController
     //@PreAuthorize("@ss.hasPermi('enclosure:scheme:add')")
     @Log(title = "围蔽方案", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody SiegeScheme siegeScheme)
+    public AjaxResult add(@RequestBody SiegeSchemePo sieheSchemePo)
     {
-        if (UserConstants.NOT_UNIQUE.equals(siegeSchemeService.checkSifegeSchemeUnique(siegeScheme))){
-            return AjaxResult.error("新增围蔽失败，围蔽阶段或围蔽状态信息已存在");
+        List<SiegeScheme> siegeSchemeList=sieheSchemePo.getStage();
+        for(SiegeScheme siegeScheme:siegeSchemeList){
+            if (UserConstants.NOT_UNIQUE.equals(siegeSchemeService.checkSifegeSchemeUnique(siegeScheme))){
+                return AjaxResult.error("新增围蔽失败，围蔽阶段或围蔽状态信息已存在");
+            }
         }
-        return toAjax(siegeSchemeService.insertSiegeScheme(siegeScheme));
+        return toAjax(siegeSchemeService.insertSiegeScheme(sieheSchemePo));
     }
 
     /**
