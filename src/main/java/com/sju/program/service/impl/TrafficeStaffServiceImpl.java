@@ -3,6 +3,7 @@ package com.sju.program.service.impl;
 import java.util.List;
 
 import com.sju.program.constant.UserConstants;
+import com.sju.program.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.TrafficeStaffMapper;
@@ -11,19 +12,19 @@ import com.sju.program.service.ITrafficeStaffService;
 
 /**
  * 交管人员Service业务层处理
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
 @Service
-public class TrafficeStaffServiceImpl implements ITrafficeStaffService 
+public class TrafficeStaffServiceImpl implements ITrafficeStaffService
 {
     @Autowired
     private TrafficeStaffMapper trafficeStaffMapper;
 
     /**
      * 查询交管人员
-     * 
+     *
      * @param trafficId 交管人员ID
      * @return 交管人员
      */
@@ -54,7 +55,7 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
 
     /**
      * 查询交管人员列表
-     * 
+     *
      * @param trafficeStaff 交管人员
      * @return 交管人员
      */
@@ -66,7 +67,7 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
 
     /**
      * 新增交管人员
-     * 
+     *
      * @param trafficeStaff 交管人员
      * @return 结果
      */
@@ -78,19 +79,20 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
 
     /**
      * 修改交管人员
-     * 
+     *
      * @param trafficeStaff 交管人员
      * @return 结果
      */
     @Override
     public int updateTrafficeStaff(TrafficeStaff trafficeStaff)
     {
+        trafficeStaff.setTrafficPassword(SecurityUtils.encryptPassword(trafficeStaff.getTrafficPassword()));
         return trafficeStaffMapper.updateTrafficeStaff(trafficeStaff);
     }
 
     /**
      * 批量删除交管人员
-     * 
+     *
      * @param trafficIds 需要删除的交管人员ID
      * @return 结果
      */
@@ -102,7 +104,7 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
 
     /**
      * 删除交管人员信息
-     * 
+     *
      * @param trafficId 交管人员ID
      * @return 结果
      */
