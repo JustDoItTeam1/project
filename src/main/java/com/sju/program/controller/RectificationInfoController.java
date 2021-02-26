@@ -30,7 +30,7 @@ import com.sju.program.service.IRectificationInfoService;
 
 /**
  * 整改信息Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -48,7 +48,7 @@ public class RectificationInfoController extends BaseController
      * 查询整改信息列表
      */
     @ApiOperation("获取整改信息列表")
-    @PreAuthorize("@ss.hasPermi('program:info:list')")
+    @PreAuthorize("@ss.hasPermi('enclosure:info:list')")
     @GetMapping("/list")
     public TableDataInfo list(RectificationInfo rectificationInfo)
     {

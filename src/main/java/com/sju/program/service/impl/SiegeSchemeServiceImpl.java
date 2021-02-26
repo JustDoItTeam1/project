@@ -17,12 +17,12 @@ import com.sju.program.service.ISiegeSchemeService;
 
 /**
  * 围蔽方案Service业务层处理
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
 @Service
-public class SiegeSchemeServiceImpl implements ISiegeSchemeService 
+public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 {
     @Autowired
     private SiegeSchemeMapper siegeSchemeMapper;
@@ -35,7 +35,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 查询围蔽方案
-     * 
+     *
      * @param ssId 围蔽方案ID
      * @return 围蔽方案
      */
@@ -47,7 +47,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 查询围蔽方案列表
-     * 
+     *
      * @param baseUser 用户基类
      * @return 围蔽方案
      */
@@ -105,7 +105,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 新增围蔽方案
-     * 
+     *
      * @param siegeScheme 围蔽方案
      * @return 结果
      */
@@ -117,7 +117,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 修改围蔽方案
-     * 
+     *
      * @param siegeScheme 围蔽方案
      * @return 结果
      */
@@ -129,7 +129,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 批量删除围蔽方案
-     * 
+     *
      * @param ssIds 需要删除的围蔽方案ID
      * @return 结果
      */
@@ -141,7 +141,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 
     /**
      * 删除围蔽方案信息
-     * 
+     *
      * @param ssId 围蔽方案ID
      * @return 结果
      */
@@ -222,12 +222,15 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     public List<SiegeScheme> selectSiegeSchemeByFlag(List<SiegeScheme> list, String flag) {
         List<SiegeScheme> siegeSchemeListPass=new ArrayList<>();
         List<SiegeScheme> siegeSchemeListNopass=new ArrayList<>();
+        List<SiegeScheme> siegeSchemeListReview=new ArrayList<>();
         for(SiegeScheme siegeScheme:list){
             if (siegeScheme.getSsVerifyFlag().equals("pass")){
                 siegeSchemeListPass.add(siegeScheme);
             }
             else if (siegeScheme.getSsVerifyFlag().equals("nopass")){
                 siegeSchemeListNopass.add(siegeScheme);
+            }else if (siegeScheme.getSsVerifyFlag().equals("review")){
+                siegeSchemeListReview.add(siegeScheme);
             }
         }
         if (flag.equals("pass")){

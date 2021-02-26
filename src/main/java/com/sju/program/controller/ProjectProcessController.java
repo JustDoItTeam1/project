@@ -30,7 +30,7 @@ import com.sju.program.service.IProjectProcessService;
 
 /**
  * 施工进度Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -48,7 +48,7 @@ public class ProjectProcessController extends BaseController
      * 查询施工进度列表
      */
     @ApiOperation("获取进度列表")
-    //@PreAuthorize("@ss.hasPermi('program:process:list')")
+    @PreAuthorize("@ss.hasPermi('project:process:list')")
     @GetMapping("/list")
     public TableDataInfo list(ProjectProcess projectProcess)
     {
@@ -76,7 +76,7 @@ public class ProjectProcessController extends BaseController
      * 获取施工进度详细信息
      */
     @ApiOperation("获取id为x的进度")
-    @PreAuthorize("@ss.hasPermi('program:process:query')")
+    @PreAuthorize("@ss.hasPermi('project:process:query')")
     @GetMapping(value = "/{ppId}")
     public AjaxResult getInfo(@PathVariable("ppId") Long ppId)
     {
@@ -87,7 +87,7 @@ public class ProjectProcessController extends BaseController
      * 新增施工进度
      */
     @ApiOperation("新增施工进度")
-    @PreAuthorize("@ss.hasPermi('program:process:add')")
+    @PreAuthorize("@ss.hasPermi('project:process:add')")
     @Log(title = "施工进度", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody ProjectProcess projectProcess)
@@ -99,7 +99,7 @@ public class ProjectProcessController extends BaseController
      * 修改施工进度
      */
     @ApiOperation("修改施工进度")
-    @PreAuthorize("@ss.hasPermi('program:process:edit')")
+    @PreAuthorize("@ss.hasPermi('project:process:edit')")
     @Log(title = "施工进度", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ProjectProcess projectProcess)
@@ -111,7 +111,7 @@ public class ProjectProcessController extends BaseController
      * 删除施工进度
      */
     @ApiOperation("删除施工进度(可批量删除)")
-    @PreAuthorize("@ss.hasPermi('program:process:remove')")
+    @PreAuthorize("@ss.hasPermi('project:process:remove')")
     @Log(title = "施工进度", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ppIds}")
     public AjaxResult remove(@PathVariable Long[] ppIds)

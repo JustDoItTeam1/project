@@ -39,7 +39,8 @@ public class AdminDetailsServiceImpl implements UserDetailsService
         {
             System.out.println("admin"+admin);
             log.info("登录用户：{} 不存在.", username);
-            throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
+            //throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
+            //return null;
         }
 //        else if (UserStatus.DELETED.getCode().equals(admin.getDelFlag()))
 //        {

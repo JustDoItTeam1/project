@@ -14,8 +14,8 @@ spring:
 #   数据源基本配置
     username: root
     password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/project_in_school?serverTimezone=GMT
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT
     type: com.alibaba.druid.pool.DruidDataSource
 # 开发环境配置
 server:

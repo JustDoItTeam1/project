@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.BuilderMapper">
-    
+
     <resultMap type="Builder" id="BuilderResult">
         <result property="builderId"    column="builder_id"    />
         <result property="builderUsername"    column="builder_username"    />
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="builderUpdateFlag != null "> and builder_update_flag = #{builderUpdateFlag}</if>
         </where>-->
     </select>
-    
+
     <select id="selectBuilderById" parameterType="Long" resultMap="BuilderResult">
         <include refid="selectBuilderVo"/>
         where builder_id = #{builderId}
@@ -53,13 +53,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBuilderByUsername" parameterType="String" resultMap="BuilderResult">
         <include refid="selectBuilderVo"></include>
-        WHERE builder_name=#{buildername}
+        WHERE builder_username=#{buildername}
     </select>
 
     <select id="selectAllBuilder" resultMap="BuilderResult">
         select  builder_username, builder_name, builder_password, builder_corporate, builder_phone, builder_address, builder_enterprise_number, builder_delete_flag from builder
     </select>
-        
+
     <insert id="insertBuilder" parameterType="Builder" useGeneratedKeys="true" keyProperty="builderId">
         insert into builder
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -133,5 +133,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             )
         </foreach>
     </insert>
-    
+
 </mapper>

@@ -2,6 +2,7 @@ package com.sju.program.config;
 
 
 import com.sju.program.security.JwtAuthenticationTokenFilter;
+import com.sju.program.security.provider.AdminUsernamePasswordAuthticationProvider;
 import com.sju.program.security.provider.BuilderUsernamePasswordAuthrnticationProvider;
 import com.sju.program.security.provider.PoliceUsernamePasswordAuthenticationProvider;
 import com.sju.program.security.provider.TrafficStaffUsernamePasswordAuthrnticationProvider;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,7 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService trafficStaffDetailsServiceImpl;
 
     @Autowired
+    @Qualifier("AdminDetailsServiceImpl")
+    private UserDetailsService adminDetailsServiceImpl;
+
+    @Autowired
     private LogoutSuccessHandlerImpl logoutSuccessHandler;
+
 
    // @Autowired
    // private JwtAuthenticationTokenFilter authenticationTokenFilter;
@@ -134,11 +141,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         auth.authenticationProvider(getPoliceUsernamePasswordAuthenticationProvider()).userDetailsService(policeDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
         auth.authenticationProvider(getBuilderUsernamePasswordAuthrnticationProvider()).userDetailsService(builderDetailServiceImpl).passwordEncoder(bCryptPasswordEncoder());
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+//        auth.authenticationProvider(builderAuthenticationProvider());
+//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
         auth.authenticationProvider(getTrafficStaffUsernamePasswordAuthrnticationProvider()).userDetailsService(trafficStaffDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(getAdminUsernamePasswordAuthticationProvider()).userDetailsService(adminDetailsServiceImpl).passwordEncoder(bCryptPasswordEncoder());
 
     }
-
+    @Bean
     protected PoliceUsernamePasswordAuthenticationProvider getPoliceUsernamePasswordAuthenticationProvider(){
         PoliceUsernamePasswordAuthenticationProvider policeUsernamePasswordAuthenticationProvider=new PoliceUsernamePasswordAuthenticationProvider();
         policeUsernamePasswordAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
@@ -146,19 +155,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return policeUsernamePasswordAuthenticationProvider;
     }
 
-
+    @Bean
     protected BuilderUsernamePasswordAuthrnticationProvider getBuilderUsernamePasswordAuthrnticationProvider(){
         BuilderUsernamePasswordAuthrnticationProvider builderUsernamePasswordAuthrnticationProvider=new BuilderUsernamePasswordAuthrnticationProvider();
         builderUsernamePasswordAuthrnticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         builderUsernamePasswordAuthrnticationProvider.setUserDetailsService(builderDetailServiceImpl);
         return builderUsernamePasswordAuthrnticationProvider;
     }
+//    @Bean(name = "BuilderAuthenticationProvider")
+//    protected AuthenticationProvider builderAuthenticationProvider(){
+//        BuilderAuthenticationProvider builderAuthenticationProvider=new BuilderAuthenticationProvider();
+//        builderAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+//        builderAuthenticationProvider.setUserDetailsService(builderService);
+//        return builderAuthenticationProvider;
+//    }
 
+    @Bean
     protected TrafficStaffUsernamePasswordAuthrnticationProvider getTrafficStaffUsernamePasswordAuthrnticationProvider(){
         TrafficStaffUsernamePasswordAuthrnticationProvider trafficStaffUsernamePasswordAuthrnticationProvider=new TrafficStaffUsernamePasswordAuthrnticationProvider();
         trafficStaffUsernamePasswordAuthrnticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         trafficStaffUsernamePasswordAuthrnticationProvider.setUserDetailsService(trafficStaffDetailsServiceImpl);
         return trafficStaffUsernamePasswordAuthrnticationProvider;
+    }
+    @Bean
+    protected AdminUsernamePasswordAuthticationProvider getAdminUsernamePasswordAuthticationProvider(){
+        AdminUsernamePasswordAuthticationProvider adminUsernamePasswordAuthticationProvider=new AdminUsernamePasswordAuthticationProvider();
+        adminUsernamePasswordAuthticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        adminUsernamePasswordAuthticationProvider.setUserDetailsService(adminDetailsServiceImpl);
+        return adminUsernamePasswordAuthticationProvider;
     }
 
 }

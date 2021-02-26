@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProjectByBuilderId" parameterType="long" resultMap="ProjectResult">
         <include refid="selectProjectVo"></include>
-        where project_builder_id = #{projectBuilderId} AND project_delete_flag!="del"
+        where project_builder_id = #{projectBuilderId} OR project_builder_name="暂无" AND project_delete_flag!="del"
     </select>
 
     <select id="selectAllProjectList"  resultMap="ProjectResult">

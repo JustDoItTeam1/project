@@ -8,6 +8,7 @@ import com.sju.program.domain.TrafficeStaff;
 import com.sju.program.domain.model.LoginBody;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.message.AjaxResult;
+import com.sju.program.security.token.AdminUsernamePasswordAuthticationToken;
 import com.sju.program.security.token.BuilderUsernamePasswordAuthticationToken;
 import com.sju.program.security.token.PoliceUsernamePasswordAuthenticationToken;
 import com.sju.program.security.token.TrafficStaffUsernamePasswordAuthticationToken;
@@ -78,7 +79,7 @@ public class LoginController  {
 				{
 					// 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
 					authentication = authenticationManager
-							.authenticate(new UsernamePasswordAuthenticationToken(loginBody.getUsername(), loginBody.getPassword()));
+							.authenticate(new AdminUsernamePasswordAuthticationToken(loginBody.getUsername(), loginBody.getPassword()));
 				}
 				catch (Exception e)
 				{
