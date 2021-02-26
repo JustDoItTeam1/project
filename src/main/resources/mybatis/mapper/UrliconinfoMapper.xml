@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.sign.UrliconinfoMapper">
+  <resultMap id="BaseResultMap" type="com.sju.program.domain.sign.UrlIconInfo">
+    <result column="trafficIcon" jdbcType="VARCHAR" property="trafficicon" />
+    <result column="trafficIcon1" jdbcType="VARCHAR" property="trafficicon1" />
+    <result column="trafficIcon2" jdbcType="VARCHAR" property="trafficicon2" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sju.program.domain.sign.UrlIconInfo">
+    insert into urliconinfo (trafficIcon, trafficIcon1, trafficIcon2
+      )
+    values (#{trafficicon,jdbcType=VARCHAR}, #{trafficicon1,jdbcType=VARCHAR}, #{trafficicon2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sju.program.domain.sign.UrlIconInfo">
+    insert into urliconinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="trafficicon != null">
+        trafficIcon,
+      </if>
+      <if test="trafficicon1 != null">
+        trafficIcon1,
+      </if>
+      <if test="trafficicon2 != null">
+        trafficIcon2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="trafficicon != null">
+        #{trafficicon,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficicon1 != null">
+        #{trafficicon1,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficicon2 != null">
+        #{trafficicon2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

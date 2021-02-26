@@ -3,6 +3,10 @@ package com.sju.program.message;
 import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,6 +16,8 @@ import java.util.HashMap;
  *
  * @author ruoyi
  */
+@Data
+@Builder
 public class AjaxResult extends HashMap<String, Object> implements Serializable
 {
     private static final long serialVersionUID = 1L;

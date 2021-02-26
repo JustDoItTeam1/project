@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.sign.SigninfoMapper">
+  <resultMap id="BaseResultMap" type="com.sju.program.domain.sign.SignInfo">
+    <result column="ObjectID" jdbcType="INTEGER" property="objectid" />
+    <result column="TypeID" jdbcType="INTEGER" property="typeid" />
+    <result column="trafficIcon" jdbcType="VARCHAR" property="trafficicon" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="Longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="Latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="roadSection" jdbcType="VARCHAR" property="roadsection" />
+    <result column="detailedAdd" jdbcType="VARCHAR" property="detailedadd" />
+    <result column="Jurisdictio" jdbcType="VARCHAR" property="jurisdictio" />
+    <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="constructCo" jdbcType="VARCHAR" property="constructco" />
+    <result column="constructCo1" jdbcType="VARCHAR" property="constructco1" />
+    <result column="Remark" jdbcType="VARCHAR" property="remark" />
+    <result column="searchStatu" jdbcType="VARCHAR" property="searchstatu" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sju.program.domain.sign.SignInfo">
+    insert into signinfo (ObjectID, TypeID, trafficIcon,
+      `Name`, Longitude, Latitude,
+      roadSection, detailedAdd, Jurisdictio,
+      createTime, constructCo, constructCo1,
+      Remark, searchStatu)
+    values (#{objectid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{trafficicon,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
+      #{roadsection,jdbcType=VARCHAR}, #{detailedadd,jdbcType=VARCHAR}, #{jurisdictio,jdbcType=VARCHAR},
+      #{createtime,jdbcType=DATE}, #{constructco,jdbcType=VARCHAR}, #{constructco1,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{searchstatu,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sju.program.domain.sign.SignInfo">
+    insert into signinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        ObjectID,
+      </if>
+      <if test="typeid != null">
+        TypeID,
+      </if>
+      <if test="trafficicon != null">
+        trafficIcon,
+      </if>
+      <if test="name != null">
+        `Name`,
+      </if>
+      <if test="longitude != null">
+        Longitude,
+      </if>
+      <if test="latitude != null">
+        Latitude,
+      </if>
+      <if test="roadsection != null">
+        roadSection,
+      </if>
+      <if test="detailedadd != null">
+        detailedAdd,
+      </if>
+      <if test="jurisdictio != null">
+        Jurisdictio,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="constructco != null">
+        constructCo,
+      </if>
+      <if test="constructco1 != null">
+        constructCo1,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+      <if test="searchstatu != null">
+        searchStatu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="trafficicon != null">
+        #{trafficicon,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="roadsection != null">
+        #{roadsection,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedadd != null">
+        #{detailedadd,jdbcType=VARCHAR},
+      </if>
+      <if test="jurisdictio != null">
+        #{jurisdictio,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="constructco != null">
+        #{constructco,jdbcType=VARCHAR},
+      </if>
+      <if test="constructco1 != null">
+        #{constructco1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="searchstatu != null">
+        #{searchstatu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getAllSign" resultType="com.sju.program.domain.vo.SigninfoVo">
+    select ObjectID,Name,Longitude,Latitude,detailedAdd,Remark,u.trafficIcon2,u.maintenance,u.maintenance1,u.maintenance2,u.maintenance3 FROM signinfo s
+    LEFT JOIN urliconinfo u ON s.trafficIcon=u.trafficIcon
+    LEFT JOIN
+    (select t.sign_OID,t.maintenance,t.maintenance1,t.maintenance2,t.maintenance3 from(                                                                                                    select row_number() over (partition by sign_OID order by maintenance desc) as rn,u.*                                                                                                   from signmaintenanceinfo u) t where t.rn=1) u
+    ON u.sign_OID=s.ObjectID
+  </select>
+
+  <select id="getDetailById" parameterType="string" resultType="com.sju.program.domain.vo.SignDetailVo">
+    select * from signinfo where ObjectID=#{id}
+  </select>
+</mapper>
