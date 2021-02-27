@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询围蔽信息列表
 export function listEnclosure(query) {
   return request({
-    url: '/program/scheme/list',
+    url: '/program/scheme/list?flag=review',
     method: 'get',
     params: query
   })

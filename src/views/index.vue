@@ -672,7 +672,11 @@ export default {
       var ploy2 = [];
       for(var i=0;i<ployg.length;i++)
       {
-        temp[i]=ployg[i].projectLongLat.split(';');
+        //ployg[i].projectLongLat可能是空的
+        if(ployg[i].projectLongLat!=null){
+          temp[i]=ployg[i].projectLongLat.split(';');
+        }
+
       }
 
       // 生成四边形

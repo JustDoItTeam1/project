@@ -869,7 +869,7 @@ export default {
       // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
       // console.log(this.builderList)
       listBuilder(this.queryParams).then(response => {
-        this.builderList=[{name:"暂无",id:0}];
+        //this.builderList=[{name:"暂无",id:0}];
         for ( let i of response.rows) {
           this.builderList.push({name:i.builderUsername,id:i.builderId});
         }
@@ -880,7 +880,7 @@ export default {
       // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
       // console.log(this.builderList)
        listProject(this.queryParams).then(response => {
-         this.projectList=[{name:"暂无",id:0}];
+         //this.projectList=[{name:"暂无",id:0}];
          for(let i of response.rows){
            this.projectList.push({name:i.projectName,id:i.projectId});
          }
@@ -1246,7 +1246,43 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
-      this.reset();
+      //清除
+      this.addS={
+        ssProjectId: null,
+        //builderList: null,
+        stage:[
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 1,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:true,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 2,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 3,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+          }],
+      }
+      this.dynamicTags=['阶段1', '阶段2', '阶段3'];
     },
     // //否决取消
     // close(){
@@ -1417,11 +1453,49 @@ export default {
             });
           } else {
             console.log(this.addS);
-            addEnclosure(this.form).then(response => {
+            addEnclosure(this.addS).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();
+                //清除
+                this.addS={
+                  ssProjectId: null,
+                  //builderList: null,
+                  stage:[
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 1,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:true,
+                    },
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 2,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:false,
+                    },
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 3,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:false,
+                    }],
+                }
+                this.dynamicTags=['阶段1', '阶段2', '阶段3'];
+
               }
             });
           }
