@@ -258,9 +258,12 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
         if (flag.equals("pass")){
             return siegeSchemeListPass;
         }
-        else {
+        else if (flag.equals("nopass")){
             return siegeSchemeListNopass;
+        }else  if (flag.equals("review")){
+            return siegeSchemeListReview;
         }
+        return null;
     }
 }
 
