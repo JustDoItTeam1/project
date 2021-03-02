@@ -1,9 +1,16 @@
 import request from '@/utils/request'
 
+// 查询围蔽信息列表 list?flag=pass|nopass|review
+export function getlistEnclosure(query) {
+  return request({
+    url: '/program/scheme/list'+ query,
+    method: 'get',
+  })
+}
 // 查询围蔽信息列表
 export function listEnclosure(query) {
   return request({
-    url: '/program/scheme/list?flag=review',
+    url: '/program/scheme/list',
     method: 'get',
     params: query
   })

@@ -249,7 +249,7 @@
         </el-form-item>
         <el-form-item label="施工单位名称" prop="projectBuilderName">
           <el-select v-model="form.projectBuilderName" placeholder="请选择施工单位名称" clearable size="small" >
-            <el-option v-for="item in builderList"  :value="item.id" >{{ item.name }}</el-option>
+            <el-option v-for="item in builderList"  :value="item.name" >{{ item.name }}</el-option>
           </el-select>
         </el-form-item>
 
@@ -425,14 +425,24 @@
       },
       /** 查询施工单位列表 ！！！！！！！*/
       getbuilder() {
-        // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
-        // console.log(this.builderList);
-        listBuilder(this.queryParams).then(response => {
-          this.builderList=[{name:"暂无",id:"null"}];
-          //console.log(this.builderList);
-          for ( let i of response.rows) {
-            this.builderList.push({name:i.builderUsername,id:i.builderId});
-          }
+        //获取操作人员权限
+        getInfo().then(response => {
+          //console.log(response.user.authenticate)
+          if (response.user.authenticate == 4) {
+            this.builderList.push({name: response.user.userName, id: response.user.builderId});
+
+          } else{
+            // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
+            // console.log(this.builderList);
+            listBuilder(this.queryParams).then(response => {
+              //this.builderList=[{name:"暂无",id:"null"}];
+              //console.log(this.builderList);
+              for (let i of response.rows) {
+                this.builderList.push({name: i.builderUsername, id: i.builderId});
+              }
+            });
+         }
+
         });
       },
       // 取消按钮
@@ -495,9 +505,17 @@
       submitForm() {
         this.$refs["form"].validate(valid => {
           if (valid) {
+            for (var i=0;i<this.builderList.length;i++)
+            {
+              if( this.builderList[i].name==this.form.projectBuilderName){
+                //if (i==0)
+                this.form["projectBuilderId"]= this.builderList[i].id;
+              }
+            }
             if (this.form.projectId != null) {
               updateProject(this.form).then(response => {
                 if (response.code === 200) {
+                  //console.log(this.form);
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
@@ -525,7 +543,7 @@
               addProject(this.form).then(response => {
 
                 if (response.code === 200) {
-                  console.log(this.form);
+                  //console.log(this.form);
                   this.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
