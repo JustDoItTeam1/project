@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.SiegeSchemeMapper">
-    
+
     <resultMap type="SiegeScheme" id="SiegeSchemeResult">
         <result property="ssId"    column="ss_id"    />
         <result property="ssStatus"    column="ss_status"    />
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSiegeSchemeList" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
         <include refid="selectSiegeSchemeVo"/>
-        <where>  
+        <where>
             <if test="ssStatus != null  and ssStatus != ''"> and ss_status = #{ssStatus}</if>
             <if test="ssLane != null  and ssLane != ''"> and ss_lane = #{ssLane}</if>
             <if test="ssStage != null  and ssStage != ''"> and ss_stage = #{ssStage}</if>
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
         </where>
     </select>
-    
+
     <select id="selectSiegeSchemeById" parameterType="Long" resultMap="SiegeSchemeResult">
         <include refid="selectSiegeSchemeVo"/>
         where ss_id = #{ssId}
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     select COUNT(ss_stage) from siege_scheme WHERE ss_project_id=#{projectId}
 </select>
 
-        
+
     <insert id="insertSiegeScheme" parameterType="SiegeScheme" useGeneratedKeys="true" keyProperty="ssId">
         insert into siege_scheme
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -135,6 +135,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="checkSifegeSchemeUnique" parameterType="SiegeScheme" resultMap="SiegeSchemeResult">
         <include refid="selectSiegeSchemeVo" ></include>
         WHERE (ss_status=#{ssStatus} or ss_stage=#{ssStage}) AND ss_project_id=#{ssProjectId}  limit 1
+    </select>
+
+    <select id="getSsVerifyFlag" parameterType="long" resultType="string">
+        select ss_verify_flag from siege_scheme where ss_id=#{id}
     </select>
 
     <update id="updateSiegeScheme" parameterType="SiegeScheme">
@@ -182,10 +186,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteSiegeSchemeByIds" parameterType="String">
-        delete from siege_scheme where ss_id in 
+        delete from siege_scheme where ss_id in
         <foreach item="ssId" collection="array" open="(" separator="," close=")">
             #{ssId}
         </foreach>
     </delete>
-    
+
 </mapper>

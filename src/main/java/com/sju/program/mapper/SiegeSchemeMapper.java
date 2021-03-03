@@ -9,15 +9,15 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 围蔽方案Mapper接口
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public interface SiegeSchemeMapper 
+public interface SiegeSchemeMapper
 {
     /**
      * 查询围蔽方案
-     * 
+     *
      * @param ssId 围蔽方案ID
      * @return 围蔽方案
      */
@@ -25,7 +25,7 @@ public interface SiegeSchemeMapper
 
     /**
      * 查询围蔽方案列表
-     * 
+     *
      * @param siegeScheme 围蔽方案
      * @return 围蔽方案集合
      */
@@ -54,6 +54,8 @@ public interface SiegeSchemeMapper
 
     int nopassSiegeSchemeById(@Param("id")Long id,@Param("trafficId")Long trafficId,@Param("suggestion")String suggestion);
 
+    String getSsVerifyFlag(Long id);
+
 
 
 
@@ -65,7 +67,7 @@ public interface SiegeSchemeMapper
 
     /**
      * 新增围蔽方案
-     * 
+     *
      * @param siegeScheme 围蔽方案
      * @return 结果
      */
@@ -73,7 +75,7 @@ public interface SiegeSchemeMapper
 
     /**
      * 修改围蔽方案
-     * 
+     *
      * @param siegeScheme 围蔽方案
      * @return 结果
      */
@@ -81,7 +83,7 @@ public interface SiegeSchemeMapper
 
     /**
      * 删除围蔽方案
-     * 
+     *
      * @param ssId 围蔽方案ID
      * @return 结果
      */
@@ -89,7 +91,7 @@ public interface SiegeSchemeMapper
 
     /**
      * 批量删除围蔽方案
-     * 
+     *
      * @param ssIds 需要删除的数据ID
      * @return 结果
      */

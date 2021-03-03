@@ -202,7 +202,8 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
 //            Map<String,String> map1=new HashMap<String, String>();
 //            Map<String,List<SiegeScheme>> map2=new HashMap<>();
 //            Map<String,Object> map3=new HashMap<>();
-            sieheSchemeParentVo.setChild(siegeSchemeMapper.selectSiegeSchemeByProjectId(projectId));
+            List<SiegeScheme> child=siegeSchemeMapper.selectSiegeSchemeByProjectId(projectId);
+            sieheSchemeParentVo.setChild(child);
             sieheSchemeParentVo.setSsId(++i);
             sieheSchemeParentVo.setSsVerifyFlag(siegeSchemeMapper.getSsBySsVerifyFlagProjectId(projectId));
             sieheSchemeParentVo.setSs(true);
@@ -212,6 +213,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
             sieheSchemeParentVo.setSsProjectId(projectId);
             sieheSchemeParentVo.setSsProjectName(projectMapper.selectProjectNameById(projectId));
             sieheSchemeParentVo.setSsSuggessions(map.get(projectId));
+            sieheSchemeParentVo.setSsVerifyFlag(child.get(0).getSsVerifyFlag());
             list.add(sieheSchemeParentVo);
         }
 //           if(map.containsKey(siegeScheme.getSsProjectId())){
