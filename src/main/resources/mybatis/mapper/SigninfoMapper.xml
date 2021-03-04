@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.sign.SigninfoMapper">
   <resultMap id="BaseResultMap" type="com.sju.program.domain.sign.SignInfo">
-    <result column="ObjectID" jdbcType="INTEGER" property="objectid" />
-    <result column="TypeID" jdbcType="INTEGER" property="typeid" />
+    <result column="id" jdbcType="INTEGER" property="id" />
     <result column="trafficIcon" jdbcType="VARCHAR" property="trafficicon" />
     <result column="Name" jdbcType="VARCHAR" property="name" />
     <result column="Longitude" jdbcType="DOUBLE" property="longitude" />
@@ -12,22 +11,17 @@
     <result column="detailedAdd" jdbcType="VARCHAR" property="detailedadd" />
     <result column="Jurisdictio" jdbcType="VARCHAR" property="jurisdictio" />
     <result column="createTime" jdbcType="DATE" property="createtime" />
-    <result column="constructCo" jdbcType="VARCHAR" property="constructco" />
-    <result column="constructCo1" jdbcType="VARCHAR" property="constructco1" />
     <result column="Remark" jdbcType="VARCHAR" property="remark" />
-    <result column="searchStatu" jdbcType="VARCHAR" property="searchstatu" />
   </resultMap>
-  <insert id="insert" parameterType="com.sju.program.domain.sign.SignInfo">
-    insert into signinfo (ObjectID, TypeID, trafficIcon,
+  <insert id="insertSign" parameterType="com.sju.program.domain.po.SignInfoPo">
+    insert into signinfo ( trafficIcon,
       `Name`, Longitude, Latitude,
       roadSection, detailedAdd, Jurisdictio,
-      createTime, constructCo, constructCo1,
-      Remark, searchStatu)
-    values (#{objectid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{trafficicon,jdbcType=VARCHAR},
+      createTime,Remark)
+    values ( #{trafficicon,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
       #{roadsection,jdbcType=VARCHAR}, #{detailedadd,jdbcType=VARCHAR}, #{jurisdictio,jdbcType=VARCHAR},
-      #{createtime,jdbcType=DATE}, #{constructco,jdbcType=VARCHAR}, #{constructco1,jdbcType=VARCHAR},
-      #{remark,jdbcType=VARCHAR}, #{searchstatu,jdbcType=VARCHAR})
+      sysdate(), #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sju.program.domain.sign.SignInfo">
     insert into signinfo
@@ -121,15 +115,14 @@
     </trim>
   </insert>
 
-  <select id="getAllSign" resultType="com.sju.program.domain.vo.SigninfoVo">
-    select ObjectID,Name,Longitude,Latitude,detailedAdd,Remark,u.trafficIcon2,u.maintenance,u.maintenance1,u.maintenance2,u.maintenance3 FROM signinfo s
-    LEFT JOIN urliconinfo u ON s.trafficIcon=u.trafficIcon
-    LEFT JOIN
-    (select t.sign_OID,t.maintenance,t.maintenance1,t.maintenance2,t.maintenance3 from(                                                                                                    select row_number() over (partition by sign_OID order by maintenance desc) as rn,u.*                                                                                                   from signmaintenanceinfo u) t where t.rn=1) u
-    ON u.sign_OID=s.ObjectID
+  <select id="getAllSign" resultType="com.sju.program.domain.sign.SignInfo">
+--     select ObjectID,Name,Longitude,Latitude,detailedAdd,Remark,u.trafficIcon2,u.maintenance,u.maintenance1,u.maintenance2,u.maintenance3 FROM signinfo s
+--     LEFT JOIN urliconinfo u ON s.trafficIcon=u.trafficIcon
+--     LEFT JOIN
+--     (select t.sign_OID,t.maintenance,t.maintenance1,t.maintenance2,t.maintenance3 from(                                                                                                    select row_number() over (partition by sign_OID order by maintenance desc) as rn,u.*                                                                                                   from signmaintenanceinfo u) t where t.rn=1) u
+--     ON u.sign_OID=s.ObjectID
+SELECT * FROM signinfo
   </select>
 
-  <select id="getDetailById" parameterType="string" resultType="com.sju.program.domain.vo.SignDetailVo">
-    select * from signinfo where ObjectID=#{id}
-  </select>
+
 </mapper>

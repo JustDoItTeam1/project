@@ -1,20 +1,17 @@
-package com.sju.program.domain.sign;
+package com.sju.program.domain.po;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * signinfo
  * @author
  */
-@ApiModel(value="com.sju.program.domain.sign.Signinfo")
 @Data
-public class SignInfo implements Serializable {
-
-    private Long id;
+public class SignInfoPo implements Serializable {
 
     private String trafficicon;
 
@@ -29,8 +26,6 @@ public class SignInfo implements Serializable {
     private String detailedadd;
 
     private String jurisdictio;
-
-    private Date createtime;
 
     private String remark;
 

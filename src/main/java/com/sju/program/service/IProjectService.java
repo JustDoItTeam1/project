@@ -78,5 +78,7 @@ public interface IProjectService
 
     List<Project> selectProjectListBySubmiteprocessFlag();
 
+    String unique(String name);
+
 
 }

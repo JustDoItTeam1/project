@@ -213,7 +213,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
             sieheSchemeParentVo.setSsProjectId(projectId);
             sieheSchemeParentVo.setSsProjectName(projectMapper.selectProjectNameById(projectId));
             sieheSchemeParentVo.setSsSuggessions(map.get(projectId));
-            sieheSchemeParentVo.setSsVerifyFlag(child.get(0).getSsVerifyFlag());
+            sieheSchemeParentVo.setSsVerifyFlag(siegeSchemeMapper.getSsVerifyFlag(projectId));
             list.add(sieheSchemeParentVo);
         }
 //           if(map.containsKey(siegeScheme.getSsProjectId())){

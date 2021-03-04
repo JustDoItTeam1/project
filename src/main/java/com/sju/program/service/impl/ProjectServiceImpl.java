@@ -89,6 +89,11 @@ public class ProjectServiceImpl implements IProjectService
         return projectMapper.selectProjectList(project);
     }
 
+    @Override
+    public String unique(String name) {
+        return projectMapper.unique(name);
+    }
+
     /**
      * 新增施工项目
      *

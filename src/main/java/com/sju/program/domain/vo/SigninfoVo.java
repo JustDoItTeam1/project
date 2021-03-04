@@ -15,9 +15,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class SigninfoVo {
 
-	private Integer objectid;
+	private Integer id;
 
-	private String trafficicon2;
+	private String trafficicon;
 
 	private String name;
 
@@ -28,14 +28,6 @@ public class SigninfoVo {
 	//private String roadsection;
 
 	private String detailedadd;
-
-	private String maintenance;
-
-	private String maintenance1;
-
-	private String maintenance2;
-
-	private String maintenance3;
 
 	private String remark;
 

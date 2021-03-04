@@ -98,7 +98,7 @@ public class SiegeScheme
 
     /** 审核标识 */
     @Excel(name = "审核标识")
-    @ApiModelProperty(name = "ssVerifyFlag",value = "审核标识",example = "pass|nopass")
+    @ApiModelProperty(name = "ssVerifyFlag",value = "审核标识",example = "pass|nopass|review")
     private String ssVerifyFlag;
 
     /** 审核时间 */

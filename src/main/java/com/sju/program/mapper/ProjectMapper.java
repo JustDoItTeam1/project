@@ -39,6 +39,8 @@ public interface ProjectMapper
 
     List<Project> selectProjectListBySubmiteprocessFlag();
 
+    String unique(String name);
+
 
 
 

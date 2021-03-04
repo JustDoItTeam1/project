@@ -92,6 +92,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where project_submitprocess_flag="false" and project_delete_flag!="del"
     </select>
 
+    <select id="unique" parameterType="string" resultType="string">
+        select project_name from project where project_name=#{name}
+    </select>
+
 
 
 

@@ -92,6 +92,10 @@ public class ProjectController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Project project)
     {
+        String name=project.getProjectName();
+        if (StringUtils.isNotEmpty(projectService.unique(name))){
+            return AjaxResult.error("与已有项目名称重复，增加失败");
+        }
         return toAjax(projectService.insertProject(project));
     }
 

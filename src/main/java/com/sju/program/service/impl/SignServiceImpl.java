@@ -1,6 +1,7 @@
 package com.sju.program.service.impl;
 
-import com.sju.program.domain.vo.SignDetailVo;
+import com.sju.program.domain.po.SignInfoPo;
+import com.sju.program.domain.sign.SignInfo;
 import com.sju.program.domain.vo.SigninfoVo;
 import com.sju.program.mapper.sign.SigninfoMapper;
 import com.sju.program.service.SignService;
@@ -19,12 +20,12 @@ public class SignServiceImpl implements SignService {
 	@Autowired
 	private SigninfoMapper signinfoMapper;
 	@Override
-	public List<SigninfoVo> getAllSign() {
+	public List<SignInfo> getAllSign() {
 		return signinfoMapper.getAllSign();
 	}
 
 	@Override
-	public SignDetailVo getDetailById(String id) {
-		return signinfoMapper.getDetailById(id);
+	public int insertSign(SignInfoPo signInfo) {
+		return signinfoMapper.insertSign(signInfo);
 	}
 }
