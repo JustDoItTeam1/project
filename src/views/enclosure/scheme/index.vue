@@ -185,6 +185,7 @@
 <!--      <el-table-column label="施工项目id" align="center" prop="ssId" width="110" />-->
       <el-table-column label="施工项目名称" align="center" prop="ssProjectName" width="110" />
       <el-table-column label="施工单位名称" align="center" prop="ssBuilderName" width="110"/>
+      <el-table-column label="围蔽方案状态" align="center" prop="ssVerifyFlag" width="110"/>
       <el-table-column label="围蔽阶段" align="center" prop="ssStage" width="110"/>
       <el-table-column label="围蔽状态" align="center" prop="ssStatus" width="170" />
       <el-table-column label="围蔽车道" align="center" prop="ssLane" width="130"/>
@@ -218,7 +219,7 @@
 
         <template slot-scope="scope" >
 
-          <div v-show="scope.row.ssBuilderName=='中铁一局'">
+
 
 
           <el-button
@@ -228,6 +229,7 @@
             v-hasPermi="['enclosure:scheme:download']"
             v-if=scope.row.ss
           >下载附件</el-button>
+          <div v-show="scope.row.ssVerifyFlag=='待审核'">
           <el-button size="mini"
                      type="text"
                      @click="handleAgree(scope.row)"
@@ -794,14 +796,39 @@ export default {
       if(this.radio=='1'){
         getlistEnclosure('').then(response => {
           this.schemeList = response.rows;
+          for (var i=0;i<this.schemeList.length;i++)
+          {
+            if(this.schemeList[i].ssVerifyFlag=='pass'){
+              this.schemeList[i].ssVerifyFlag='已通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='nopass'){
+              this.schemeList[i].ssVerifyFlag='未通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='review'){
+              this.schemeList[i].ssVerifyFlag='待审核';
+            }
+
+          }
           this.total = response.total;
           this.loading = false;
         })
       }
       else if(this.radio=='2'){
         getlistEnclosure('?flag=review').then(response => {
-
           this.schemeList = response.rows;
+          for (var i=0;i<this.schemeList.length;i++)
+          {
+            if(this.schemeList[i].ssVerifyFlag=='pass'){
+              this.schemeList[i].ssVerifyFlag='已通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='nopass'){
+              this.schemeList[i].ssVerifyFlag='未通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='review'){
+              this.schemeList[i].ssVerifyFlag='待审核';
+            }
+
+          }
           this.total = response.total;
           this.loading = false;
         })
@@ -809,6 +836,19 @@ export default {
       else if(this.radio=='3'){
         getlistEnclosure('?flag=pass').then(response => {
           this.schemeList = response.rows;
+          for (var i=0;i<this.schemeList.length;i++)
+          {
+            if(this.schemeList[i].ssVerifyFlag=='pass'){
+              this.schemeList[i].ssVerifyFlag='已通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='nopass'){
+              this.schemeList[i].ssVerifyFlag='未通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='review'){
+              this.schemeList[i].ssVerifyFlag='待审核';
+            }
+
+          }
           this.total = response.total;
           this.loading = false;
         })
@@ -816,6 +856,19 @@ export default {
       else{
         getlistEnclosure('?flag=nopass').then(response => {
           this.schemeList = response.rows;
+          for (var i=0;i<this.schemeList.length;i++)
+          {
+            if(this.schemeList[i].ssVerifyFlag=='pass'){
+              this.schemeList[i].ssVerifyFlag='已通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='nopass'){
+              this.schemeList[i].ssVerifyFlag='未通过';
+            }
+            if(this.schemeList[i].ssVerifyFlag=='review'){
+              this.schemeList[i].ssVerifyFlag='待审核';
+            }
+
+          }
           this.total = response.total;
           this.loading = false;
         })
@@ -1005,6 +1058,7 @@ export default {
       listEnclosure().then(response => {
         //console.log(response);
         this.schemeList = response.rows;
+
         // this.schemeList[0].ssId=102;
         // this.schemeList[1].ssId=103;
         // this.schemeList[0].children[0].ssId=10211;
@@ -1014,6 +1068,19 @@ export default {
         //console.log(this.schemeList);
         // this.getbuilder();
         // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
+        for (var i=0;i<this.schemeList.length;i++)
+        {
+          if(this.schemeList[i].ssVerifyFlag=='pass'){
+            this.schemeList[i].ssVerifyFlag='已通过';
+          }
+          if(this.schemeList[i].ssVerifyFlag=='nopass'){
+            this.schemeList[i].ssVerifyFlag='未通过';
+          }
+          if(this.schemeList[i].ssVerifyFlag=='review'){
+            this.schemeList[i].ssVerifyFlag='待审核';
+          }
+
+        }
 
         this.total = response.total;
         // this.total=2,
