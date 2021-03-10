@@ -1,8 +1,9 @@
 package com.sju.program.service;
 
 import com.sju.program.domain.po.SignInfoPo;
+import com.sju.program.domain.sign.Sign;
 import com.sju.program.domain.sign.SignInfo;
-import com.sju.program.domain.vo.SigninfoVo;
+import com.sju.program.domain.vo.SignInfoVo;
 
 import java.util.List;
 
@@ -11,7 +12,21 @@ import java.util.List;
  * @date 2021/2/26
  **/
 public interface SignService {
-	List<SignInfo> getAllSign();
+	List<SignInfoVo> getAllSignInfo();
 
-	int insertSign(SignInfoPo signInfo);
+	List<Sign> getAllSign();
+
+	int insertSign(Sign sign);
+
+	int insertSignInfo(SignInfoPo signInfo);
+
+	int deleteSignInfo(Long[] id);
+
+	int deleteSign(Long[] id) throws Exception;
+
+	Sign getSignByName(String name);
+
+	int updateSign(Sign sign);
+
+	SignInfo getSignInfoByLongitudeAndLatitude(SignInfoPo signInfoPo);
 }

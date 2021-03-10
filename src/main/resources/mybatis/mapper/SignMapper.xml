@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sju.program.mapper.sign.SignMapper">
+  <resultMap id="BaseResultMap" type="com.sju.program.domain.sign.Sign">
+    <id column="sign_id" jdbcType="BIGINT" property="signId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sign_id, `name`, icon, `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sign
+    where sign_id = #{signId,jdbcType=BIGINT}
+  </select>
+
+  <select id="getAllSign" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sign
+  </select>
+
+  <select id="getSignByName" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from sign
+    where name=#{name}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sign
+    where sign_id = #{signId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="sign_id" keyProperty="signId" parameterType="com.sju.program.domain.sign.Sign" useGeneratedKeys="true">
+    insert into sign (`name`, icon, `type`
+      )
+    values (#{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="sign_id" keyProperty="signId" parameterType="com.sju.program.domain.sign.Sign" useGeneratedKeys="true">
+    insert into sign
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sju.program.domain.sign.Sign">
+    update sign
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sign_id = #{signId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sju.program.domain.sign.Sign">
+    update sign
+    set `name` = #{name,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR}
+    where sign_id = #{signId,jdbcType=BIGINT}
+  </update>
+
+  <delete id="deleteSignById">
+    delete from sign where sign_id in
+    <foreach collection="array" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

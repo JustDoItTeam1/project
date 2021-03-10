@@ -13,8 +13,6 @@ import java.util.Date;
 @Data
 public class SignInfoPo implements Serializable {
 
-    private String trafficicon;
-
     private String name;
 
     private Double longitude;

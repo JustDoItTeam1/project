@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sju.program.mapper.sign.SigninfoMapper">
+<mapper namespace="com.sju.program.mapper.sign.SignInfoMapper">
   <resultMap id="BaseResultMap" type="com.sju.program.domain.sign.SignInfo">
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="trafficIcon" jdbcType="VARCHAR" property="trafficicon" />
-    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sign_id" jdbcType="BIGINT" property="signId" />
     <result column="Longitude" jdbcType="DOUBLE" property="longitude" />
     <result column="Latitude" jdbcType="DOUBLE" property="latitude" />
     <result column="roadSection" jdbcType="VARCHAR" property="roadsection" />
@@ -12,31 +11,37 @@
     <result column="Jurisdictio" jdbcType="VARCHAR" property="jurisdictio" />
     <result column="createTime" jdbcType="DATE" property="createtime" />
     <result column="Remark" jdbcType="VARCHAR" property="remark" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
   </resultMap>
-  <insert id="insertSign" parameterType="com.sju.program.domain.po.SignInfoPo">
-    insert into signinfo ( trafficIcon,
-      `Name`, Longitude, Latitude,
+  <sql id="Base_Column_List">
+    id, sign_id, Longitude, Latitude, roadSection, detailedAdd, Jurisdictio, createTime,
+    Remark, project_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sign_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sign_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.sju.program.domain.sign.SignInfo" useGeneratedKeys="true">
+    insert into sign_info (sign_id, Longitude, Latitude,
       roadSection, detailedAdd, Jurisdictio,
-      createTime,Remark)
-    values ( #{trafficicon,jdbcType=VARCHAR},
-      #{name,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
+      createTime, Remark, project_name
+      )
+    values (#{signId,jdbcType=BIGINT}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
       #{roadsection,jdbcType=VARCHAR}, #{detailedadd,jdbcType=VARCHAR}, #{jurisdictio,jdbcType=VARCHAR},
-      sysdate(), #{remark,jdbcType=VARCHAR})
+      sysdate(), #{remark,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.sju.program.domain.sign.SignInfo">
-    insert into signinfo
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.sju.program.domain.sign.SignInfo" useGeneratedKeys="true">
+    insert into sign_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="objectid != null">
-        ObjectID,
-      </if>
-      <if test="typeid != null">
-        TypeID,
-      </if>
-      <if test="trafficicon != null">
-        trafficIcon,
-      </if>
-      <if test="name != null">
-        `Name`,
+      <if test="signId != null">
+        sign_id,
       </if>
       <if test="longitude != null">
         Longitude,
@@ -56,31 +61,16 @@
       <if test="createtime != null">
         createTime,
       </if>
-      <if test="constructco != null">
-        constructCo,
-      </if>
-      <if test="constructco1 != null">
-        constructCo1,
-      </if>
       <if test="remark != null">
         Remark,
       </if>
-      <if test="searchstatu != null">
-        searchStatu,
+      <if test="projectName != null">
+        project_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="objectid != null">
-        #{objectid,jdbcType=INTEGER},
-      </if>
-      <if test="typeid != null">
-        #{typeid,jdbcType=INTEGER},
-      </if>
-      <if test="trafficicon != null">
-        #{trafficicon,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="signId != null">
+        #{signId,jdbcType=BIGINT},
       </if>
       <if test="longitude != null">
         #{longitude,jdbcType=DOUBLE},
@@ -100,29 +90,76 @@
       <if test="createtime != null">
         #{createtime,jdbcType=DATE},
       </if>
-      <if test="constructco != null">
-        #{constructco,jdbcType=VARCHAR},
-      </if>
-      <if test="constructco1 != null">
-        #{constructco1,jdbcType=VARCHAR},
-      </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="searchstatu != null">
-        #{searchstatu,jdbcType=VARCHAR},
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sju.program.domain.sign.SignInfo">
+    update sign_info
+    <set>
+      <if test="signId != null">
+        sign_id = #{signId,jdbcType=BIGINT},
+      </if>
+      <if test="longitude != null">
+        Longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        Latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="roadsection != null">
+        roadSection = #{roadsection,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedadd != null">
+        detailedAdd = #{detailedadd,jdbcType=VARCHAR},
+      </if>
+      <if test="jurisdictio != null">
+        Jurisdictio = #{jurisdictio,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sju.program.domain.sign.SignInfo">
+    update sign_info
+    set sign_id = #{signId,jdbcType=BIGINT},
+      Longitude = #{longitude,jdbcType=DOUBLE},
+      Latitude = #{latitude,jdbcType=DOUBLE},
+      roadSection = #{roadsection,jdbcType=VARCHAR},
+      detailedAdd = #{detailedadd,jdbcType=VARCHAR},
+      Jurisdictio = #{jurisdictio,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=DATE},
+      Remark = #{remark,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 
-  <select id="getAllSign" resultType="com.sju.program.domain.sign.SignInfo">
---     select ObjectID,Name,Longitude,Latitude,detailedAdd,Remark,u.trafficIcon2,u.maintenance,u.maintenance1,u.maintenance2,u.maintenance3 FROM signinfo s
---     LEFT JOIN urliconinfo u ON s.trafficIcon=u.trafficIcon
---     LEFT JOIN
---     (select t.sign_OID,t.maintenance,t.maintenance1,t.maintenance2,t.maintenance3 from(                                                                                                    select row_number() over (partition by sign_OID order by maintenance desc) as rn,u.*                                                                                                   from signmaintenanceinfo u) t where t.rn=1) u
---     ON u.sign_OID=s.ObjectID
-SELECT * FROM signinfo
+  <select id="getAllSignInfo" resultType="com.sju.program.domain.vo.SignInfoVo">
+    select id,s.name,s.icon,s.type,si.Longitude,si.Latitude,si.roadSection ,si.detailedAdd ,si.Jurisdictio ,si.createTime,si.Remark,si.project_name from sign_info si
+    left join sign s on s.sign_id=si.sign_id
   </select>
+
+  <select id="getSignInfoByLongitudeAndLatitude" parameterType="com.sju.program.domain.sign.SignInfo" resultMap="BaseResultMap">
+    select * from sign_info si where si.Latitude=#{latitude} and si.Longitude=#{longitude}
+  </select>
+
+  <delete id="deleteSignInfo">
+    delete from sign_info where id in
+    <foreach collection="array" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 
 
 </mapper>

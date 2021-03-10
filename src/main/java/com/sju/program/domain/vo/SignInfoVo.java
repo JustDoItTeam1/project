@@ -13,22 +13,30 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SigninfoVo {
+public class SignInfoVo {
 
 	private Integer id;
 
-	private String trafficicon;
-
 	private String name;
+
+	private String icon;
+
+	private String type;
 
 	private Double longitude;
 
 	private Double latitude;
 
-	//private String roadsection;
+	private String roadsection;
 
 	private String detailedadd;
 
+	private String jurisdictio;
+
+	private Date createTime;
+
 	private String remark;
+
+	private String projectName;
 
 }
