@@ -44,6 +44,9 @@
       </div>
     </el-dialog>
 
+    <div style="position: absolute;right: 1%;top:2%;">
+      <el-button type="primary" @click="addMapSign">增加地图标牌</el-button>
+    </div>
 
 
 <!--    <div style="position: absolute;left: 2%;top:5%;width: 200px">-->
@@ -73,12 +76,21 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
+        <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
+      </el-form-item>
+        <el-form-item style="position: absolute;left: 15%;top:60%;">
+          <el-radio-group v-model="radio">
+            <el-radio :label="1">施工项目</el-radio>
+            <el-radio :label="2">标牌</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
     </div>
+
 <!--    搜索结果-->
-    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVS">
+
+
+    <div style="position: absolute;left:1%;top: 13%;width: 270px;background-color: white" v-if="resultVS">
       <el-card class="box-card" v-for="o in this.searchSeige" :key="o" >
 
         <div  class="text item">
@@ -134,7 +146,7 @@
     </div>
 
 <!--    项目搜索结果-->
-    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVP">
+    <div class="search" style="position: absolute;left:1%;top:12%;width: 270px;background-color: white" v-if="resultVP">
       <el-card class="box-card" v-for="o in this.searchProject" :key="o" >
 
         <div  class="text item">
@@ -243,6 +255,56 @@
 
 <!--      </el-table-column>-->
 <!--    </el-table>-->
+<!--    </el-dialog>-->
+    <!--弹出标牌详情表格-->
+    <el-dialog title='标牌信息详情' :visible.sync="signV" width="500px" append-to-body>
+      <el-form ref="projectForm" :model="signListOne"  label-width="120px">
+        <el-form-item label="标牌名称"  >
+          <el-input v-model="signListOne.name" />
+
+        </el-form-item>
+        <el-form-item label="标识码" prop="projectName">
+          <el-input v-model="signListOne.id" placeholder="请输入项目名称" />
+        </el-form-item>
+        <el-form-item label="道路" prop="projectLocation">
+          <el-input v-model="signListOne.roadsection" placeholder="请输入项目位置" />
+        </el-form-item>
+        <el-form-item label="具体位置" prop="projectLongLat">
+          <el-input v-model="signListOne.projectName" placeholder="请输入项目位置(地图)" />
+        </el-form-item>
+        <el-form-item label="施工项目名称" prop="projectManger">
+          <el-input v-model="projectListOne.projectManger" placeholder="请输入项目负责人" />
+        </el-form-item>
+        <el-form-item label="备注" prop="projectPhone">
+          <el-input v-model="signListOne.remark" placeholder="请输入负责人联系电话" />
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="addSign" v-if="addSignBut">新增标牌</el-button>
+        <el-button type="danger" @click="deleteSign" v-if="delSignBut">删除该标牌</el-button>
+      </div>
+    </el-dialog>
+
+<!--    <el-dialog :visible.sync="signV" width="750px"  append-to-body title="标牌信息详情">-->
+<!--      <el-form style="position: relative" :model="signListOne">-->
+<!--        <div >-->
+<!--          <br>-->
+<!--          <label class="labelSeige" style="font-weight: 700">{{signListOne.name}}</label>-->
+<!--          &lt;!&ndash;       <div style="position: absolute;left: 20%;">&ndash;&gt;-->
+<!--          <label class="labelSeige" style="font-weight: 700">标识码:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{signListOne.id}}</label><br>-->
+<!--          <label class="labelSeige" style="font-weight: 700;width: 120px">道路:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{signListOne.roadsection}}</label><br>-->
+<!--          <label class="labelSeige" style="font-weight: 700;width: 120px">具体位置:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{signListOne.detailedadd}}</label><br>-->
+<!--          <label class="labelSeige" style="font-weight: 700;width: 120px">施工项目名称:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{signListOne.projectName}}</label><br>-->
+<!--          <label class="labelSeige" style="font-weight: 700;width: 120px">备注:</label>-->
+<!--          <label class="labelSeige" style="width: 560px">{{signListOne.remark}}</label><br>-->
+<!--          &lt;!&ndash;       </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </el-form>-->
 <!--    </el-dialog>-->
 
     <!--弹出围蔽详情表格-->
@@ -385,8 +447,10 @@
 </template>
 
 <script>
-import {listProject,updateProject} from "../api/project/project";
+  import {getMapSign,delMapSign} from "../api/sign/sign";
+  import {listProject,updateProject} from "../api/project/project";
 import {getInfo} from "../api/login";
+
 import { saveAs } from 'file-saver';
 import Ploygon from "./test/components/Ploygon";
 import {getIdEnclosure,reviewEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
@@ -397,6 +461,8 @@ export default {
   props:['msg'],
   data() {
     return {
+      radio:1,
+
       //项目id
       //PId:null,
       //查询施工单位参数
@@ -433,6 +499,7 @@ export default {
       schemeListOne:[],
       // 一个施工项目的详情
       projectListOne:[],
+      signListOne:{},
 
 
       //新增围蔽窗口
@@ -483,7 +550,12 @@ export default {
       },
       // 表单校验
       rules: {
-      }
+      },
+
+      markerList:null,
+      signV:false,
+      addSignBut:false,
+      delSignBut:false,
 
     };
   },
@@ -491,6 +563,63 @@ export default {
 
   },
   methods: {
+    signListOneRes(){
+      this.signListOne={
+        id:null,
+        name:null,
+        projectName:null,
+        roadsection:null,
+        projectManger:null,
+        remark:null,
+      }
+    },
+    draw(){
+      this.mouseTool.marker({
+        //同Marker的Option设置
+      });
+    },
+    addMapSign(){
+      this.signListOneRes();
+
+      console.log(this.draw());
+
+      // this.signV=true;
+      // this.addSignBut=true;
+      // this.delSignBut=false;
+    },
+    deleteSign(){
+
+          // console.log(e);
+          this.$confirm('是否确认删除标识码为"' + this.signListOne.id + '"的数据项?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+
+              delMapSign(this.signListOne.id).then(response => {
+                if (response.code === 200) {
+                  this.$message({
+                    type: 'success',
+                    message: '该标牌已删除!'
+                  });
+                  this.initMarker();
+                  this.signV=false;
+
+                }
+
+              });
+
+            // this.getList();
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+
+          });
+
+    },
+
     //生成地图上Polygon
     getPolygon(){
       listProject().then(response => {
@@ -663,9 +792,84 @@ export default {
 //
 //
 // },
+    //生成全部标牌
+    createSign:function(map,ployg,overlayGroup){
+
+      // 创建一个 Icon
+
+      var temp = [];
+      var path = [];
+      var ploy2 = [];
+      for(var i=0;i<ployg.length;i++)
+      {
+        var pt=new AMap.LngLat(ployg[i].longitude,ployg[i].latitude)
+        var marker = new AMap.Marker({
+          position:pt,
+          title: ployg[i].name,
+
+
+        });
+        marker.content =i
+        marker.on('click', signmarkerClick);
+        overlayGroup.addOverlay(marker);
+
+        var that =this;
+        function signmarkerClick(e) {
+          console.log(e);
+
+          that.maps.setCenter(e.lnglat);
+          that.maps.setZoom(17);
+          that.signV=true;
+          this.addSignBut=false;
+          that.delSignBut=true;
+          console.log(that.signListOne);
+          console.log(that.ployg[parseInt(e.target.content)]);
+          that.signListOne= that.markerList[parseInt(e.target.content)];
+
+          //将object转化为array
+          // var myArray=new Array()
+          // myArray.push(that.ployg2[parseInt(e.target.content)]);
+
+         // that.searchIdSeige();
+          //that.searchQueryParamsSeige.projectId=that.projectListOne.projectId;
+
+          // // 数据脱绑
+          // that.nomsg=JSON.parse(JSON.stringify(e.target.cont));
+          //   var t=document.getElementById("txt");
+          //  t.value=that.nomsg.id
+        }
+
+      }
+
+        ////////////////////////////////////////////////////////////////////////
+        // map.add(polygon);
+
+
+
+
+
+    },
 
     //生成施工项目全部polygon
     createPolygon:function(map,ployg,overlayGroup){
+      var redIcon = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(40, 50),
+        // 图标的取图地址
+        image: 'https://gaode.com/assets/img/poi-marker.png',
+        // // 图标所用图片大小
+        imageSize: new AMap.Size(450, 280),
+        // // 图标取图偏移量
+        imageOffset: new AMap.Pixel(-360, 10)
+      });
+
+      // var marker = new AMap.Marker({
+      //   position:[103.981629,30.762099],
+      //
+      //   icon:redIcon,
+      //   anchor:'bottom-center',
+      // });
+      // overlayGroup.addOverlay(marker);
 
       var temp = [];
       var path = [];
@@ -715,7 +919,9 @@ export default {
 
         var marker = new AMap.Marker({
           position: pt,
-          title: ployg[i].projectName
+          title: ployg[i].projectName,
+          icon:redIcon,
+          anchor:'bottom-center',
         });
         marker.content =i;
         //marker.content={};
@@ -880,9 +1086,10 @@ export default {
         //   new AMap.TileLayer.RoadNet()
         // ]
       })
+      this.mouseTool = new AMap.MouseTool(this.maps);
 
 
-     // this.overlayGroup1 = new AMap.OverlayGroup();
+      this.overlayGroup1 = new AMap.OverlayGroup();
       this.overlayGroup2 = new AMap.OverlayGroup();
 
       //获得每个四边形图层
@@ -996,12 +1203,28 @@ export default {
       this.vformVisible= false;
 
     },
+    initMarker(){
+      getMapSign().then(response => {
+        this.overlayGroup1.clearOverlays();
+        this.markerList=response.rows;
+        this.createSign(this.maps,this.markerList,this.overlayGroup1);
+        this.maps.add(this.overlayGroup1);
+        this.overlayGroup1.show();
+      })
+    },
 
   },
 
   mounted() {
 
     this.init();
+
+    getMapSign().then(response => {
+      this.markerList=response.rows;
+      this.createSign(this.maps,this.markerList,this.overlayGroup1);
+      this.maps.add(this.overlayGroup1);
+      this.overlayGroup1.show();
+    }),
 
     listProject().then(response => {
       //this.ployg = response.rows;

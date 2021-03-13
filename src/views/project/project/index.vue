@@ -488,7 +488,7 @@
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();
-        this.open = true;
+        this.openupd = true;
         this.title = "添加施工项目";
       },
       /** 修改按钮操作 */

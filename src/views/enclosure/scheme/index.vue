@@ -482,7 +482,7 @@
 <!--      </div>-->
 <!--    </el-dialog>-->
 <!--新增-->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig">
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="施工项目名称" prop="ssProjectName">
           <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
@@ -517,7 +517,7 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
 
-       <div  v-for="stagenum in addS.stage" v-show="stagenum.show" >
+       <div  v-for="stagenum in addS.stage" v-if="stagenum.show" >
         <el-form-item label="围蔽阶段" prop="ssStage">
           <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
             <el-option label="1" value="1" />
@@ -557,7 +557,11 @@
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
           <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
           <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
+          <div id="container" style="width: 95%;height:210px;position:relative ">
+
+          </div>
         </el-form-item>
+
         <el-form-item label="围蔽性质" prop="ssProperties">
           <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
             <el-option label="全封闭" value="全封闭" />
@@ -777,12 +781,17 @@ export default {
         ssProperties: null,
         show:false,
       },
+      //目前正在填写的阶段数
       a:0,
+
+      maps:null,
+      pointA:null,
+      pointB:null,
       // stageV1:true,
       // stageV2:false,
       // stageV3:false,
       // stageV4:false,
-
+      // centerp:null,
 
     };
   },
@@ -790,8 +799,180 @@ export default {
     this.getList();
     this.getproject();
     this.getbuilder();
+
+
+
+  },
+  mounted() {
+
+  },
+  watch:{
+    pointVisible(newVal) {
+      if((newVal==false)&&(this.open==true)){
+
+
+        //this.addS.stage[this.a].ssRange
+        this.overlayGroup2 = new AMap.OverlayGroup();
+        // for(var m=0;m<this.addS.length;m++){
+        //   //if(this.addS.stage[m].ssRange!=null)
+        //   this.createPolygon(this.maps,this.addS.stage[m].ssRange,this.overlayGroup2);
+        //
+        // }
+        this.centerp=new AMap.LngLat(104.07, 30.67);
+
+        this.createPolygon(this.maps,this.addS.stage,this.overlayGroup2,this.center);
+        // this.createPolygon(this.maps,this.addS.stage[this.a].ssRange,this.overlayGroup2);
+
+        this.maps.add(this.overlayGroup2);
+        this.overlayGroup2.show();
+        console.log(this.pointA);
+        console.log(this.pointB);
+
+        //this.maps.setCenter(this.centerp);
+        console.log(newVal);
+      }
+
+}
   },
   methods: {
+    init(){
+      this.maps = new AMap.Map('container', {
+        //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+        center: [104.07, 30.67],
+        resizeEnable: true,
+        expandZoomRange: true,
+        zooms: [3, 20],
+        zoom:15,
+      });
+    },
+    opendig(){
+      this.maps = new AMap.Map('container', {
+        //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+        center: [104.07, 30.67],
+        resizeEnable: true,
+        expandZoomRange: true,
+        zooms: [3, 20],
+        zoom:15,
+      });
+      console.log('dakai')
+    },
+
+    createPolygon:function(map,ployg,overlayGroup,centerp){
+
+      var temp = [];
+      var path = [];
+      var ploy2 = [];
+      var a=0;
+      var b=0;
+      var a1=0;
+      var b1=0;
+      var colorP=['red','green','yellow','white','black','blue']
+      for(var i=0;i<ployg.length;i++)
+      {
+        //ployg[i].projectLongLat可能是空的
+        if(ployg[i].ssRange!=null){
+          temp[i]=ployg[i].ssRange.split(';');
+        }
+
+      }
+
+      // 生成四边形
+      for(var i=0;i<temp.length;i++)
+      {
+
+        path = [];
+        //  console.log(this.path)
+
+        for(var j=0;j<temp[i].length-1;j++)
+        {
+
+          ploy2=temp[i][j].split(',');
+          a=parseFloat(a)+parseFloat(ploy2[0]);
+          b=parseFloat(b)+parseFloat(ploy2[1]);
+          a1=parseFloat(a1)+parseFloat(ploy2[0]);
+          b1=parseFloat(b1)+parseFloat(ploy2[1]);
+          path.push(new AMap.LngLat(ploy2[0]-0,ploy2[1]-0));
+
+        }
+        a=a/(temp[i].length-1);
+        b=b/(temp[i].length-1);
+        a1=a1/(temp[i].length-1);
+        b1=b1/(temp[i].length-1);
+        console.log("a"+a);
+        console.log("b"+b);
+
+        console.log("a1:"+a1);
+        console.log("b1:"+b1);
+
+
+        var polygon = new AMap.Polygon({
+          path:path,
+          fillColor: '#fff', // 多边形填充颜色
+          borderWeight: 2, // 线条宽度，默认为 1
+          strokeColor: colorP[i], // 线条颜色
+        });
+        overlayGroup.addOverlay(polygon);
+      }
+      console.log("a"+a);
+      console.log("b"+b);
+      console.log("a1:"+a1);
+      console.log("b1:"+b1);
+      var pt=new AMap.LngLat(a1,b1)
+      centerp=pt
+      console.log(centerp)
+      //map.setCenter(centerp);
+    },
+    //生成施工项目全部polygon
+    createPolygon1:function(map,ployg,overlayGroup){
+
+      var temp = [];
+      var path = [];
+      var ploy2 = [];
+      //for(var i=0;i<ployg.length;i++)
+      //{
+        //ployg[i].projectLongLat可能是空的
+        //if(ployg[i]!=null){
+          temp=ployg.split(';');
+        //}
+
+      //}
+
+      // 生成四边形
+     // for(var i=0;i<temp.length;i++)
+      //{
+
+        path = [];
+        //  console.log(this.path)
+        var a=0;
+        var b=0;
+        for(var j=0;j<temp.length-1;j++)
+        {
+
+          ploy2=temp[j].split(',');
+          a=parseFloat(a)+parseFloat(ploy2[0]);
+          b=parseFloat(b)+parseFloat(ploy2[1]);
+          path.push(new AMap.LngLat(ploy2[0]-0,ploy2[1]-0));
+
+        }
+        a=a/(temp.length-1);
+        b=b/(temp.length-1);
+        // console.log("a"+a);
+        // console.log("b"+b);
+        var pt=new AMap.LngLat(a,b)
+        var polygon = new AMap.Polygon({
+          path:path,
+          fillColor: '#fff', // 多边形填充颜色
+          borderWeight: 2, // 线条宽度，默认为 1
+          strokeColor: 'red', // 线条颜色
+        });
+
+        map.setCenter(pt);
+        overlayGroup.addOverlay(polygon);
+
+        //}
+
+    },
+
     radioChange(){
       if(this.radio=='1'){
         getlistEnclosure('').then(response => {
@@ -875,7 +1056,9 @@ export default {
       }
     },
     handleClick(tag) {
-     this.a=tag.charAt(tag.length-1)-1;
+     // this.maps.destroy();
+
+      this.a=tag.charAt(tag.length-1)-1;
       // if(tag=="阶段1"){
       //   this.stage.stage1.show=true;
       // }
@@ -892,6 +1075,17 @@ export default {
         this.addS.stage[i].show=false;
       }
       this.addS.stage[this.a].show=true;
+
+      var map = new AMap.Map(document.getElementById("container"));
+      this.opendig();
+      // this.maps = new AMap.Map('container', {
+      //   //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+      //   center: [104.07, 30.67],
+      //   resizeEnable: true,
+      //   expandZoomRange: true,
+      //   zooms: [3, 20],
+      //   zoom:15,
+      // });
       // // }
       console.log(this.a)
       console.log(this.addS.stage[this.a])
