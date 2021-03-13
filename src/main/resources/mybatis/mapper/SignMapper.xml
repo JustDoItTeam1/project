@@ -93,4 +93,8 @@
       #{id}
     </foreach>
   </delete>
+
+  <select id="getSignById" parameterType="Long" resultMap="BaseResultMap">
+    select * from sign where sign_id=#{id}
+  </select>
 </mapper>

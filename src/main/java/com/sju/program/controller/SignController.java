@@ -37,6 +37,11 @@ public class SignController extends BaseController{
 		startPage();
 		return getDataTable(service.getAllSign());
 	}
+	@ApiOperation(value = "查询单个标牌接口")
+	@GetMapping("/{id}")
+	public AjaxResult getSignById(@PathVariable("id") Long id){
+		return AjaxResult.success(service.getSignById(id));
+	}
 	@ApiOperation(value = "增加标牌接口")
 	@PostMapping()
 	public AjaxResult insertSign(@RequestBody Sign sign){
@@ -68,6 +73,11 @@ public class SignController extends BaseController{
 			return AjaxResult.error("新增失败，该地点已有标牌");
 		}
 		return AjaxResult.success(service.insertSignInfo(signInfoPo));
+	}
+	@ApiOperation(value = "查询单个地图标牌")
+	@GetMapping("/inMap/{id}")
+	public AjaxResult selectSignInMapById(@PathVariable("id") Long id){
+		return AjaxResult.success(service.selectSignInMapById(id));
 	}
 
 	@ApiOperation(value = "删除地图标牌")

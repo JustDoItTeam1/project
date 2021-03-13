@@ -22,4 +22,6 @@ public interface SignMapper {
     Sign getSignByName(String name);
 
     int deleteSignById(Long[] id);
+
+    Sign getSignById(Long id);
 }

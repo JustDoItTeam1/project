@@ -160,6 +160,9 @@
       #{id}
     </foreach>
   </delete>
+  <select id="selectSignInMapById" parameterType="Long" resultMap="BaseResultMap">
+    select * from sign_info where id=#{id}
+  </select>
 
 
 </mapper>

@@ -29,4 +29,8 @@ public interface SignService {
 	int updateSign(Sign sign);
 
 	SignInfo getSignInfoByLongitudeAndLatitude(SignInfoPo signInfoPo);
+
+	Sign getSignById(Long id);
+
+	SignInfo selectSignInMapById(Long id);
 }

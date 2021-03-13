@@ -82,4 +82,14 @@ public class SignServiceImpl implements SignService {
 		BeanUtils.copyProperties(signInfoPo,signInfo);
 		return signInfoMapper.getSignInfoByLongitudeAndLatitude(signInfo);
 	}
+
+	@Override
+	public Sign getSignById(Long id) {
+		return signMapper.getSignById(id);
+	}
+
+	@Override
+	public SignInfo selectSignInMapById(Long id) {
+		return signInfoMapper.selectSignInMapById(id);
+	}
 }
