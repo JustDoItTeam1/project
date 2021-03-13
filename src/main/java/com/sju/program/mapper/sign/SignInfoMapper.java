@@ -24,4 +24,6 @@ public interface SignInfoMapper {
     int deleteSignInfo(Long[] id);
 
     SignInfo getSignInfoByLongitudeAndLatitude(SignInfo signInfo);
+
+    SignInfo selectSignInMapById(Long id);
 }
