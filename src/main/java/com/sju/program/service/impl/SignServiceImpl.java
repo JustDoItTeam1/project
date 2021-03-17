@@ -92,4 +92,9 @@ public class SignServiceImpl implements SignService {
 	public SignInfo selectSignInMapById(Long id) {
 		return signInfoMapper.selectSignInMapById(id);
 	}
+
+	@Override
+	public List<SignInfoVo> selectSignInfoByName(String s) {
+		return signInfoMapper.selectSignInfoByName(s);
+	}
 }

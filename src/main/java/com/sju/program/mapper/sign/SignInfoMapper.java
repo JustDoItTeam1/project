@@ -26,4 +26,6 @@ public interface SignInfoMapper {
     SignInfo getSignInfoByLongitudeAndLatitude(SignInfo signInfo);
 
     SignInfo selectSignInMapById(Long id);
+
+    List<SignInfoVo> selectSignInfoByName(String s);
 }

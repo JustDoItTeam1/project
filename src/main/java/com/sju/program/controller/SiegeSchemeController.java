@@ -10,9 +10,12 @@ import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.domain.po.SiegeSchemePo;
 import com.sju.program.domain.po.SiegeSchemePo;
+import com.sju.program.domain.sign.SignInfo;
 import com.sju.program.domain.vo.SieheSchemeParentVo;
+import com.sju.program.domain.vo.SignInfoVo;
 import com.sju.program.message.HttpStatus;
 import com.sju.program.message.Test;
+import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
@@ -46,6 +49,8 @@ public class SiegeSchemeController extends BaseController
     @Autowired
     private TokenService tokenService;
 
+
+
     /**
      * 查询围蔽方案列表
      */
@@ -67,7 +72,7 @@ public class SiegeSchemeController extends BaseController
         }
         else {
             List<SieheSchemeParentVo> sieheSchemeParentVoList1=siegeSchemeService.selectSiegeSchemeBySearch(sieheSchemeParentVoList,project.getProjectInfo());
-            return getDataTable(sieheSchemeParentVoList1);
+        return getDataTable(sieheSchemeParentVoList1);
         }
        // return getDataTable(sieheSchemeParentVoList);
     }

@@ -3,6 +3,8 @@ package com.sju.program.controller;
 import java.util.List;
 
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.SignInfoVo;
+import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
@@ -40,6 +42,8 @@ public class ProjectController extends BaseController
     private IProjectService projectService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private SignService signService;
 
     /**
      * 查询施工项目列表
@@ -53,7 +57,13 @@ public class ProjectController extends BaseController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<Project> list = tokenService.getLoginUserProject(loginUser);
         if (StringUtils.isNotEmpty(project.getProjectInfo())){
-            return getDataTable(projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo()));
+            List<Project> projectList=projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo());
+            List<SignInfoVo> signInfoList=signService.selectSignInfoByName(project.getProjectInfo());
+            if (StringUtils.isNotNull(projectList)){
+                return getDataTable(projectList);
+            }else{
+                return getDataTable(signInfoList);
+            }
         }
         return getDataTable(list);
     }
