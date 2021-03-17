@@ -1,16 +1,23 @@
 package com.sju.program.controller;
 
+import com.sju.program.domain.Project;
+import com.sju.program.domain.model.LoginUser;
 import com.sju.program.domain.po.SignInfoPo;
 import com.sju.program.domain.sign.Sign;
 import com.sju.program.domain.sign.SignInfo;
+import com.sju.program.domain.vo.SignInfoVo;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.page.TableDataInfo;
 import com.sju.program.service.SignService;
+import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author qhw
@@ -23,13 +30,17 @@ public class SignController extends BaseController{
 
 	@Autowired
 	private SignService service;
+	@Autowired
+	private TokenService tokenService;
 
 
 	@ApiOperation(value = "查询地图标牌接口")
 	@GetMapping("/signInfo/list")
 	public TableDataInfo getAllSignInfo(){
 		startPage();
-		return getDataTable(service.getAllSignInfo());
+		LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+		List<SignInfoVo> signInfoVos = tokenService.getLoginUserSignInfo(loginUser);
+		return getDataTable(signInfoVos);
 	}
 	@ApiOperation(value = "查询标牌接口")
 	@GetMapping("/list")

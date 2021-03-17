@@ -1,13 +1,12 @@
 package com.sju.program.service.login;
 
 import com.sju.program.constant.Constants;
+import com.sju.program.controller.BaseController;
 import com.sju.program.domain.*;
 import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
-import com.sju.program.service.IProjectProcessService;
-import com.sju.program.service.IProjectService;
-import com.sju.program.service.IRectificationInfoService;
-import com.sju.program.service.ISiegeSchemeService;
+import com.sju.program.domain.vo.SignInfoVo;
+import com.sju.program.service.*;
 import com.sju.program.utils.JwtUtils;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
@@ -62,6 +61,8 @@ public class TokenService
     IProjectService projectService;
     @Autowired
     IProjectProcessService projectProcessService;
+    @Autowired
+    SignService signService;
 
     public List<SiegeScheme> getLoginUserSiegeScheme(LoginUser loginUser){
         List<SiegeScheme> list=null;
@@ -126,6 +127,22 @@ public class TokenService
                  break;
          }
 
+         return list;
+     }
+
+     public List<SignInfoVo> getLoginUserSignInfo(LoginUser loginUser){
+        List<SignInfoVo> list=new ArrayList<>();
+         BaseUser baseUser=(BaseUser) loginUser.getUser();
+         switch (baseUser.getAuthenticate()){
+             case 1:
+             case 2:
+             case 3:
+                 list=signService.getAllSignInfo();
+                 break;
+             case 4:
+                 list= signService.getSignInfoByBuilderId(baseUser.getId());
+                 break;
+         }
          return list;
      }
 

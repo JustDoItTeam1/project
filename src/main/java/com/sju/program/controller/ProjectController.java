@@ -56,10 +56,11 @@ public class ProjectController extends BaseController
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<Project> list = tokenService.getLoginUserProject(loginUser);
+        List<SignInfoVo> signInfoVos = tokenService.getLoginUserSignInfo(loginUser);
         if (StringUtils.isNotEmpty(project.getProjectInfo())){
             List<Project> projectList=projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo());
-            List<SignInfoVo> signInfoList=signService.selectSignInfoByName(project.getProjectInfo());
-            if (StringUtils.isNotNull(projectList)){
+            List<SignInfoVo> signInfoList=signService.selectSignInfoByName(signInfoVos,project.getProjectInfo());
+            if (projectList.size()>0){
                 return getDataTable(projectList);
             }else{
                 return getDataTable(signInfoList);

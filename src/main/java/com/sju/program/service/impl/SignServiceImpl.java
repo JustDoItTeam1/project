@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,8 +94,24 @@ public class SignServiceImpl implements SignService {
 		return signInfoMapper.selectSignInMapById(id);
 	}
 
+//	@Override
+//	public List<SignInfoVo> selectSignInfoByName(String s) {
+//		return signInfoMapper.selectSignInfoByName(s);
+//	}
+
 	@Override
-	public List<SignInfoVo> selectSignInfoByName(String s) {
-		return signInfoMapper.selectSignInfoByName(s);
+	public List<SignInfoVo> selectSignInfoByName(List<SignInfoVo> list, String s) {
+		List<SignInfoVo> signInfoVoList=new ArrayList<>();
+		for(SignInfoVo signInfoVo:list){
+			if (signInfoVo.getName().contains(s)){
+				signInfoVoList.add(signInfoVo);
+			}
+		}
+		return signInfoVoList;
+	}
+
+	@Override
+	public List<SignInfoVo> getSignInfoByBuilderId(Long id) {
+		return signInfoMapper.getSignInfoByBuilderId(id);
 	}
 }

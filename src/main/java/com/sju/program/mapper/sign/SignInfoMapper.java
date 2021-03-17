@@ -28,4 +28,6 @@ public interface SignInfoMapper {
     SignInfo selectSignInMapById(Long id);
 
     List<SignInfoVo> selectSignInfoByName(String s);
+
+    List<SignInfoVo> getSignInfoByBuilderId(Long id);
 }
