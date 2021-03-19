@@ -80,7 +80,7 @@ public class ProjectController extends BaseController
                 return rspData;
             }
         }
-        return getDataTable(new ArrayList<>());
+        return getDataTable(list);
     }
 
     /**
