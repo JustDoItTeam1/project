@@ -1,21 +1,31 @@
 import request from '@/utils/request'
 
 // 查询地图标牌
-export function getMapSign() {
+export function getMapSign(query) {
   return request({
     url: '/program/sign/signInfo/list',
     method: 'get',
-    //params: query
+    params: query
+  })
+}
+// 新增地图标牌
+export function addMapSign(data) {
+  return request({
+    url: '/program/sign/inMap',
+    method: 'post',
+    data: data
   })
 }
 
-// 删除标牌信息
+
+// 删除地图标牌信息
 export function delMapSign(ssId) {
   return request({
     url: '/program/sign/signInfo/' + ssId,
     method: 'delete'
   })
 }
+
 // 查询标牌
 export function listSign(query) {
   return request({

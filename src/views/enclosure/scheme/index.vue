@@ -517,7 +517,7 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
 
-       <div  v-for="stagenum in addS.stage" v-if="stagenum.show" >
+       <div  v-for="stagenum in addS.stage" v-show="stagenum.show" >
         <el-form-item label="围蔽阶段" prop="ssStage">
           <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
             <el-option label="1" value="1" />
@@ -554,22 +554,24 @@
 <!--        <el-form-item label="围蔽区域(地图)" prop="ssRange">-->
 <!--          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />-->
 <!--        </el-form-item>-->
+         <el-form-item label="围蔽性质" prop="ssProperties">
+           <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
+             <el-option label="全封闭" value="全封闭" />
+             <el-option label="半封闭" value="半封闭" />
+           </el-select>
+         </el-form-item>
+
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
           <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
           <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
-          <div id="container" style="width: 95%;height:210px;position:relative ">
 
-          </div>
         </el-form-item>
 
-        <el-form-item label="围蔽性质" prop="ssProperties">
-          <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
-            <el-option label="全封闭" value="全封闭" />
-            <el-option label="半封闭" value="半封闭" />
-          </el-select>
-        </el-form-item>
+
 </div>
+        <div id="container" style="width: 95%;height:210px;position:relative ">
 
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -818,33 +820,33 @@ export default {
         //   this.createPolygon(this.maps,this.addS.stage[m].ssRange,this.overlayGroup2);
         //
         // }
-        this.centerp=new AMap.LngLat(104.07, 30.67);
+        //this.centerp=new AMap.LngLat(104.07, 30.67);
 
         this.createPolygon(this.maps,this.addS.stage,this.overlayGroup2,this.center);
         // this.createPolygon(this.maps,this.addS.stage[this.a].ssRange,this.overlayGroup2);
 
         this.maps.add(this.overlayGroup2);
         this.overlayGroup2.show();
-        console.log(this.pointA);
-        console.log(this.pointB);
+        // console.log(this.pointA);
+        // console.log(this.pointB);
 
         //this.maps.setCenter(this.centerp);
-        console.log(newVal);
+        //console.log(newVal);
       }
 
 }
   },
   methods: {
-    init(){
-      this.maps = new AMap.Map('container', {
-        //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
-        center: [104.07, 30.67],
-        resizeEnable: true,
-        expandZoomRange: true,
-        zooms: [3, 20],
-        zoom:15,
-      });
-    },
+    // init(){
+    //   this.maps = new AMap.Map('container', {
+    //     //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+    //     center: [104.07, 30.67],
+    //     resizeEnable: true,
+    //     expandZoomRange: true,
+    //     zooms: [3, 20],
+    //     zoom:15,
+    //   });
+    // },
     opendig(){
       this.maps = new AMap.Map('container', {
         //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
@@ -854,7 +856,7 @@ export default {
         zooms: [3, 20],
         zoom:15,
       });
-      console.log('dakai')
+      //console.log('dakai')
     },
 
     createPolygon:function(map,ployg,overlayGroup,centerp){
@@ -862,8 +864,7 @@ export default {
       var temp = [];
       var path = [];
       var ploy2 = [];
-      var a=0;
-      var b=0;
+
       var a1=0;
       var b1=0;
       var colorP=['red','green','yellow','white','black','blue']
@@ -875,7 +876,8 @@ export default {
         }
 
       }
-
+      var a=0;
+      var b=0;
       // 生成四边形
       for(var i=0;i<temp.length;i++)
       {
@@ -889,20 +891,20 @@ export default {
           ploy2=temp[i][j].split(',');
           a=parseFloat(a)+parseFloat(ploy2[0]);
           b=parseFloat(b)+parseFloat(ploy2[1]);
-          a1=parseFloat(a1)+parseFloat(ploy2[0]);
-          b1=parseFloat(b1)+parseFloat(ploy2[1]);
+         // a1=parseFloat(a1)+parseFloat(ploy2[0]);
+         // b1=parseFloat(b1)+parseFloat(ploy2[1]);
           path.push(new AMap.LngLat(ploy2[0]-0,ploy2[1]-0));
 
         }
         a=a/(temp[i].length-1);
         b=b/(temp[i].length-1);
-        a1=a1/(temp[i].length-1);
-        b1=b1/(temp[i].length-1);
+       // a1=a1/(temp[i].length-1);
+        //b1=b1/(temp[i].length-1);
         console.log("a"+a);
         console.log("b"+b);
 
-        console.log("a1:"+a1);
-        console.log("b1:"+b1);
+       // console.log("a1:"+a1);
+       // console.log("b1:"+b1);
 
 
         var polygon = new AMap.Polygon({
@@ -915,12 +917,13 @@ export default {
       }
       console.log("a"+a);
       console.log("b"+b);
-      console.log("a1:"+a1);
-      console.log("b1:"+b1);
-      var pt=new AMap.LngLat(a1,b1)
-      centerp=pt
-      console.log(centerp)
-      //map.setCenter(centerp);
+     // console.log("a1:"+a1);
+     // console.log("b1:"+b1);
+      var pt=new AMap.LngLat(a,b)
+     // centerp=pt
+     // console.log(centerp)
+      if(temp.length==1)
+        map.setCenter(pt);
     },
     //生成施工项目全部polygon
     createPolygon1:function(map,ployg,overlayGroup){
@@ -1076,8 +1079,8 @@ export default {
       }
       this.addS.stage[this.a].show=true;
 
-      var map = new AMap.Map(document.getElementById("container"));
-      this.opendig();
+      // var map = new AMap.Map(document.getElementById("container"));
+      // this.opendig();
       // this.maps = new AMap.Map('container', {
       //   //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
       //   center: [104.07, 30.67],

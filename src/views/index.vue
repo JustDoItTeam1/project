@@ -1,7 +1,7 @@
 <template>
   <div>
 
-  <div id="container" style="width: 100%;height: 670px;position:relative ">
+  <div id="container" style="width: 100%;height: 670px;position:relative "   >
   </div>
 <!--  <el-dialog   :visible.sync="vformVisible" append-to-body>-->
 <!--    <detailForm  ref="detailfrom" :msg="nomsg"></detailForm>-->
@@ -39,13 +39,18 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="info"  @click="clickSeige" style="float: left" v-if="siegeVV" round>查看围蔽详情</el-button>
         <el-button type="info"  @click="clickSeigeAdd" style="float: left" v-if="addSiegeVV" round>新增围蔽方案</el-button>
+        <el-button type="success"  @click="clickOverlaySearch" style="float: left"  round>查看项目标牌</el-button>
         <el-button type="primary" @click="submitProject">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+
       </div>
     </el-dialog>
 
     <div style="position: absolute;right: 1%;top:2%;">
       <el-button type="primary" @click="addMapSign">增加地图标牌</el-button>
+    </div>
+    <div style="position: absolute;right: 10%;top:2%;">
+      <el-button type="success" @click="outSign" v-if="overlaySearchV">退出查看标牌</el-button>
     </div>
 
 
@@ -78,34 +83,34 @@
         <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
       </el-form-item>
-        <el-form-item style="position: absolute;left: 15%;top:60%;">
-          <el-radio-group v-model="radio">
-            <el-radio :label="1">施工项目</el-radio>
-            <el-radio :label="2">标牌</el-radio>
-          </el-radio-group>
-        </el-form-item>
+<!--        <el-form-item style="position: absolute;left: 15%;top:60%;">-->
+<!--          <el-radio-group v-model="radio">-->
+<!--            <el-radio :label="1">施工项目</el-radio>-->
+<!--            <el-radio :label="2">标牌</el-radio>-->
+<!--          </el-radio-group>-->
+<!--        </el-form-item>-->
       </el-form>
     </div>
 
-<!--    搜索结果-->
+<!--    搜索结果 标牌-->
 
 
-    <div style="position: absolute;left:1%;top: 13%;width: 270px;background-color: white" v-if="resultVS">
+    <div style="position: absolute;left:1%;top: 9%;width: 270px;background-color: white" v-if="resultVS">
       <el-card class="box-card" v-for="o in this.searchSeige" :key="o" >
 
         <div  class="text item">
           <el-button
             size="samll"
             type="text"
-            @click="handleClick(o)"
+            @click="handleClickSign(o)"
 
-          > {{o.ssProjectName}}</el-button>
+          > {{o.name}}</el-button>
         </div>
 <!--        <div  class="text item">-->
 <!--          {{o.ssProjectName}}-->
 <!--        </div>-->
         <div  class="text item">
-          {{o.ssBuilderName}}
+          {{o.roadsection}}
         </div>
       </el-card>
 
@@ -146,7 +151,7 @@
     </div>
 
 <!--    项目搜索结果-->
-    <div class="search" style="position: absolute;left:1%;top:12%;width: 270px;background-color: white" v-if="resultVP">
+    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVP">
       <el-card class="box-card" v-for="o in this.searchProject" :key="o" >
 
         <div  class="text item">
@@ -257,31 +262,31 @@
 <!--    </el-table>-->
 <!--    </el-dialog>-->
     <!--弹出标牌详情表格-->
-    <el-dialog title='标牌信息详情' :visible.sync="signV" width="500px" append-to-body>
+    <el-dialog title='标牌信息详情' :visible.sync="signV" width="500px" :before-close="signClose" append-to-body>
       <el-form ref="projectForm" :model="signListOne"  label-width="120px">
         <el-form-item label="标牌名称"  >
-          <el-input v-model="signListOne.name" />
+          <el-input v-model="signListOne.name" placeholder="请输入标牌名称"/>
 
         </el-form-item>
-        <el-form-item label="标识码" prop="projectName">
-          <el-input v-model="signListOne.id" placeholder="请输入项目名称" />
+        <el-form-item label="标识码" prop="projectName" v-if="delSignBut">
+          <el-input v-model="signListOne.id" placeholder="请输入标识码" />
         </el-form-item>
         <el-form-item label="道路" prop="projectLocation">
-          <el-input v-model="signListOne.roadsection" placeholder="请输入项目位置" />
+          <el-input v-model="signListOne.roadsection" placeholder="请输入所在道路" />
         </el-form-item>
         <el-form-item label="具体位置" prop="projectLongLat">
-          <el-input v-model="signListOne.projectName" placeholder="请输入项目位置(地图)" />
+          <el-input v-model="signListOne.detailedadd" placeholder="请输入标牌的具体位置" />
         </el-form-item>
         <el-form-item label="施工项目名称" prop="projectManger">
-          <el-input v-model="projectListOne.projectManger" placeholder="请输入项目负责人" />
+          <el-input v-model="signListOne.projectName" placeholder="请输入所属施工项目的名称" />
         </el-form-item>
         <el-form-item label="备注" prop="projectPhone">
-          <el-input v-model="signListOne.remark" placeholder="请输入负责人联系电话" />
+          <el-input v-model="signListOne.remark" placeholder="请输入备注" />
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="addSign" v-if="addSignBut">新增标牌</el-button>
+        <el-button type="primary" @click="addSignCom" v-if="addSignBut">新增标牌</el-button>
         <el-button type="danger" @click="deleteSign" v-if="delSignBut">删除该标牌</el-button>
       </div>
     </el-dialog>
@@ -447,7 +452,7 @@
 </template>
 
 <script>
-  import {getMapSign,delMapSign} from "../api/sign/sign";
+  import {getMapSign,delMapSign,addMapSign} from "../api/sign/sign";
   import {listProject,updateProject} from "../api/project/project";
 import {getInfo} from "../api/login";
 
@@ -470,6 +475,10 @@ export default {
       searchQueryParams: {
         //seigeName:null,
         projectInfo:null,
+      },
+      searchQueryParamsSign: {
+        //seigeName:null,
+        projectId:null,
       },
       // searchQueryParamsSeige:{
       //   projectId:null,
@@ -557,19 +566,82 @@ export default {
       addSignBut:false,
       delSignBut:false,
 
+      overlaysMarker:null,
+
+      markerClick:false,
+      markerNew:null,
+
+      overlaySearchV:null,
+      overlaySearch:null,
     };
   },
   created() {
 
   },
+  // watch:{
+  //   mouseTool(newval){
+  //     this.mouseTool.on('draw',function(e){
+  //       this.overlaysMarker=e;
+  //     })
+  //     //this.mouseTool.marker()
+  //     console.log(this.overlaysMarker);
+  //   }
+  // },
   methods: {
+
+     // / ** 点击搜索结果查看详情操作 */
+    handleClickSign(o){
+
+    console.log(o)
+    this.signV=true;
+    this.signListOne= o;
+    //console.log(this.projectListOne);
+    this.maps.setCenter(new AMap.LngLat(this.signListOne.longitude,this.signListOne.latitude));
+    this.maps.setZoom(17);
+    // this.siegeV = true;
+    //
+    // //将object转化为array
+    // var myArray=new Array()
+    // myArray.push(o);
+    // this.schemeListOne= myArray;
+  },
+
+
+    addSignCom(){
+      console.log(this.signListOne);
+      delete this.signListOne["id"];
+      console.log(this.signListOne);
+      addMapSign(this.signListOne).then(response => {
+        if (response.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '该标牌新增成功!'
+          });
+          this.initMarker();
+          this.signV=false;
+
+        }
+
+      });
+    },
+    signClose(){
+      this.signListOneRes();
+      if (this.markerNew!=null){
+        this.maps.remove(this.markerNew);
+      }
+      this.signV=false;
+      this.markerNew=null;
+    },
+
+
+
     signListOneRes(){
       this.signListOne={
         id:null,
         name:null,
         projectName:null,
         roadsection:null,
-        projectManger:null,
+        detailedadd:null,
         remark:null,
       }
     },
@@ -577,11 +649,21 @@ export default {
       this.mouseTool.marker({
         //同Marker的Option设置
       });
-    },
+    //
+    //
+      },
+    // pullMarker(e){
+    //   console.log(e);
+    //
+    // },
     addMapSign(){
-      this.signListOneRes();
+      this.markerClick=true;
+      // this.signListOneRes();
+      // this.draw()
+      //this.mouseTool.close(false);
 
-      console.log(this.draw());
+      //this.mouseTool.marker()
+
 
       // this.signV=true;
       // this.addSignBut=true;
@@ -647,10 +729,37 @@ export default {
       this.projectListOne.projectLongLat=ms;
     },
 
+    outSign(){
+      this.overlayGroup1.show();
+      this.overlaySearch.hide();
+      this.overlaySearchV=false;
+    },
+    clickOverlaySearch(){
+      this.overlaySearchV=true;
+      this.vformVisible=false;
+      this.overlayGroup1.hide();
+      console.log(this.projectListOne);
+      this.searchQueryParams.projectInfo=this.projectListOne.projectId;
+      listProject(this.searchQueryParams).then(response => {
+        console.log(response);
+        this.overlaySearch = new AMap.OverlayGroup();
+        this.overlaySearch.clearOverlays();
+        this.createSign(this.maps,response.rows,this.overlaySearch);
+        this.maps.add(this.overlaySearch);
+        this.overlaySearch.show();
+        // overlaySearch
+
+      })
+
+      //this.overlayGroup2.hide();
+
+
+    },
+
     /** 点击搜索结果查看详情操作 */
     handleClick(o){
 
-      //console.log(o)
+      console.log(o)
       this.vformVisible=true;
       this.projectListOne= o;
       //console.log(this.projectListOne);
@@ -677,13 +786,30 @@ export default {
       //   });
       // }
       // else{
-        this.resultVP=true;
+
+
         this.searchQueryParams.projectInfo=this.searchName;
+
         listProject(this.searchQueryParams).then(response => {
-          this.createPolygon(this.maps,response.rows,this.overlayGroup2);
-          this.searchProject=response.rows;
-          this.total=response.total;
-          //console.log(this.searchProject)
+          if((response.msg=="项目查询成功")||(response.msg=="查询成功")){
+            console.log(response)
+            this.createPolygon(this.maps,response.rows,this.overlayGroup2);
+            this.searchProject=response.rows;
+            this.total=response.total;
+            this.resultVP=true;
+            this.resultVS=false;
+            //console.log(this.searchProject)
+          }
+          if(response.msg=="标牌查询成功"){
+            console.log(response)
+            //this.createPolygon(this.maps,response.rows,this.overlayGroup2);
+            this.searchSeige=response.rows;
+            this.total=response.total;
+            this.resultVS=true;
+            this.resultVP=false;
+            //console.log(this.searchProject)
+          }
+
         });
 
 
@@ -910,6 +1036,7 @@ export default {
           fillColor: '#fff', // 多边形填充颜色
           borderWeight: 2, // 线条宽度，默认为 1
           strokeColor: 'red', // 线条颜色
+
         });
 
         // polygon.pl=this.ploy2;
@@ -921,6 +1048,7 @@ export default {
           position: pt,
           title: ployg[i].projectName,
           icon:redIcon,
+          offset: new AMap.Pixel(0, 0),
           anchor:'bottom-center',
         });
         marker.content =i;
@@ -1086,8 +1214,42 @@ export default {
         //   new AMap.TileLayer.RoadNet()
         // ]
       })
-      this.mouseTool = new AMap.MouseTool(this.maps);
+      var that=this;
 
+      this.maps.on('click', function(e) {
+        if(that.markerClick==true){
+          console.log(e.lnglat.getLng() + ',' + e.lnglat.getLat());
+          var pt=new AMap.LngLat(e.lnglat.getLng(),e.lnglat.getLat())
+
+          that.markerNew = new AMap.Marker({
+            position:pt,
+          });
+          that.maps.add(that.markerNew);
+
+
+          setTimeout(function(){
+            that.signListOneRes();
+            that.signV=true;
+            that.signListOne.latitude=e.lnglat.getLat();
+            that.signListOne.longitude=e.lnglat.getLng();
+            that.addSignBut=true;
+            that.delSignBut=false;
+            that.markerClick=false;
+            }, 1000);
+
+        }
+
+
+      });
+
+      this.mouseTool = new AMap.MouseTool(this.maps);
+      this.mouseTool.on('draw',function(e){
+        console.log(e);
+        this.overlaysMarker.push(e.obj.w);
+
+        console.log(this.overlaysMarker);
+      })
+      //this.mouseTool.on('draw',this.pullMarker(e));
 
       this.overlayGroup1 = new AMap.OverlayGroup();
       this.overlayGroup2 = new AMap.OverlayGroup();
@@ -1216,6 +1378,7 @@ export default {
   },
 
   mounted() {
+
 
     this.init();
 
