@@ -30,4 +30,6 @@ public interface SignInfoMapper {
     List<SignInfoVo> selectSignInfoByName(String s);
 
     List<SignInfoVo> getSignInfoByBuilderId(Long id);
+
+    List<SignInfoVo> selectSignInfoByProjectName(String name);
 }

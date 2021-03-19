@@ -176,4 +176,10 @@ LEFT JOIN project p on p.project_name=si.project_name
 WHERE p.project_builder_id=#{id}
   </select>
 
+  <select id="selectSignInfoByProjectName" parameterType="string" resultType="com.sju.program.domain.vo.SignInfoVo">
+    select id,s.name,s.icon,s.type,si.Longitude,si.Latitude,si.roadSection ,si.detailedAdd ,si.Jurisdictio ,si.createTime,si.Remark,si.project_name from sign_info si
+    left join sign s on s.sign_id=si.sign_id
+    where si.project_name=#{name}
+  </select>
+
 </mapper>

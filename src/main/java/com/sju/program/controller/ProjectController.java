@@ -1,8 +1,12 @@
 package com.sju.program.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
+import com.sju.program.constant.HttpStatus;
 import com.sju.program.domain.model.LoginUser;
+import com.sju.program.domain.vo.ProjectVo;
 import com.sju.program.domain.vo.SignInfoVo;
 import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
@@ -61,12 +65,22 @@ public class ProjectController extends BaseController
             List<Project> projectList=projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo());
             List<SignInfoVo> signInfoList=signService.selectSignInfoByName(signInfoVos,project.getProjectInfo());
             if (projectList.size()>0){
-                return getDataTable(projectList);
+                TableDataInfo rspData = new TableDataInfo();
+                rspData.setCode(HttpStatus.SUCCESS);
+                rspData.setMsg("项目查询成功");
+                rspData.setRows(projectList);
+                rspData.setTotal(new PageInfo(projectList).getTotal());
+                return rspData;
             }else{
-                return getDataTable(signInfoList);
+                TableDataInfo rspData = new TableDataInfo();
+                rspData.setCode(HttpStatus.SUCCESS);
+                rspData.setMsg("标牌查询成功");
+                rspData.setRows(signInfoList);
+                rspData.setTotal(new PageInfo(signInfoList).getTotal());
+                return rspData;
             }
         }
-        return getDataTable(list);
+        return getDataTable(new ArrayList<>());
     }
 
     /**

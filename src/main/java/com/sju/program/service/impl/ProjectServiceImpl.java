@@ -3,7 +3,12 @@ package com.sju.program.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sju.program.domain.vo.ProjectVo;
+import com.sju.program.domain.vo.SignInfoVo;
+import com.sju.program.mapper.sign.SignInfoMapper;
+import com.sju.program.mapper.sign.SignMapper;
 import io.swagger.models.auth.In;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sju.program.mapper.ProjectMapper;
@@ -22,6 +27,9 @@ public class ProjectServiceImpl implements IProjectService
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private SignInfoMapper signInfoMapper;
+
     /**
      * 查询施工项目
      *
@@ -29,9 +37,14 @@ public class ProjectServiceImpl implements IProjectService
      * @return 施工项目
      */
     @Override
-    public Project selectProjectById(Long projectId)
+    public ProjectVo selectProjectById(Long projectId)
     {
-        return projectMapper.selectProjectById(projectId);
+        Project project=projectMapper.selectProjectById(projectId);
+        ProjectVo projectVo=new ProjectVo();
+        List<SignInfoVo> signInfoVoList=signInfoMapper.selectSignInfoByProjectName(project.getProjectName());
+        BeanUtils.copyProperties(project,projectVo);
+        projectVo.setSignInfoVoList(signInfoVoList);
+        return projectVo;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.Project;
+import com.sju.program.domain.vo.ProjectVo;
 import io.swagger.models.auth.In;
 
 /**
@@ -18,7 +19,7 @@ public interface IProjectService
      * @param projectId 施工项目ID
      * @return 施工项目
      */
-    public Project selectProjectById(Long projectId);
+    public ProjectVo selectProjectById(Long projectId);
 
     /**
      * 查询施工项目列表
