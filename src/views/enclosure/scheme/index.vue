@@ -794,6 +794,7 @@ export default {
       // stageV3:false,
       // stageV4:false,
       // centerp:null,
+      overlayGroup2:null,
 
     };
   },
@@ -813,8 +814,10 @@ export default {
       if((newVal==false)&&(this.open==true)){
 
 
+        console.log("this.pointB");
         //this.addS.stage[this.a].ssRange
-        this.overlayGroup2 = new AMap.OverlayGroup();
+
+        this.overlayGroup2.clearOverlays();
         // for(var m=0;m<this.addS.length;m++){
         //   //if(this.addS.stage[m].ssRange!=null)
         //   this.createPolygon(this.maps,this.addS.stage[m].ssRange,this.overlayGroup2);
@@ -822,13 +825,14 @@ export default {
         // }
         //this.centerp=new AMap.LngLat(104.07, 30.67);
 
+        console.log(this.addS.stage)
         this.createPolygon(this.maps,this.addS.stage,this.overlayGroup2,this.center);
         // this.createPolygon(this.maps,this.addS.stage[this.a].ssRange,this.overlayGroup2);
 
         this.maps.add(this.overlayGroup2);
         this.overlayGroup2.show();
         // console.log(this.pointA);
-        // console.log(this.pointB);
+
 
         //this.maps.setCenter(this.centerp);
         //console.log(newVal);
@@ -856,11 +860,12 @@ export default {
         zooms: [3, 20],
         zoom:15,
       });
+      this.overlayGroup2 = new AMap.OverlayGroup();
       //console.log('dakai')
     },
 
     createPolygon:function(map,ployg,overlayGroup,centerp){
-
+      overlayGroup.clearOverlays();
       var temp = [];
       var path = [];
       var ploy2 = [];

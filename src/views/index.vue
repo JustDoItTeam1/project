@@ -37,8 +37,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="info"  @click="clickSeige" style="float: left" v-if="siegeVV" round>查看围蔽详情</el-button>
-        <el-button type="info"  @click="clickSeigeAdd" style="float: left" v-if="addSiegeVV" round>新增围蔽方案</el-button>
+        <el-button type="success"  @click="clickSeige" style="float: left" v-if="siegeVV" round>查看围蔽详情</el-button>
+        <el-button type="success"  @click="clickSeigeAdd" style="float: left" v-if="addSiegeVV" round>新增围蔽方案</el-button>
         <el-button type="success"  @click="clickOverlaySearch" style="float: left"  round>查看项目标牌</el-button>
         <el-button type="primary" @click="submitProject">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -47,9 +47,9 @@
     </el-dialog>
 
     <div style="position: absolute;right: 1%;top:2%;">
-      <el-button type="primary" @click="addMapSign">增加地图标牌</el-button>
+      <el-button type="primary" @click="addMapSign" v-if="addSignV">增加地图标牌</el-button>
     </div>
-    <div style="position: absolute;right: 10%;top:2%;">
+    <div style="position: absolute;right: 1%;top:2%;">
       <el-button type="success" @click="outSign" v-if="overlaySearchV">退出查看标牌</el-button>
     </div>
 
@@ -453,7 +453,7 @@
 
 <script>
   import {getMapSign,delMapSign,addMapSign} from "../api/sign/sign";
-  import {listProject,updateProject} from "../api/project/project";
+  import {getProject,listProject,updateProject} from "../api/project/project";
 import {getInfo} from "../api/login";
 
 import { saveAs } from 'file-saver';
@@ -571,7 +571,8 @@ export default {
       markerClick:false,
       markerNew:null,
 
-      overlaySearchV:null,
+      addSignV:true,
+      overlaySearchV:false,
       overlaySearch:null,
     };
   },
@@ -733,18 +734,21 @@ export default {
       this.overlayGroup1.show();
       this.overlaySearch.hide();
       this.overlaySearchV=false;
+      this.addSignV=true;
     },
+
     clickOverlaySearch(){
       this.overlaySearchV=true;
+      this.addSignV=false;
       this.vformVisible=false;
       this.overlayGroup1.hide();
       console.log(this.projectListOne);
       this.searchQueryParams.projectInfo=this.projectListOne.projectId;
-      listProject(this.searchQueryParams).then(response => {
+      getProject(this.projectListOne.projectId).then(response => {
         console.log(response);
         this.overlaySearch = new AMap.OverlayGroup();
         this.overlaySearch.clearOverlays();
-        this.createSign(this.maps,response.rows,this.overlaySearch);
+        this.createSign(this.maps,response.data.signInfoVoList,this.overlaySearch);
         this.maps.add(this.overlaySearch);
         this.overlaySearch.show();
         // overlaySearch
@@ -786,8 +790,8 @@ export default {
       //   });
       // }
       // else{
-
-
+      console.log(this.searchName)
+      if(this.searchName!=null){
         this.searchQueryParams.projectInfo=this.searchName;
 
         listProject(this.searchQueryParams).then(response => {
@@ -811,6 +815,9 @@ export default {
           }
 
         });
+      }
+
+
 
 
       // }
