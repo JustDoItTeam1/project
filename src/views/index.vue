@@ -96,11 +96,69 @@
       </el-form>
     </div>
 
+    <!--   画图搜索结果 标牌 项目-->
+
+
+    <div style="position: absolute;left:1%;top: 9%;width: 270px;background-color: white" v-if="drawV">
+      <!--     项目-->
+      <div>
+      <el-card class="box-card" v-for="o in this.projectDrawList" :key="o" style="height: 90px">
+
+        <div  class="text item">
+          <el-button
+            size="samll"
+            type="text"
+            @click="handleClick(o)"
+
+          > {{o.projectName}}</el-button>
+        </div>
+        <!--        <div  class="text item">-->
+        <!--          {{o.ssProjectName}}-->
+        <!--        </div>-->
+        <div  class="text item">
+          {{o.projectBuilderName}}
+        </div>
+      </el-card>
+      </div>
+<!--      标牌-->
+      <div>
+      <el-card class="box-card" v-for="o in this.signDrawList" :key="o" style="height: 90px" >
+
+        <div  class="text item">
+          <el-button
+            size="samll"
+            type="text"
+            @click="handleClickSign(o)"
+
+          > {{o.name}}</el-button>
+        </div>
+        <!--        <div  class="text item">-->
+        <!--          {{o.ssProjectName}}-->
+        <!--        </div>-->
+        <div  class="text item">
+          {{o.roadsection}}
+        </div>
+      </el-card>
+      </div>
+
+
+      <div style="position: absolute;left: 27%;top:100%;">
+        <el-pagination
+
+          layout="prev, pager, next"
+          :total="total"
+
+        >
+        </el-pagination>
+
+      </div>
+    </div>
+
 <!--    搜索结果 标牌-->
 
 
     <div style="position: absolute;left:1%;top: 9%;width: 270px;background-color: white" v-if="resultVS">
-      <el-card class="box-card" v-for="o in this.searchSeige" :key="o" >
+      <el-card class="box-card" v-for="o in this.searchSeige" :key="o" style="height: 90px" >
 
         <div  class="text item">
           <el-button
@@ -156,7 +214,7 @@
 
 <!--    项目搜索结果-->
     <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVP">
-      <el-card class="box-card" v-for="o in this.searchProject" :key="o" >
+      <el-card class="box-card" v-for="o in this.searchProject" :key="o" style="height: 90px">
 
         <div  class="text item">
           <el-button
@@ -282,7 +340,10 @@
           <el-input v-model="signListOne.detailedadd" placeholder="请输入标牌的具体位置" />
         </el-form-item>
         <el-form-item label="施工项目名称" prop="projectManger">
-          <el-input v-model="signListOne.projectName" placeholder="请输入所属施工项目的名称" />
+          <el-select v-model="signListOne.projectName" placeholder="请选择项目名称" clearable  >
+            <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
+          </el-select>
+<!--          <el-input v-model="signListOne.projectName" placeholder="请输入所属施工项目的名称" />-->
         </el-form-item>
         <el-form-item label="备注" prop="projectPhone">
           <el-input v-model="signListOne.remark" placeholder="请输入备注" />
@@ -456,8 +517,8 @@
 </template>
 
 <script>
-  import {getMapSign,delMapSign,addMapSign} from "../api/sign/sign";
-  import {getProject,listProject,updateProject} from "../api/project/project";
+  import {getMapSign,delMapSign,addMapSign,MaplistSign} from "../api/sign/sign";
+  import {getProject,listProject,updateProject,MaplistProject} from "../api/project/project";
 import {getInfo} from "../api/login";
 
 import { saveAs } from 'file-saver';
@@ -480,10 +541,12 @@ export default {
         //seigeName:null,
         projectInfo:null,
       },
-      searchQueryParamsSign: {
+      searchQueryParamsMap: {
         //seigeName:null,
-        projectId:null,
+
+        longitudeAndLatitude:null,
       },
+
       // searchQueryParamsSeige:{
       //   projectId:null,
       // },v:null,
@@ -521,6 +584,9 @@ export default {
       //围蔽详情弹窗
       siegeV:false,
       siegeVV:false,
+
+      // 施工项目表格数据
+      projectList: [],
 
       ploy1:[],
       ploy2:[],
@@ -579,10 +645,16 @@ export default {
       addSignV:true,
       overlaySearchV:false,
       overlaySearch:null,
+      //地图画框搜索结果
+      projectDrawList:[],
+      signDrawList:[],
+      //地图画框搜索显示
+      drawV:false,
+
     };
   },
   created() {
-
+    this.getproject();
   },
   // watch:{
   //   mouseTool(newval){
@@ -595,11 +667,24 @@ export default {
   // },
   methods: {
 
+    /** 查询项目单位列表 ！！！！！！！*/
+    getproject() {
+      // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
+      // console.log(this.builderList)
+      listProject().then(response => {
+        //this.projectList=[{name:"暂无",id:0}];
+        for(let i of response.rows){
+          this.projectList.push({name:i.projectName,id:i.projectId});
+        }
+      });
+    },
+
      // / ** 点击搜索结果查看详情操作 */
     handleClickSign(o){
-
-    console.log(o)
+    //console.log(o)
     this.signV=true;
+    this.addSignBut=false;
+    this.delSignBut=true;
     this.signListOne= o;
     //console.log(this.projectListOne);
     this.maps.setCenter(new AMap.LngLat(this.signListOne.longitude,this.signListOne.latitude));
@@ -667,6 +752,7 @@ export default {
     //
     // },
     handleQueryMap(){
+      this.mouseTool.close(true);
       this.draw()
     },
     addMapSign(){
@@ -790,6 +876,8 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+
+      this.mouseTool.close(true);
       //搜索结果显示
 
       // if(this.radio1=="查看围蔽方案"){
@@ -805,6 +893,8 @@ export default {
       console.log(this.searchName)
       if(this.searchName!=null){
         this.searchQueryParams.projectInfo=this.searchName;
+        this.searchQueryParams.pageNum=1;
+        this.searchQueryParams.pageSize=6;
 
         listProject(this.searchQueryParams).then(response => {
           if((response.msg=="项目查询成功")||(response.msg=="查询成功")){
@@ -814,6 +904,7 @@ export default {
             this.total=response.total;
             this.resultVP=true;
             this.resultVS=false;
+            this.drawV=false;
             //console.log(this.searchProject)
           }
           if(response.msg=="标牌查询成功"){
@@ -823,6 +914,7 @@ export default {
             this.total=response.total;
             this.resultVS=true;
             this.resultVP=false;
+            this.drawV=false;
             //console.log(this.searchProject)
           }
 
@@ -954,18 +1046,23 @@ export default {
 
 
         });
-        marker.content =i
+        marker.content =i;
+        marker.setLabel({
+          offset: new AMap.Pixel(0, 5),  //设置文本标注偏移量
+          content:ployg[i].name, //设置文本标注内容
+          direction: 'bottom' //设置文本标注方位
+        });
         marker.on('click', signmarkerClick);
         overlayGroup.addOverlay(marker);
 
         var that =this;
         function signmarkerClick(e) {
-          console.log(e);
+          //console.log(e);
 
           that.maps.setCenter(e.lnglat);
           that.maps.setZoom(17);
           that.signV=true;
-          this.addSignBut=false;
+          that.addSignBut=false;
           that.delSignBut=true;
           console.log(that.signListOne);
           console.log(that.ployg[parseInt(e.target.content)]);
@@ -1240,7 +1337,9 @@ export default {
       })
       var that=this;
 
+
       this.maps.on('click', function(e) {
+
         if(that.markerClick==true){
           console.log(e.lnglat.getLng() + ',' + e.lnglat.getLat());
           var pt=new AMap.LngLat(e.lnglat.getLng(),e.lnglat.getLat())
@@ -1269,15 +1368,16 @@ export default {
 
       this.mouseTool = new AMap.MouseTool(this.maps);
       this.mouseTool.on('draw',function(e){
-        //初始化
-        this.overlaysMarker=[];
-        this.searchQueryParams={
-
-          projectInfo:null,
-        },
-        console.log(e.obj.Ce.path);
-        this.overlaysMarker.push(e.obj.Ce.path);
-        console.log(this.overlaysMarker);
+        // //初始化
+        // this.overlaysMarker=[];
+        // // this.searchQueryParamsMap={
+        // //   //seigeName:null,
+        // //
+        // //   longitudeAndLatitude:null,
+        // // },
+        // console.log(e.obj.Ce.path);
+        // this.overlaysMarker.push(e.obj.Ce.path);
+        // console.log(this.overlaysMarker);
 
 
         var longlat="";
@@ -1285,15 +1385,33 @@ export default {
         for(var i=0;i<e.obj.Ce.path.length;i++){
           longlat=longlat+e.obj.Ce.path[i].lng;
           longlat=longlat+","+e.obj.Ce.path[i].lat;
-          longlat=longlat+";"
+          longlat=longlat+"!"
           console.log("1");
           //this.overlaysMarker[i]=longlat;
 
         }
         console.log(longlat);
-        this.searchQueryParams.projectInfo=longlat;
-        listProject(this.searchQueryParams).then(response => {
-
+        that.searchQueryParamsMap.longitudeAndLatitude=longlat;
+        that.mouseTool.close(false);
+        MaplistProject(that.searchQueryParamsMap).then(response => {
+          if (response.code === 200) {
+            //console.log(that.drawV)
+            that.projectDrawList=response.data;
+            console.log(that.projectDrawList);
+            that.drawV=true;
+            that.resultVP=false;
+            that.resultVS=false;
+          }
+        });
+        MaplistSign(that.searchQueryParamsMap).then(response => {
+          if (response.code === 200) {
+            that.signDrawList=response.rows;
+            //console.log(that.signDrawList)
+            that.drawV=true;
+            that.resultVP=false;
+            that.resultVS=false;
+            //console.log(that.drawV)
+          }
         });
 
       })

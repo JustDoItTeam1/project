@@ -8,7 +8,14 @@ export function listProject(query) {
     params: query
   })
 }
-
+// 地图查询施工项目列表
+export function MaplistProject(query) {
+  return request({
+    url: '/program/project/search',
+    method: 'get',
+    params: query
+  })
+}
 // 查询施工单位列表！！！！！！！！！！！！！！！！！
 // export function listBuilder(query) {
 //   return request({

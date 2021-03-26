@@ -8,6 +8,14 @@ export function getMapSign(query) {
     params: query
   })
 }
+// 地图查询标牌列表（画图）
+export function MaplistSign(query) {
+  return request({
+    url: '/program/sign',
+    method: 'get',
+    params: query
+  })
+}
 // 新增地图标牌
 export function addMapSign(data) {
   return request({
