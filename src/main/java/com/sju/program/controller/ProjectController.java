@@ -34,8 +34,7 @@ import com.sju.program.service.IProjectService;
 @Api(tags = "施工项目接口")
 @RestController
 @RequestMapping("/program/project")
-public class ProjectController extends BaseController
-{
+public class ProjectController extends BaseController {
     @Autowired
     private IProjectService projectService;
     @Autowired
@@ -49,23 +48,22 @@ public class ProjectController extends BaseController
     @ApiOperation("获取施工项目列表")
     @PreAuthorize("@ss.hasPermi('project:project:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Project project)
-    {
+    public TableDataInfo list(Project project) {
         startPage();
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         List<Project> list = tokenService.getLoginUserProject(loginUser);
         List<SignInfoVo> signInfoVos = tokenService.getLoginUserSignInfo(loginUser);
-        if (StringUtils.isNotEmpty(project.getProjectInfo())){
-            List<Project> projectList=projectService.selectSiegeSchemeBySearch(list,project.getProjectInfo());
-            List<SignInfoVo> signInfoList=signService.selectSignInfoByName(signInfoVos,project.getProjectInfo());
-            if (projectList.size()>0){
+        if (StringUtils.isNotEmpty(project.getProjectInfo())) {
+            List<Project> projectList = projectService.selectSiegeSchemeBySearch(list, project.getProjectInfo());
+            List<SignInfoVo> signInfoList = signService.selectSignInfoByName(signInfoVos, project.getProjectInfo());
+            if (projectList.size() > 0) {
                 TableDataInfo rspData = new TableDataInfo();
                 rspData.setCode(HttpStatus.SUCCESS);
                 rspData.setMsg("项目查询成功");
                 rspData.setRows(projectList);
                 rspData.setTotal(new PageInfo(projectList).getTotal());
                 return rspData;
-            }else{
+            } else {
                 TableDataInfo rspData = new TableDataInfo();
                 rspData.setCode(HttpStatus.SUCCESS);
                 rspData.setMsg("标牌查询成功");
@@ -91,21 +89,21 @@ public class ProjectController extends BaseController
 //    }
 
     //@PreAuthorize("@ss.hasPermi('program:project:query')")
+
     /**
      * 获取施工项目详细信息
      */
     @ApiOperation("获取id为x的施工项目信息")
     @PreAuthorize("@ss.hasPermi('project:project:edit')")
     @GetMapping(value = "/{projectId}")
-    public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
-    {
+    public AjaxResult getInfo(@PathVariable("projectId") Long projectId) {
         return AjaxResult.success(projectService.selectProjectById(projectId));
     }
 
 
     @ApiOperation("获取name为x的施工项目信息")
     @GetMapping()
-    public AjaxResult getInfoByName(@RequestParam("name") String name){
+    public AjaxResult getInfoByName(@RequestParam("name") String name) {
         return AjaxResult.success(projectService.selectProjectByProjectName(name));
     }
 
@@ -116,10 +114,9 @@ public class ProjectController extends BaseController
     @PreAuthorize("@ss.hasPermi('project:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Project project)
-    {
-        String name=project.getProjectName();
-        if (StringUtils.isNotEmpty(projectService.unique(name))){
+    public AjaxResult add(@RequestBody Project project) {
+        String name = project.getProjectName();
+        if (StringUtils.isNotEmpty(projectService.unique(name))) {
             return AjaxResult.error("与已有项目名称重复，增加失败");
         }
         return toAjax(projectService.insertProject(project));
@@ -132,8 +129,7 @@ public class ProjectController extends BaseController
     @PreAuthorize("@ss.hasPermi('project:project:edit')")
     @Log(title = "施工项目", businessType = BusinessType.UPDATE)
     @PutMapping()
-    public AjaxResult edit(@RequestBody Project project)
-    {
+    public AjaxResult edit(@RequestBody Project project) {
         return toAjax(projectService.updateProject(project));
     }
 
@@ -143,17 +139,30 @@ public class ProjectController extends BaseController
     @ApiOperation("删除施工项目(可批量删除)")
     @PreAuthorize("@ss.hasPermi('project:project:remove')")
     @Log(title = "施工项目", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{projectIds}")
-    public AjaxResult remove(@PathVariable Long[] projectIds)
-    {
+    @DeleteMapping("/{projectIds}")
+    public AjaxResult remove(@PathVariable Long[] projectIds) {
         return toAjax(projectService.deleteProjectByIds(projectIds));
     }
 
-//    /**
-//     * 地图范围查询项目
-//     */
-//    @ApiOperation("地图范围查询项目")
-//    @GetMapping("/search")
-//    public AjaxResult search()
-
+    /**
+     * 地图范围查询项目
+     */
+    @ApiOperation("地图范围查询项目")
+    @GetMapping("/search")
+    public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude) {
+        startPage();
+        String[] ll = longitudeAndLatitude.split(";");
+        int length = ll.length;
+        double[] longitude = new double[length];
+        double[] latitude = new double[length];
+        int i = 0;
+        for (String s : ll) {
+            String[] val = s.split(",");
+            longitude[i] = Double.valueOf(val[0]);
+            latitude[i] = Double.valueOf(val[1]);
+            i++;
+        }
+        //List<ProjectVo>
+        return AjaxResult.success();
+    }
 }

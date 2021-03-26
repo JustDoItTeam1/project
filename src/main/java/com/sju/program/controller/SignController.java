@@ -105,7 +105,7 @@ public class SignController extends BaseController{
 	 */
 	@ApiOperation("地图范围查询标牌")
 	@GetMapping()
-	public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
+	public TableDataInfo search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
 		String[] ll=longitudeAndLatitude.split(";");
 		int length=ll.length;
 		double[] longitude=new double[length];
@@ -117,6 +117,7 @@ public class SignController extends BaseController{
 			latitude[i]=Double.valueOf(val[1]);
 			i++;
 		}
+		startPage();
 		List<SignInfoVo> signInfoVoList=new ArrayList<>();
 		List<SignInfoVo> result=new ArrayList<>();
 		signInfoVoList=service.getAllSignInfo();
@@ -125,6 +126,6 @@ public class SignController extends BaseController{
 				result.add(signInfoVo);
 			}
 		}
-		return AjaxResult.success(result);
+		return getDataTable(result);
 	}
 }
