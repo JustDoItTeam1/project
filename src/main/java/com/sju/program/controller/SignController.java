@@ -103,7 +103,7 @@ public class SignController extends BaseController{
 	/**
 	 * 地图范围查询标牌
 	 */
-	@ApiOperation("地图范围查询项目")
+	@ApiOperation("地图范围查询标牌")
 	@GetMapping()
 	public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
 		String[] ll=longitudeAndLatitude.split(";");
