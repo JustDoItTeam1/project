@@ -17,6 +17,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT
     type: com.alibaba.druid.pool.DruidDataSource
+  #文件配置
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 20MB
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8085

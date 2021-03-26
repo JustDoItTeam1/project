@@ -156,7 +156,7 @@ public class ProjectController extends BaseController {
     @ApiOperation("地图范围查询项目")
     @GetMapping("/search")
     public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude) {
-        String[] ll = longitudeAndLatitude.split(";");
+        String[] ll = longitudeAndLatitude.split(".");
         int length = ll.length;
         double[] longitude = new double[length];
         double[] latitude = new double[length];

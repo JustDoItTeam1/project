@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 通用请求处理
- * 
+ *
  * @author ruoyi
  */
 @Api(tags = "文件上传下载接口")
@@ -38,12 +38,12 @@ public class CommonController
 
     /**
      * 通用下载请求
-     * 
+     *
      * @param fileName 文件名称
      *
      */
     @ApiOperation(value = "下载请求",response = AjaxResult.class)
-    @PreAuthorize("@ss.hasPermi('enclosure:scheme:download')")
+    //@PreAuthorize("@ss.hasPermi('enclosure:scheme:download')")
     @GetMapping("common/download")
     public AjaxResult fileDownload(String fileName,  HttpServletResponse response, HttpServletRequest request)
     {
@@ -62,7 +62,7 @@ public class CommonController
             response.setHeader("Content-Disposition",
                     "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, realFileName));
             FileUtils.writeBytes(filePath, response.getOutputStream());
-            return null;
+            return AjaxResult.success("下载成功");
         }
         catch (Exception e)
         {

@@ -106,7 +106,7 @@ public class SignController extends BaseController{
 	@ApiOperation("地图范围查询标牌")
 	@GetMapping()
 	public TableDataInfo search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
-		String[] ll=longitudeAndLatitude.split(";");
+		String[] ll=longitudeAndLatitude.split(".");
 		int length=ll.length;
 		double[] longitude=new double[length];
 		double[] latitude=new double[length];
