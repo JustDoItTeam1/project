@@ -75,6 +75,16 @@ public class ProjectVo
 
     private List<SignInfoVo> signInfoVoList;
 
+    private String typeInMap;
+
+    public String getTypeInMap() {
+        return typeInMap;
+    }
+
+    public void setTypeInMap(String typeInMap) {
+        this.typeInMap = typeInMap;
+    }
+
     public List<SignInfoVo> getSignInfoVoList() {
         return signInfoVoList;
     }

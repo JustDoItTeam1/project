@@ -123,6 +123,7 @@ public class SignController extends BaseController{
 		signInfoVoList=service.getAllSignInfo();
 		for(SignInfoVo signInfoVo:signInfoVoList){
 			if(PNPoly.polygon(longitude,latitude,signInfoVo.getLongitude(),signInfoVo.getLatitude())){
+				signInfoVo.setTypeInMap("标牌");
 				result.add(signInfoVo);
 			}
 		}

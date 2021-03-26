@@ -16,6 +16,8 @@ import com.sju.program.utils.StringUtils;
 import com.sun.org.glassfish.gmbal.ParameterNames;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -166,14 +168,17 @@ public class ProjectController extends BaseController {
             i++;
         }
         List<Project> projectList=projectService.selectAllProjectList();
-        List<Project> result=new ArrayList<>();
+        List<ProjectVo> result=new ArrayList<>();
         for(Project project:projectList){
             String s=project.getProjectLongLat();
             String[] longAndLat=s.split(";");
             for(String s1:longAndLat){
                 String[] ss=s1.split(",");
                 if (PNPoly.polygon(longitude,latitude,Double.valueOf(ss[0]),Double.valueOf(ss[1]))){
-                    result.add(project);
+                    ProjectVo projectVo=new ProjectVo();
+                    BeanUtils.copyProperties(project,projectVo);
+                    projectVo.setTypeInMap("项目");
+                    result.add(projectVo);
                     break;
                 }
             }

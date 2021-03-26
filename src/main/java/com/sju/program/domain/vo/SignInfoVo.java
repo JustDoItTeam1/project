@@ -39,4 +39,6 @@ public class SignInfoVo {
 
 	private String projectName;
 
+	private String typeInMap;
+
 }
