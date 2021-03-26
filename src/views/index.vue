@@ -82,7 +82,11 @@
         </el-form-item>
         <el-form-item>
         <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
-      </el-form-item>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="cyan" icon="el-icon-search" size="small" @click="handleQueryMap">画图搜索</el-button>
+        </el-form-item>
+
 <!--        <el-form-item style="position: absolute;left: 15%;top:60%;">-->
 <!--          <el-radio-group v-model="radio">-->
 <!--            <el-radio :label="1">施工项目</el-radio>-->
@@ -528,6 +532,7 @@ export default {
       nomsg:{},
 
       maps:null,
+      mouseTool:null,
 
       //拒绝理由弹窗
       opendisa:false,
@@ -566,7 +571,7 @@ export default {
       addSignBut:false,
       delSignBut:false,
 
-      overlaysMarker:null,
+      overlaysMarker:[],
 
       markerClick:false,
       markerNew:null,
@@ -647,7 +652,11 @@ export default {
       }
     },
     draw(){
-      this.mouseTool.marker({
+      this.mouseTool.polygon({
+        fillColor:'#00b0ff',
+        strokeColor:'#80d8ff'
+        //同Polyline的Option设置
+
         //同Marker的Option设置
       });
     //
@@ -657,6 +666,9 @@ export default {
     //   console.log(e);
     //
     // },
+    handleQueryMap(){
+      this.draw()
+    },
     addMapSign(){
       this.markerClick=true;
       // this.signListOneRes();
@@ -1061,6 +1073,11 @@ export default {
         marker.content =i;
         //marker.content={};
         //marker.cont=ployg[i];
+        marker.setLabel({
+          offset: new AMap.Pixel(0, 5),  //设置文本标注偏移量
+          content:ployg[i].projectName, //设置文本标注内容
+          direction: 'bottom' //设置文本标注方位
+        });
 
 
         ployg[i]["marker"]=marker;
@@ -1249,12 +1266,36 @@ export default {
 
       });
 
+
       this.mouseTool = new AMap.MouseTool(this.maps);
       this.mouseTool.on('draw',function(e){
-        console.log(e);
-        this.overlaysMarker.push(e.obj.w);
+        //初始化
+        this.overlaysMarker=[];
+        this.searchQueryParams={
 
+          projectInfo:null,
+        },
+        console.log(e.obj.Ce.path);
+        this.overlaysMarker.push(e.obj.Ce.path);
         console.log(this.overlaysMarker);
+
+
+        var longlat="";
+
+        for(var i=0;i<e.obj.Ce.path.length;i++){
+          longlat=longlat+e.obj.Ce.path[i].lng;
+          longlat=longlat+","+e.obj.Ce.path[i].lat;
+          longlat=longlat+";"
+          console.log("1");
+          //this.overlaysMarker[i]=longlat;
+
+        }
+        console.log(longlat);
+        this.searchQueryParams.projectInfo=longlat;
+        listProject(this.searchQueryParams).then(response => {
+
+        });
+
       })
       //this.mouseTool.on('draw',this.pullMarker(e));
 

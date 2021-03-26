@@ -1366,6 +1366,9 @@ export default {
     /** 下载附件按钮操作 */
     handleDownload(e){
       console.log(e);
+      var searchP={fileName:null}
+      searchP.fileName=e.children[0].ssFilePath;
+      downloadEnclosure(searchP).then(response => {})
     },
     /** 通过按钮操作 */
     handleAgree(e){
