@@ -10,6 +10,7 @@ import com.sju.program.domain.vo.ProjectVo;
 import com.sju.program.domain.vo.SignInfoVo;
 import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.PNPoly;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
 import com.sun.org.glassfish.gmbal.ParameterNames;
@@ -17,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
@@ -57,6 +59,7 @@ public class ProjectController extends BaseController {
             List<Project> projectList = projectService.selectSiegeSchemeBySearch(list, project.getProjectInfo());
             List<SignInfoVo> signInfoList = signService.selectSignInfoByName(signInfoVos, project.getProjectInfo());
             if (projectList.size() > 0) {
+                startPage();
                 TableDataInfo rspData = new TableDataInfo();
                 rspData.setCode(HttpStatus.SUCCESS);
                 rspData.setMsg("项目查询成功");
@@ -64,6 +67,7 @@ public class ProjectController extends BaseController {
                 rspData.setTotal(new PageInfo(projectList).getTotal());
                 return rspData;
             } else {
+                startPage();
                 TableDataInfo rspData = new TableDataInfo();
                 rspData.setCode(HttpStatus.SUCCESS);
                 rspData.setMsg("标牌查询成功");
@@ -150,7 +154,6 @@ public class ProjectController extends BaseController {
     @ApiOperation("地图范围查询项目")
     @GetMapping("/search")
     public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude) {
-        startPage();
         String[] ll = longitudeAndLatitude.split(";");
         int length = ll.length;
         double[] longitude = new double[length];
@@ -162,7 +165,19 @@ public class ProjectController extends BaseController {
             latitude[i] = Double.valueOf(val[1]);
             i++;
         }
-        //List<ProjectVo>
-        return AjaxResult.success();
+        List<Project> projectList=projectService.selectAllProjectList();
+        List<Project> result=new ArrayList<>();
+        for(Project project:projectList){
+            String s=project.getProjectLongLat();
+            String[] longAndLat=s.split(";");
+            for(String s1:longAndLat){
+                String[] ss=s1.split(",");
+                if (PNPoly.polygon(longitude,latitude,Double.valueOf(ss[0]),Double.valueOf(ss[1]))){
+                    result.add(project);
+                    break;
+                }
+            }
+        }
+        return AjaxResult.success(result);
     }
 }
