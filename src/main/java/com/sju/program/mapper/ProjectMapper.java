@@ -3,6 +3,7 @@ package com.sju.program.mapper;
 import java.util.List;
 
 import com.sju.program.domain.Project;
+import org.springframework.security.core.parameters.P;
 
 /**
  * 施工项目Mapper接口
@@ -40,6 +41,8 @@ public interface ProjectMapper
     List<Project> selectProjectListBySubmiteprocessFlag();
 
     String unique(String name);
+
+    Project selectProjectByProjectName(String name);
 
 
 

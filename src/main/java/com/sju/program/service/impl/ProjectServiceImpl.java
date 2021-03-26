@@ -155,4 +155,9 @@ public class ProjectServiceImpl implements IProjectService
     {
         return projectMapper.deleteProjectById(projectId);
     }
+
+    @Override
+    public Project selectProjectByProjectName(String name) {
+        return projectMapper.selectProjectByProjectName(name);
+    }
 }

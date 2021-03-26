@@ -81,5 +81,7 @@ public interface IProjectService
 
     String unique(String name);
 
+    Project selectProjectByProjectName(String name);
+
 
 }

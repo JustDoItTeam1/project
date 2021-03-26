@@ -10,6 +10,7 @@ import com.sju.program.message.AjaxResult;
 import com.sju.program.page.TableDataInfo;
 import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
+import com.sju.program.utils.PNPoly;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -17,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,5 +98,33 @@ public class SignController extends BaseController{
 	@DeleteMapping("/signInfo/{id}")
 	public AjaxResult deleteSignInfo(@PathVariable Long[] id){
 		return AjaxResult.success(service.deleteSignInfo(id));
+	}
+
+	/**
+	 * 地图范围查询标牌
+	 */
+	@ApiOperation("地图范围查询项目")
+	@GetMapping()
+	public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
+		String[] ll=longitudeAndLatitude.split(";");
+		int length=ll.length;
+		double[] longitude=new double[length];
+		double[] latitude=new double[length];
+		int i=0;
+		for(String s:ll){
+			String[] val=s.split(",");
+			longitude[i]=Double.valueOf(val[0]);
+			latitude[i]=Double.valueOf(val[1]);
+			i++;
+		}
+		List<SignInfoVo> signInfoVoList=new ArrayList<>();
+		List<SignInfoVo> result=new ArrayList<>();
+		signInfoVoList=service.getAllSignInfo();
+		for(SignInfoVo signInfoVo:signInfoVoList){
+			if(PNPoly.polygon(longitude,latitude,signInfoVo.getLongitude(),signInfoVo.getLatitude())){
+				result.add(signInfoVo);
+			}
+		}
+		return AjaxResult.success(result);
 	}
 }

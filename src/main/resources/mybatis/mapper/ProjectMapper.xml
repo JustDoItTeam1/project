@@ -96,6 +96,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select project_name from project where project_name=#{name}
     </select>
 
+    <select id="selectProjectByProjectName" parameterType="string" resultMap="ProjectResult">
+        <include refid="selectProjectVo"></include>
+        where project_name=#{name} and project_delete_flag!="del"
+    </select>
+
 
 
 

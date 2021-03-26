@@ -12,18 +12,12 @@ import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.enums.BusinessType;
@@ -108,6 +102,13 @@ public class ProjectController extends BaseController
         return AjaxResult.success(projectService.selectProjectById(projectId));
     }
 
+
+    @ApiOperation("获取name为x的施工项目信息")
+    @GetMapping()
+    public AjaxResult getInfoByName(@RequestParam("name") String name){
+        return AjaxResult.success(projectService.selectProjectByProjectName(name));
+    }
+
     /**
      * 新增施工项目
      */
@@ -147,4 +148,12 @@ public class ProjectController extends BaseController
     {
         return toAjax(projectService.deleteProjectByIds(projectIds));
     }
+
+//    /**
+//     * 地图范围查询项目
+//     */
+//    @ApiOperation("地图范围查询项目")
+//    @GetMapping("/search")
+//    public AjaxResult search()
+
 }
