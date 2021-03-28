@@ -561,6 +561,20 @@
            </el-select>
          </el-form-item>
 
+         <el-form-item label="附件上传" >
+           <el-upload
+             class="upload-demo"
+             action="http://localhost/dev-api/common/upload/"
+
+             multiple
+             :limit="1"
+             :on-success="myUpload"
+             :file-list="fileList">
+             <el-button size="small" type="primary"  v-model="filen" >点击上传</el-button>
+             <div slot="tip" class="el-upload__tip">只能上传1个文件，且不超过10MB</div>
+           </el-upload>
+         </el-form-item>
+
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
           <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
           <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
@@ -572,6 +586,8 @@
         <div id="container" style="width: 95%;height:210px;position:relative ">
 
         </div>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -609,9 +625,11 @@ import { getlistEnclosure,listEnclosure, getEnclosure, delEnclosure, addEnclosur
 import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
 import {listProject} from "@/api/project/project";
-import {downloadEnclosure, reviewEnclosure} from "../../../api/enclosure/enclosure";
+import {downloadEnclosure, reviewEnclosure,} from "../../../api/enclosure/enclosure";
 import Ploygon from "../../test/components/Ploygon";
+import {uploadMy} from "../../../api/enclosure/scheme";
 import {getInfo} from "../../../api/login";
+
 export default {
   name: "Scheme",
   components:{Ploygon,mapView},
@@ -720,6 +738,7 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:true,
+            ssFilePath:null,
           },
           {
             ssStatus: null,
@@ -730,6 +749,7 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:false,
+            ssFilePath:null,
           },
           {
             ssStatus: null,
@@ -740,6 +760,7 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:false,
+            ssFilePath:null,
           }],
        },
       // stage:[
@@ -796,6 +817,9 @@ export default {
       // centerp:null,
       overlayGroup2:null,
 
+      filen:null,
+      fileList:[],
+
     };
   },
   created() {
@@ -841,6 +865,28 @@ export default {
 }
   },
   methods: {
+    myUpload(response, file, fileList){
+      console.log(response);
+      this.addS.stage[this.a].ssFilePath=response.fileName;
+    },
+    // myUpload(file){
+    //   console.log(file);
+    //   console.log(this.fileList);
+    //
+    //
+    //
+    // },
+    // cl(){
+    //   uploadMy("F:\\优生优育.docx").then(response=> {
+    //     console.log(response)
+    //
+    //   });
+    // },
+    // uploadM(response, file, fileList){
+    //   console.log(fileList);
+    //
+    //
+    // },
     // init(){
     //   this.maps = new AMap.Map('container', {
     //     //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
@@ -1368,7 +1414,12 @@ export default {
       console.log(e);
       var searchP={fileName:null}
       searchP.fileName=e.children[0].ssFilePath;
-      downloadEnclosure(searchP).then(response => {})
+
+      //上线记得改url！！！！！！！！！！！！！！！！！！！！！
+      window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(searchP.fileName);
+      // downloadEnclosure(searchP).then(response => {
+      //   window.location.href=baseURL + "/common/download?fileName=" + encodeURI(searchP.fileName) ;
+      // })
     },
     /** 通过按钮操作 */
     handleAgree(e){

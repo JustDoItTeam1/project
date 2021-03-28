@@ -17,6 +17,16 @@ export function getScheme(ssId) {
   })
 }
 
+// 上传
+export function uploadMy(data) {
+  return request({
+    url: '/common/upload',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 新增围蔽信息
 export function addScheme(data) {
   return request({

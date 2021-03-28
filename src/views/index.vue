@@ -1430,17 +1430,19 @@ export default {
     },
     //下载附件
     handleDownload:function () {
-      var downloadQuery={fileName:this.schemeListOne.children[0].ssFilePath}
-      // downloadEnclosure(downloadQuery).then(response => {
-        //const blob = new Blob([response], { type: 'text/plain;charset=utf-8' })
-        //saveAs(blob, this.schemeListOne.children[0].ssFilePath)
-        // this.download(response.msg);
-        // if (response.code === 200) {
-        //   this.msgSuccess("修改成功");
-        //
-        // }
-      // });
-      return downloadEnclosure(downloadQuery);
+      // var downloadQuery={fileName:this.schemeListOne.children[0].ssFilePath}
+      // // downloadEnclosure(downloadQuery).then(response => {
+      //   //const blob = new Blob([response], { type: 'text/plain;charset=utf-8' })
+      //   //saveAs(blob, this.schemeListOne.children[0].ssFilePath)
+      //   // this.download(response.msg);
+      //   // if (response.code === 200) {
+      //   //   this.msgSuccess("修改成功");
+      //   //
+      //   // }
+      // // });
+      // return downloadEnclosure(downloadQuery);
+      //上线记得改url！！！！！！！！！！！！！！！！！！！！！
+      window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(this.schemeListOne.children[0].ssFilePath);
     },
 
     //新增围蔽
