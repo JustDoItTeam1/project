@@ -29,6 +29,8 @@ import com.sju.program.page.TableDataInfo;
 import com.sju.program.domain.Project;
 import com.sju.program.service.IProjectService;
 
+import javax.validation.Valid;
+
 /**
  * 施工项目Controller
  *
@@ -120,7 +122,7 @@ public class ProjectController extends BaseController {
     @PreAuthorize("@ss.hasPermi('project:project:add')")
     @Log(title = "施工项目", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Project project) {
+    public AjaxResult add(@RequestBody @Valid Project project) {
         String name = project.getProjectName();
         if (StringUtils.isNotEmpty(projectService.unique(name))) {
             return AjaxResult.error("与已有项目名称重复，增加失败");

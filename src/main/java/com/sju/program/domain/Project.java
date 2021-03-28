@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.sju.program.annotation.Excel;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 施工项目对象 project
  *
@@ -21,30 +23,37 @@ public class Project
 
     /** 项目名称 */
     @Excel(name = "项目名称")
+    @NotNull(message = "项目名称不为空")
     private String projectName;
 
     /** 项目位置(文字描述) */
     @Excel(name = "项目位置(文字描述)")
+    @NotNull()
     private String projectLocation;
 
     /** 项目位置(地图) */
     @Excel(name = "项目位置(地图)")
+    @NotNull()
     private String projectLongLat;
 
     /** 负责人 */
     @Excel(name = "负责人")
+    @NotNull()
     private String projectManger;
 
     /** 联系电话 */
     @Excel(name = "联系电话")
+    @NotNull()
     private String projectPhone;
 
     /** 施工单位名称 */
     @Excel(name = "施工单位名称")
+    @NotNull()
     private String projectBuilderName;
 
     /** 施工单位id */
     @Excel(name = "施工单位id")
+    @NotNull()
     private Long projectBuilderId;
 
     /** 创建的交管人员id */

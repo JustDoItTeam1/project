@@ -109,7 +109,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
     /**
      * 新增围蔽方案
      *
-     * @param siegeScheme 围蔽方案
+     * @param siegeSchemePo 围蔽方案
      * @return 结果
      */
     @Override
@@ -128,6 +128,7 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
                         .ssLane(siegeScheme.getSsLane())
                         .ssRange(siegeScheme.getSsRange())
                         .ssStage(siegeScheme.getSsStage())
+                        .ssFilePath(siegeScheme.getSsFilePath())
                         .ssProperties(siegeScheme.getSsProperties())
                         .ssStatus(siegeScheme.getSsStatus())
                         .build();
