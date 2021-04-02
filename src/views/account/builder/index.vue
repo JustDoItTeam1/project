@@ -135,7 +135,7 @@
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete"
+            @click="handleDelete(scope.row)"
             v-hasPermi="['account:builder:remove']"
           >删除</el-button>
         </template>
@@ -348,15 +348,18 @@
       },
       /** 删除按钮操作 */
       handleDelete(row) {
-        const builderIds=row.builderName||this.ids;
+        console.log(row)
+        const builderIds=row.builderId||this.ids;
         const builderUsernames = row.builderUsername || this.names;
         this.$confirm('是否确认删除施工单位用户账号为"' + builderUsernames + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
+          console.log(builderIds)
           return delBuilder(builderIds);
         }).then(() => {
+
           this.getList();
           this.msgSuccess("删除成功");
         }).catch(function() {});

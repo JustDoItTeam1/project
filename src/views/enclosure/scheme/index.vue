@@ -598,6 +598,7 @@
     <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
       <Ploygon v-if="pointVisible" ref="Ploygon" :msg="form.ssRange" @myfun="myf"></Ploygon>
     </el-dialog>
+
     <!--mapview子组件，显示地图中位置-->
     <el-dialog width="80%"   :visible.sync="mapVisible" append-to-body>
       <mapView v-if="mapVisible" ref="mapView" :msg="epolygon" ></mapView>

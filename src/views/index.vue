@@ -511,6 +511,122 @@
     <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
       <Ploygon v-if="pointVisible" ref="Ploygon" :msg="projectListOne.projectLongLat" @myfun="myf"></Ploygon>
     </el-dialog>
+
+    <!--新增-->
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig">
+      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+        <el-form-item label="施工项目名称" prop="ssProjectName">
+          <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
+            <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="施工单位名称" prop="ssBuilderId">
+          <el-select v-model="addS.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" >
+            <el-option v-for="item in builderList"  :value="item.id" :label="item.name">{{ item.name }}</el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-tag
+          :key="tag"
+          v-for="tag in dynamicTags"
+          closable
+          :disable-transitions="false"
+
+          @close="handleClose(tag)"
+          @click="handleClick(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="small"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
+
+        <div  v-for="stagenum in addS.stage" v-show="stagenum.show" >
+          <el-form-item label="围蔽阶段" prop="ssStage">
+            <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
+              <el-option label="1" value="1" />
+              <el-option label="2" value="2" />
+              <el-option label="3" value="3" />
+              <el-option label="4" value="4" />
+              <el-option label="5" value="5" />
+              <el-option label="6" value="6" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="围蔽状态" prop="ssStatus">
+            <el-input v-model="stagenum.ssStatus" placeholder="请输入围蔽状态" />
+          </el-form-item>
+          <el-form-item label="围蔽车道" prop="ssLane">
+            <el-input v-model="stagenum.ssLane" placeholder="请输入围蔽车道" />
+          </el-form-item>
+
+          <el-form-item label="开始时间" prop="ssStartTime">
+            <el-date-picker clearable size="small" style="width: 200px"
+                            v-model="stagenum.ssStartTime"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择开始时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="结束时间" prop="ssEndTime">
+            <el-date-picker clearable size="small" style="width: 200px"
+                            v-model="stagenum.ssEndTime"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            placeholder="选择结束时间">
+            </el-date-picker>
+          </el-form-item>
+          <!--        <el-form-item label="围蔽区域(地图)" prop="ssRange">-->
+          <!--          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />-->
+          <!--        </el-form-item>-->
+          <el-form-item label="围蔽性质" prop="ssProperties">
+            <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
+              <el-option label="全封闭" value="全封闭" />
+              <el-option label="半封闭" value="半封闭" />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="附件上传" >
+            <el-upload
+              class="upload-demo"
+              action="http://localhost/dev-api/common/upload/"
+
+              multiple
+              :limit="1"
+              :on-success="myUpload"
+              :file-list="fileList">
+              <el-button size="small" type="primary"  v-model="filen" >点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传1个文件，且不超过10MB</div>
+            </el-upload>
+          </el-form-item>
+
+          <el-form-item label="围蔽区域(地图)" prop="ssRange">
+            <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
+            <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
+
+          </el-form-item>
+
+
+        </div>
+        <div id="container1" style="width: 95%;height:210px;position:relative ">
+
+        </div>
+
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
   </div>
 
 
@@ -525,6 +641,7 @@ import { saveAs } from 'file-saver';
 import Ploygon from "./test/components/Ploygon";
 import {getIdEnclosure,reviewEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
 import detailForm from "./test/components/detailForm";
+
 export default {
   name: "index",
   components: {detailForm,Ploygon},
@@ -651,6 +768,50 @@ export default {
       //地图画框搜索显示
       drawV:false,
 
+      addS:{
+        ssProjectId: null,
+        //builderList: null,
+        stage:[
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 1,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:true,
+            ssFilePath:null,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 2,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+            ssFilePath:null,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 3,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+            ssFilePath:null,
+          }],
+      },
+      //目前正在填写的阶段数
+      a:0,
+      filen:null,
+      fileList:[],
+      overlayGroup2:null,
+
     };
   },
   created() {
@@ -666,6 +827,99 @@ export default {
   //   }
   // },
   methods: {
+
+    handleClick(tag) {
+      // this.maps.destroy();
+
+      this.a=tag.charAt(tag.length-1)-1;
+      // if(tag=="阶段1"){
+      //   this.stage.stage1.show=true;
+      // }
+      // if(tag=="阶段4"){
+
+      // for (var i=0;i<a;i++)
+      // {
+      //   document.write(cars[i] + "<br>");
+      // }
+
+
+      for (var i=0;i<this.addS.stage.length;i++)
+      {
+        this.addS.stage[i].show=false;
+      }
+      this.addS.stage[this.a].show=true;
+
+      // var map = new AMap.Map(document.getElementById("container"));
+      // this.opendig();
+      // this.maps = new AMap.Map('container', {
+      //   //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+      //   center: [104.07, 30.67],
+      //   resizeEnable: true,
+      //   expandZoomRange: true,
+      //   zooms: [3, 20],
+      //   zoom:15,
+      // });
+      // // }
+      console.log(this.a)
+      console.log(this.addS.stage[this.a])
+    },
+
+    handleInputConfirm() {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        this.dynamicTags.push(inputValue);
+        // this.stage.push(this.add);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+
+      // let inputV = this.stage.length+1;
+      //
+      // this.dynamicTags.push("阶段"+inputV);
+
+
+      for (var i=0;i<this.addS.stage.length;i++)
+      {
+        // console.log(i)
+        this.addS.stage[i].show=false;
+        console.log(this.addS.stage[i])
+      }
+
+      //console.log(this.stage)
+      // this.add.show=true;
+      // this.add.ssStage=inputValue;
+      this.addS.stage.push(Object.assign({},this.add));
+      this.addS.stage[this.addS.stage.length-1].show=true;
+      this.addS.stage[this.addS.stage.length-1].ssStage=this.addS.stage.length;
+      //console.log(this.stage.length)
+      //console.log(this.stage)
+      // this.inputVisible = false;
+      // this.inputValue = '';
+
+    },
+
+
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+      console.log(tag.charAt(tag.length-1)-1);
+      console.log( this.addS.stage[tag.charAt(tag.length-1)-1])
+      this.addS.stage[tag.charAt(tag.length-1)-1].show=false;
+      this.addS.stage[0].show=true;
+      //delete this.addS.stage[tag.charAt(tag.length-1)-1];
+    },
+
+    opendig(){
+      this.maps = new AMap.Map('container', {
+        //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
+        center: [104.07, 30.67],
+        resizeEnable: true,
+        expandZoomRange: true,
+        zooms: [3, 20],
+        zoom:15,
+      });
+      this.overlayGroup2 = new AMap.OverlayGroup();
+      //console.log('dakai')
+    },
 
     /** 查询项目单位列表 ！！！！！！！*/
     getproject() {
@@ -783,6 +1037,7 @@ export default {
                     type: 'success',
                     message: '该标牌已删除!'
                   });
+
                   this.initMarker();
                   this.signV=false;
 
@@ -1099,6 +1354,8 @@ export default {
         size: new AMap.Size(40, 50),
         // 图标的取图地址
         image: 'https://gaode.com/assets/img/poi-marker.png',
+        //image: require("@/assets/markerPhoto/red.png")
+         //image: "../assets/markerPhoto/red.png",
         // // 图标所用图片大小
         imageSize: new AMap.Size(450, 280),
         // // 图标取图偏移量
