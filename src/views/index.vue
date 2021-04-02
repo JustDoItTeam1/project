@@ -47,7 +47,8 @@
     </el-dialog>
 
     <div style="position: absolute;right: 1%;top:2%;">
-      <el-button type="primary" @click="addMapSign" v-if="addSignV">增加地图标牌</el-button>
+      <el-button type="primary" @click="addMapSign" v-if="addSignV" >增加地图标牌</el-button>
+<!--      v-hasPermi="['sign:map:add']"-->
     </div>
     <div style="position: absolute;right: 1%;top:2%;">
       <el-button type="success" @click="outSign" v-if="overlaySearchV">退出查看标牌</el-button>
@@ -352,7 +353,8 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addSignCom" v-if="addSignBut">新增标牌</el-button>
-        <el-button type="danger" @click="deleteSign" v-if="delSignBut">删除该标牌</el-button>
+        <el-button type="danger" @click="deleteSign" v-if="delSignBut" >删除该标牌</el-button>
+<!--        v-hasPermi="['sign:map:delete']"-->
       </div>
     </el-dialog>
 
@@ -811,11 +813,18 @@ export default {
       filen:null,
       fileList:[],
       overlayGroup2:null,
+      authenticate:null,
 
     };
   },
   created() {
     this.getproject();
+    getInfo().then(response => {
+      if(response.user.authenticate == 4) {
+        this.authenticate=4;
+        this.addSignV = false;
+      }
+    })
   },
   // watch:{
   //   mouseTool(newval){
@@ -938,7 +947,16 @@ export default {
     //console.log(o)
     this.signV=true;
     this.addSignBut=false;
-    this.delSignBut=true;
+
+      if(this.authenticate == 4) {
+        this.delSignBut=false;
+      }
+      else {
+        this.delSignBut=true;
+      }
+
+
+
     this.signListOne= o;
     //console.log(this.projectListOne);
     this.maps.setCenter(new AMap.LngLat(this.signListOne.longitude,this.signListOne.latitude));
@@ -1321,6 +1339,8 @@ export default {
         if(ployg[i].name=="限速30"){marker.setIcon(require("@/assets/markerPhoto/限速30.png"))}
         if(ployg[i].name=="限速20"){marker.setIcon(require("@/assets/markerPhoto/限速20.png"))}
         if(ployg[i].name=="禁止车辆临时或长时停放"){marker.setIcon(require("@/assets/markerPhoto/禁止车辆临时或者长时停放.png"))}
+        if(ployg[i].name=="禁止鸣喇叭"){marker.setIcon(require("@/assets/markerPhoto/禁止鸣笛.png"))}
+
         marker.content =i;
         // marker.setLabel({
         //   offset: new AMap.Pixel(0, 5),  //设置文本标注偏移量
@@ -1338,7 +1358,13 @@ export default {
           that.maps.setZoom(17);
           that.signV=true;
           that.addSignBut=false;
-          that.delSignBut=true;
+          if(that.authenticate == 4) {
+            that.delSignBut=false;
+          }
+          else {
+            that.delSignBut=true;
+          }
+         // that.delSignBut=true;
           console.log(that.signListOne);
           console.log(that.ployg[parseInt(e.target.content)]);
           that.signListOne= that.markerList[parseInt(e.target.content)];
