@@ -84,11 +84,6 @@ public class SignController extends BaseController{
 	@ApiOperation(value = "增加地图标牌")
 	@PostMapping("/inMap")
 	public AjaxResult insertSignInMap(@RequestBody SignInfoPo signInfoPo){
-		LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-		BaseUser baseUser=(BaseUser)loginUser.getUser();
-		if (baseUser.getAuthenticate()==4){
-			return AjaxResult.error("暂无权限操作");
-		}
 		if (StringUtils.isNotNull(service.getSignInfoByLongitudeAndLatitude(signInfoPo))){
 			return AjaxResult.error("新增失败，该地点已有标牌");
 		}
@@ -103,11 +98,6 @@ public class SignController extends BaseController{
 	@ApiOperation(value = "删除地图标牌")
 	@DeleteMapping("/signInfo/{id}")
 	public AjaxResult deleteSignInfo(@PathVariable Long[] id){
-		LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
-		BaseUser baseUser=(BaseUser)loginUser.getUser();
-		if (baseUser.getAuthenticate()==4){
-			return AjaxResult.error("暂无权限操作");
-		}
 		return AjaxResult.success(service.deleteSignInfo(id));
 	}
 
