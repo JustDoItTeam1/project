@@ -341,7 +341,7 @@
         </el-form-item>
         <el-form-item label="施工项目名称" prop="projectManger">
           <el-select v-model="signListOne.projectName" placeholder="请选择项目名称" clearable  >
-            <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
+            <el-option v-for="item in projectList"  :value="item.name" :label="item.name">{{item.name}}</el-option>
           </el-select>
 <!--          <el-input v-model="signListOne.projectName" placeholder="请输入所属施工项目的名称" />-->
         </el-form-item>
@@ -963,6 +963,7 @@ export default {
             message: '该标牌新增成功!'
           });
           this.initMarker();
+          this.markerNew.hide();
           this.signV=false;
 
         }
@@ -1287,26 +1288,45 @@ export default {
     //生成全部标牌
     createSign:function(map,ployg,overlayGroup){
 
-      // 创建一个 Icon
+      // // 创建一个 Icon
+      // var xs30 = new AMap.Icon({
+      //   // 图标尺寸
+      //   //size: new AMap.Size(40, 50),
+      //   size: new AMap.Size(30, 30),
+      //   // 图标的取图地址
+      //   //image: 'https://gaode.com/assets/img/poi-marker.png',
+      //   image: require("@/assets/markerPhoto/限速30.png"),
+      //
+      //   // // 图标所用图片大小
+      //   imageSize: new AMap.Size(30, 30),
+      //   // // 图标取图偏移量
+      //   //imageOffset: new AMap.Pixel(-50, -10)
+      // });
 
       var temp = [];
       var path = [];
       var ploy2 = [];
+      var iconType="";
       for(var i=0;i<ployg.length;i++)
       {
         var pt=new AMap.LngLat(ployg[i].longitude,ployg[i].latitude)
+
+
         var marker = new AMap.Marker({
           position:pt,
           title: ployg[i].name,
-
-
+          offset: new AMap.Pixel(0, 0),
+          anchor:'center',
         });
+        if(ployg[i].name=="限速30"){marker.setIcon(require("@/assets/markerPhoto/限速30.png"))}
+        if(ployg[i].name=="限速20"){marker.setIcon(require("@/assets/markerPhoto/限速20.png"))}
+        if(ployg[i].name=="禁止车辆临时或长时停放"){marker.setIcon(require("@/assets/markerPhoto/禁止车辆临时或者长时停放.png"))}
         marker.content =i;
-        marker.setLabel({
-          offset: new AMap.Pixel(0, 5),  //设置文本标注偏移量
-          content:ployg[i].name, //设置文本标注内容
-          direction: 'bottom' //设置文本标注方位
-        });
+        // marker.setLabel({
+        //   offset: new AMap.Pixel(0, 5),  //设置文本标注偏移量
+        //   content:ployg[i].name, //设置文本标注内容
+        //   direction: 'bottom' //设置文本标注方位
+        // });
         marker.on('click', signmarkerClick);
         overlayGroup.addOverlay(marker);
 
@@ -1351,15 +1371,16 @@ export default {
     createPolygon:function(map,ployg,overlayGroup){
       var redIcon = new AMap.Icon({
         // 图标尺寸
-        size: new AMap.Size(40, 50),
+        //size: new AMap.Size(40, 50),
+        size: new AMap.Size(30, 30),
         // 图标的取图地址
-        image: 'https://gaode.com/assets/img/poi-marker.png',
-        //image: require("@/assets/markerPhoto/red.png")
-         //image: "../assets/markerPhoto/red.png",
+        //image: 'https://gaode.com/assets/img/poi-marker.png',
+        image: require("@/assets/markerPhoto/project2.png"),
+
         // // 图标所用图片大小
-        imageSize: new AMap.Size(450, 280),
+        imageSize: new AMap.Size(30, 30),
         // // 图标取图偏移量
-        imageOffset: new AMap.Pixel(-360, 10)
+        //imageOffset: new AMap.Pixel(-50, -10)
       });
 
       // var marker = new AMap.Marker({
@@ -1421,7 +1442,7 @@ export default {
           position: pt,
           title: ployg[i].projectName,
           icon:redIcon,
-          offset: new AMap.Pixel(0, 0),
+          offset: new AMap.Pixel(5, 10),
           anchor:'bottom-center',
         });
         marker.content =i;
