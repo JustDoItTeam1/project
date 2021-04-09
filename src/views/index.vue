@@ -8,10 +8,10 @@
 <!--  </el-dialog>-->
     <el-dialog title='施工项目详情' :visible.sync="vformVisible" width="500px" append-to-body>
       <el-form ref="projectForm" :model="projectListOne" :rules="rules" label-width="120px">
-        <el-form-item label="项目id"  >
-          <el-input v-model="projectListOne.projectId" :disabled="true"/>
+<!--        <el-form-item label="项目id"  >-->
+<!--          <el-input v-model="projectListOne.projectId" :disabled="true"/>-->
 
-        </el-form-item>
+<!--        </el-form-item>-->
         <el-form-item label="项目名称" prop="projectName">
           <el-input v-model="projectListOne.projectName" placeholder="请输入项目名称" />
         </el-form-item>
@@ -100,9 +100,11 @@
     <!--   画图搜索结果 标牌 项目-->
 
 
-    <div style="position: absolute;left:1%;top: 9%;width: 270px;background-color: white" v-if="drawV">
+    <div style="position: absolute;left:1%;top: 9%;width: 270px;height:90%;" v-if="drawV">
       <!--     项目-->
-      <div>
+      <el-scrollbar style="height: 100%">
+
+<div>
       <el-card class="box-card" v-for="o in this.projectDrawList" :key="o" style="height: 90px">
 
         <div  class="text item">
@@ -120,7 +122,9 @@
           {{o.projectBuilderName}}
         </div>
       </el-card>
+
       </div>
+
 <!--      标牌-->
       <div>
       <el-card class="box-card" v-for="o in this.signDrawList" :key="o" style="height: 90px" >
@@ -142,23 +146,25 @@
       </el-card>
       </div>
 
+      </el-scrollbar>
+<!--      <div style="position: absolute;left: 27%;top:100%;">-->
+<!--        <el-pagination-->
 
-      <div style="position: absolute;left: 27%;top:100%;">
-        <el-pagination
+<!--          layout="prev, pager, next"-->
+<!--          :total="total"-->
 
-          layout="prev, pager, next"
-          :total="total"
+<!--        >-->
+<!--        </el-pagination>-->
 
-        >
-        </el-pagination>
 
-      </div>
+<!--      </div>-->
     </div>
 
 <!--    搜索结果 标牌-->
 
 
-    <div style="position: absolute;left:1%;top: 9%;width: 270px;background-color: white" v-if="resultVS">
+    <div style="position: absolute;left:1%;top: 9%;width: 270px;height:90%;" v-if="resultVS">
+      <el-scrollbar style="height: 100%">
       <el-card class="box-card" v-for="o in this.searchSeige" :key="o" style="height: 90px" >
 
         <div  class="text item">
@@ -176,7 +182,7 @@
           {{o.roadsection}}
         </div>
       </el-card>
-
+      </el-scrollbar>
 <!--      <el-table-->
 <!--        :data="searchSeige"-->
 <!--        style="width: 100%; font-size: 14px;"-->
@@ -201,20 +207,21 @@
 <!--&lt;!&ndash;          prop="ssBuilderName">&ndash;&gt;-->
 <!--&lt;!&ndash;        </el-table-column>&ndash;&gt;-->
 <!--      </el-table>-->
-      <div style="position: absolute;left: 27%;top:100%;">
-       <el-pagination
+<!--      <div style="position: absolute;left: 27%;top:100%;">-->
+<!--       <el-pagination-->
 
-        layout="prev, pager, next"
-        :total="total"
+<!--        layout="prev, pager, next"-->
+<!--        :total="total"-->
 
-       >
-       </el-pagination>
+<!--       >-->
+<!--       </el-pagination>-->
 
-      </div>
+<!--      </div>-->
     </div>
 
 <!--    项目搜索结果-->
-    <div class="search" style="position: absolute;left:1%;top:9%;width: 270px;background-color: white" v-if="resultVP">
+    <div  style="position: absolute;left:1%;top:9%;width: 270px;height:90%;" v-if="resultVP">
+      <el-scrollbar style="height: 100%">
       <el-card class="box-card" v-for="o in this.searchProject" :key="o" style="height: 90px">
 
         <div  class="text item">
@@ -232,6 +239,7 @@
           {{o.projectBuilderName}}
         </div>
       </el-card>
+      </el-scrollbar>
 
       <!--      <el-table-->
       <!--        :data="searchSeige"-->
@@ -257,16 +265,16 @@
       <!--&lt;!&ndash;          prop="ssBuilderName">&ndash;&gt;-->
       <!--&lt;!&ndash;        </el-table-column>&ndash;&gt;-->
       <!--      </el-table>-->
-      <div style="position: absolute;left: 27%;top:100%;">
-        <el-pagination
+<!--      <div style="position: absolute;left: 27%;top:100%;">-->
+<!--        <el-pagination-->
 
-          layout="prev, pager, next"
-          :total="total"
+<!--          layout="prev, pager, next"-->
+<!--          :total="total"-->
 
-        >
-        </el-pagination>
+<!--        >-->
+<!--        </el-pagination>-->
 
-      </div>
+<!--      </div>-->
     </div>
 <!--弹出围蔽详情表格-->
 <!--    <el-dialog :visible.sync="siegeV" width="98%" append-to-body title="围蔽信息详情">-->
@@ -513,6 +521,9 @@
     <el-dialog width="80%"   :visible.sync="pointVisible" append-to-body>
       <Ploygon v-if="pointVisible" ref="Ploygon" :msg="projectListOne.projectLongLat" @myfun="myf"></Ploygon>
     </el-dialog>
+    <el-dialog width="80%"   :visible.sync="pointVisible2" append-to-body>
+      <Ploygon v-if="pointVisible2" ref="Ploygon2" :msg="form.ssRange" @myfun="myf2"></Ploygon>
+    </el-dialog>
 
     <!--新增-->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig">
@@ -610,7 +621,7 @@
 
           <el-form-item label="围蔽区域(地图)" prop="ssRange">
             <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
-            <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
+            <el-button @click="mapshow2" type="primary" plain>选择围蔽区域</el-button>
 
           </el-form-item>
 
@@ -624,7 +635,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancelseige">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -635,10 +646,11 @@
 </template>
 
 <script>
+  import {addEnclosure} from "../api/enclosure/enclosure";
   import {getMapSign,delMapSign,addMapSign,MaplistSign} from "../api/sign/sign";
   import {getProject,listProject,updateProject,MaplistProject} from "../api/project/project";
 import {getInfo} from "../api/login";
-
+  import {listBuilder,getBuilder} from "@/api/account/builder";
 import { saveAs } from 'file-saver';
 import Ploygon from "./test/components/Ploygon";
 import {getIdEnclosure,reviewEnclosure,listEnclosure,updateEnclosure,downloadEnclosure} from "../api/enclosure/enclosure";
@@ -650,10 +662,13 @@ export default {
   props:['msg'],
   data() {
     return {
+
       radio:1,
 
       //项目id
       //PId:null,
+      //是否显示map
+      mapVisible:false,
       //查询施工单位参数
       searchName: null,
       searchQueryParams: {
@@ -717,6 +732,7 @@ export default {
       nomsg:{},
 
       maps:null,
+      maps2:null,
       mouseTool:null,
 
       //拒绝理由弹窗
@@ -770,6 +786,23 @@ export default {
       //地图画框搜索显示
       drawV:false,
 
+
+      //目前正在填写的阶段数
+      a:0,
+      filen:null,
+      fileList:[],
+      overlayGroup2:null,
+      authenticate:null,
+
+
+      overlayGroup3:null,
+
+      // 是否显示弹出层
+      open: false,
+      //新增围蔽的tag
+      dynamicTags: ['阶段1', '阶段2', '阶段3'],
+      inputVisible: false,
+      inputValue: '',
       addS:{
         ssProjectId: null,
         //builderList: null,
@@ -808,16 +841,19 @@ export default {
             ssFilePath:null,
           }],
       },
-      //目前正在填写的阶段数
-      a:0,
-      filen:null,
-      fileList:[],
-      overlayGroup2:null,
-      authenticate:null,
+      // 表单参数
+      form: {},
 
+      // 施工单位表格数据
+      builderList: [],
+      //传递给子组件mapview的地图ploygon
+      epolygon:"",
+      //是否显示ploygon
+      pointVisible2:false,
     };
   },
   created() {
+    this.getbuilder();
     this.getproject();
     getInfo().then(response => {
       if(response.user.authenticate == 4) {
@@ -835,7 +871,74 @@ export default {
   //     console.log(this.overlaysMarker);
   //   }
   // },
+  watch:{
+    pointVisible2(newVal) {
+      if((newVal==false)&&(this.open==true)){
+
+
+        console.log("this.pointB");
+        //this.addS.stage[this.a].ssRange
+
+        this.overlayGroup3.clearOverlays();
+        // for(var m=0;m<this.addS.length;m++){
+        //   //if(this.addS.stage[m].ssRange!=null)
+        //   this.createPolygon(this.maps,this.addS.stage[m].ssRange,this.overlayGroup2);
+        //
+        // }
+        //this.centerp=new AMap.LngLat(104.07, 30.67);
+
+        console.log(this.addS.stage)
+        this.createPolygon2(this.maps2,this.addS.stage,this.overlayGroup3,this.center);
+        // this.createPolygon(this.maps,this.addS.stage[this.a].ssRange,this.overlayGroup2);
+
+        this.maps2.add(this.overlayGroup3);
+        this.overlayGroup3.show();
+        // console.log(this.pointA);
+
+
+        //this.maps.setCenter(this.centerp);
+        //console.log(newVal);
+      }
+
+    }
+  },
   methods: {
+
+    /** 查询施工单位列表 ！！！！！！！*/
+    getbuilder() {
+      getInfo().then(response => {
+        //console.log(response.user.authenticate)
+        if (response.user.authenticate == 4) {
+          this.builderList.push({name: response.user.userName, id: response.user.builderId});
+        }
+        else
+        {
+          // this.builderList=[{name:"暂无",id:"暂无"},{name:"中铁一局",id:"中铁一局"},{name:"中铁二局",id:"中铁二局"}];
+          // console.log(this.builderList)
+          listBuilder(this.queryParams).then(response => {
+            //this.builderList=[{name:"暂无",id:0}];
+            for ( let i of response.rows) {
+              this.builderList.push({name:i.builderUsername,id:i.builderId});
+            }
+          });
+        }
+
+      });
+    },
+
+    mapshow2(){
+      this.pointVisible2=true;
+    },
+    myf2(ms) {
+      this.addS.stage[this.a].ssRange=ms;
+      this.pointVisible2=false;
+      // console.log(this.form.ploygon);
+    },
+    myf(ms) {
+      this.addS.stage[this.a].ssRange=ms;
+      this.pointVisible=false;
+      // console.log(this.form.ploygon);
+    },
 
     handleClick(tag) {
       // this.maps.destroy();
@@ -872,6 +975,113 @@ export default {
       console.log(this.a)
       console.log(this.addS.stage[this.a])
     },
+    myUpload(response, file, fileList){
+      console.log(response);
+      this.addS.stage[this.a].ssFilePath=response.fileName;
+    },
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.ssId != null) {
+            updateEnclosure(this.form).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              }
+            });
+          } else {
+            console.log(this.addS);
+            addEnclosure(this.addS).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
+                //清除
+                this.addS={
+                  ssProjectId: null,
+                  //builderList: null,
+                  stage:[
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 1,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:true,
+                    },
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 2,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:false,
+                    },
+                    {
+                      ssStatus: null,
+                      ssLane: null,
+                      ssStage: 3,
+                      ssStartTime: null,
+                      ssEndTime: null,
+                      ssRange: null,
+                      ssProperties: null,
+                      show:false,
+                    }],
+                }
+                this.dynamicTags=['阶段1', '阶段2', '阶段3'];
+
+              }
+            });
+          }
+        }
+      });
+    },
+    cancelseige(){
+      this.open = false;
+      //清除
+      this.addS={
+        ssProjectId: null,
+        //builderList: null,
+        stage:[
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 1,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:true,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 2,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+          },
+          {
+            ssStatus: null,
+            ssLane: null,
+            ssStage: 3,
+            ssStartTime: null,
+            ssEndTime: null,
+            ssRange: null,
+            ssProperties: null,
+            show:false,
+          }],
+      }
+      this.dynamicTags=['阶段1', '阶段2', '阶段3'];
+    },
 
     handleInputConfirm() {
       let inputValue = this.inputValue;
@@ -907,6 +1117,30 @@ export default {
 
     },
 
+    showInput() {
+      //  this.inputVisible = true;
+      //  this.$nextTick(_ => {
+      //    this.$refs.saveTagInput.$refs.input.focus();
+      // });
+
+      let inputV = this.addS.stage.length+1;
+      this.dynamicTags.push("阶段"+inputV);
+
+      for (var i=0;i<this.addS.stage.length;i++)
+      {
+        // console.log(i)
+        this.addS.stage[i].show=false;
+        console.log(this.addS.stage[i])
+      }
+
+      //console.log(this.stage)
+      // this.add.show=true;
+      // this.add.ssStage=inputValue;
+      this.addS.stage.push(Object.assign({},this.add));
+      this.addS.stage[this.addS.stage.length-1].show=true;
+      this.addS.stage[this.addS.stage.length-1].ssStage=this.addS.stage.length;
+    },
+
 
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
@@ -918,7 +1152,7 @@ export default {
     },
 
     opendig(){
-      this.maps = new AMap.Map('container', {
+      this.maps2 = new AMap.Map('container1', {
         //mapStyle:'amap://styles/797343a394a721796989e608aaeff24d', //设置地图的显示样式
         center: [104.07, 30.67],
         resizeEnable: true,
@@ -926,8 +1160,21 @@ export default {
         zooms: [3, 20],
         zoom:15,
       });
-      this.overlayGroup2 = new AMap.OverlayGroup();
-      //console.log('dakai')
+      this.overlayGroup3 = new AMap.OverlayGroup();
+
+      console.log(this.builderList);
+      this.addS.ssProjectId=this.projectListOne.projectId;
+
+      for(var i=0;i<this.builderList.length;i++)
+      {
+        //console.log(this.builderList[i].name)
+        //console.log(this.projectBuilderName)
+        if(this.builderList[i].name==this.projectListOne.projectBuilderName){
+          this.addS.ssBuilderId=this.builderList[i].name;
+          //console.log("yicivi")
+        }
+
+      }
     },
 
     /** 查询项目单位列表 ！！！！！！！*/
@@ -1118,11 +1365,22 @@ export default {
       this.searchQueryParams.projectInfo=this.projectListOne.projectId;
       getProject(this.projectListOne.projectId).then(response => {
         console.log(response);
-        this.overlaySearch = new AMap.OverlayGroup();
-        this.overlaySearch.clearOverlays();
-        this.createSign(this.maps,response.data.signInfoVoList,this.overlaySearch);
-        this.maps.add(this.overlaySearch);
-        this.overlaySearch.show();
+        //console.log(response.data.signInfoVoList.length)
+        if(response.data.signInfoVoList.length==0)
+        {
+          this.$message({
+            message: '该项目暂无标牌',
+            type: 'warning'
+          });
+        }
+
+          this.overlaySearch = new AMap.OverlayGroup();
+          this.overlaySearch.clearOverlays();
+          this.createSign(this.maps,response.data.signInfoVoList,this.overlaySearch);
+          this.maps.add(this.overlaySearch);
+          this.overlaySearch.show();
+
+
         // overlaySearch
 
       })
@@ -1167,8 +1425,8 @@ export default {
       console.log(this.searchName)
       if(this.searchName!=null){
         this.searchQueryParams.projectInfo=this.searchName;
-        this.searchQueryParams.pageNum=1;
-        this.searchQueryParams.pageSize=6;
+        // this.searchQueryParams.pageNum=1;
+        // this.searchQueryParams.pageSize=6;
 
         listProject(this.searchQueryParams).then(response => {
           if((response.msg=="项目查询成功")||(response.msg=="查询成功")){
@@ -1391,6 +1649,72 @@ export default {
 
 
 
+    },
+    createPolygon2:function(map,ployg,overlayGroup,centerp){
+      overlayGroup.clearOverlays();
+      var temp = [];
+      var path = [];
+      var ploy2 = [];
+
+      var a1=0;
+      var b1=0;
+      var colorP=['red','green','yellow','white','black','blue']
+      for(var i=0;i<ployg.length;i++)
+      {
+        //ployg[i].projectLongLat可能是空的
+        if(ployg[i].ssRange!=null){
+          temp[i]=ployg[i].ssRange.split(';');
+        }
+
+      }
+      var a=0;
+      var b=0;
+      // 生成四边形
+      for(var i=0;i<temp.length;i++)
+      {
+
+        path = [];
+        //  console.log(this.path)
+
+        for(var j=0;j<temp[i].length-1;j++)
+        {
+
+          ploy2=temp[i][j].split(',');
+          a=parseFloat(a)+parseFloat(ploy2[0]);
+          b=parseFloat(b)+parseFloat(ploy2[1]);
+          // a1=parseFloat(a1)+parseFloat(ploy2[0]);
+          // b1=parseFloat(b1)+parseFloat(ploy2[1]);
+          path.push(new AMap.LngLat(ploy2[0]-0,ploy2[1]-0));
+
+        }
+        a=a/(temp[i].length-1);
+        b=b/(temp[i].length-1);
+        // a1=a1/(temp[i].length-1);
+        //b1=b1/(temp[i].length-1);
+        console.log("a"+a);
+        console.log("b"+b);
+
+        // console.log("a1:"+a1);
+        // console.log("b1:"+b1);
+
+
+        var polygon = new AMap.Polygon({
+          path:path,
+          fillColor: '#fff', // 多边形填充颜色
+          borderWeight: 2, // 线条宽度，默认为 1
+          strokeColor: colorP[i], // 线条颜色
+        });
+        overlayGroup.addOverlay(polygon);
+      }
+      console.log("a"+a);
+      console.log("b"+b);
+      // console.log("a1:"+a1);
+      // console.log("b1:"+b1);
+      var pt=new AMap.LngLat(a,b)
+      // centerp=pt
+      // console.log(centerp)
+      if(temp.length==1)
+        map.setCenter(pt);
     },
 
     //生成施工项目全部polygon
@@ -1751,7 +2075,7 @@ export default {
 
     //新增围蔽
     clickSeigeAdd:function(){
-
+      this.open=true;
     },
     //点击查看围蔽详情
     clickSeige:function(){

@@ -227,7 +227,7 @@
             type="text"
             @click="handleDownload(scope.row)"
             v-hasPermi="['enclosure:scheme:download']"
-            v-if=scope.row.ss
+            v-if="scope.row.ss==false"
           >下载附件</el-button>
           <div v-show="scope.row.ssVerifyFlag=='待审核'">
           <el-button size="mini"
@@ -1306,6 +1306,7 @@ export default {
       this.loading = true;
       listEnclosure().then(response => {
         //console.log(response);
+        console.log(response.rows)
         this.schemeList = response.rows;
 
         // this.schemeList[0].ssId=102;
@@ -1412,12 +1413,13 @@ export default {
     },
     /** 下载附件按钮操作 */
     handleDownload(e){
-      console.log(e);
-      var searchP={fileName:null}
-      searchP.fileName=e.children[0].ssFilePath;
-
+      console.log(e.ssFilePath);
+      //var searchP={fileName:null}
+      //searchP.fileName=e.children[0].ssFilePath;
+//上线记得改url！！！！！！！！！！！！！！！！！！！！！
+      window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(e.ssFilePath);
       //上线记得改url！！！！！！！！！！！！！！！！！！！！！
-      window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(searchP.fileName);
+      //window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(searchP.fileName);
       // downloadEnclosure(searchP).then(response => {
       //   window.location.href=baseURL + "/common/download?fileName=" + encodeURI(searchP.fileName) ;
       // })

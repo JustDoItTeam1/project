@@ -15,7 +15,7 @@
     </div>
   </div>
   <!--地图容器-->
-  <div id="container1" style="width: 100%;height:650px;position: relative; "></div>
+  <div id="container3" style="width: 100%;height:650px;position: relative; "></div>
 
 
 </div>
@@ -48,7 +48,7 @@
           //初始化地图
         init:function () {
 
-          let map = new AMap.Map('container1', {
+          let map = new AMap.Map('container3', {
             center: [104.07, 30.67],
             resizeEnable: true,
             expandZoomRange: true,
