@@ -107,6 +107,8 @@ public class SignController extends BaseController{
 	@ApiOperation("地图范围查询标牌")
 	@GetMapping()
 	public TableDataInfo search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude){
+		LoginUser logUser=tokenService.getLoginUser(ServletUtils.getRequest());
+		BaseUser baseUser=(BaseUser)logUser.getUser();
 		String[] ll=longitudeAndLatitude.split("!");
 		int length=ll.length;
 		double[] longitude=new double[length];
@@ -121,7 +123,11 @@ public class SignController extends BaseController{
 		startPage();
 		List<SignInfoVo> signInfoVoList=new ArrayList<>();
 		List<SignInfoVo> result=new ArrayList<>();
-		signInfoVoList=service.getAllSignInfo();
+		if (baseUser.getAuthenticate()==4){
+			signInfoVoList=service.getSignInfoByBuilderId(baseUser.getId());
+		}else{
+			signInfoVoList=service.getAllSignInfo();
+		}
 		for(SignInfoVo signInfoVo:signInfoVoList){
 			if(PNPoly.polygon(longitude,latitude,signInfoVo.getLongitude(),signInfoVo.getLatitude())){
 				signInfoVo.setTypeInMap("标牌");

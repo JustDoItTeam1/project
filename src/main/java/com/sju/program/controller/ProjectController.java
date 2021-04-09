@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.sju.program.constant.HttpStatus;
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.domain.vo.ProjectVo;
 import com.sju.program.domain.vo.SignInfoVo;
@@ -158,6 +159,8 @@ public class ProjectController extends BaseController {
     @ApiOperation("地图范围查询项目")
     @GetMapping("/search")
     public AjaxResult search(@RequestParam("longitudeAndLatitude") String longitudeAndLatitude) {
+        LoginUser loginUser=tokenService.getLoginUser(ServletUtils.getRequest());
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
         String[] ll = longitudeAndLatitude.split("!");
         int length = ll.length;
         double[] longitude = new double[length];
@@ -169,7 +172,12 @@ public class ProjectController extends BaseController {
             latitude[i] = Double.valueOf(val[1]);
             i++;
         }
-        List<Project> projectList=projectService.selectAllProjectList();
+        List<Project> projectList=new ArrayList<>();
+        if (baseUser.getAuthenticate()==4){
+            projectList=projectService.selectProjectByBuilderId(baseUser.getId());
+        }else {
+            projectList = projectService.selectAllProjectList();
+        }
         List<ProjectVo> result=new ArrayList<>();
         for(Project project:projectList){
             String s=project.getProjectLongLat();
