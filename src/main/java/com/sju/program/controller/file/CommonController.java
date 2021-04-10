@@ -82,8 +82,8 @@ public class CommonController
     {
         try
         {
-            // 上传文件路径
-            String filePath =Constants.WINDOWS_FILE_PATH;
+            // 上传文件临时路径
+            String filePath =Constants.WINDOWS_FILE_TEMPORARY_PATH;
             // 上传并返回新文件名称(相对路径)
             String fileName = FileUploadUtils.upload(filePath, file);
             String url = serverConfig.getUrl() + fileName;
@@ -97,6 +97,7 @@ public class CommonController
             return AjaxResult.error(e.getMessage());
         }
     }
+
 
 //    /**
 //     * 本地资源通用下载

@@ -1,5 +1,6 @@
 package com.sju.program.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.sju.program.service.SignService;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
 import com.sju.program.utils.StringUtils;
+import com.sju.program.utils.file.FileUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -130,6 +132,9 @@ public class SiegeSchemeController extends BaseController
             if (UserConstants.NOT_UNIQUE.equals(siegeSchemeService.checkSifegeSchemeUnique(siegeScheme))){
                 return AjaxResult.error("新增围蔽失败，围蔽阶段或围蔽状态信息已存在");
             }
+        }
+        if (FileUtils.copyFile(sieheSchemePo.getStage())){
+            return AjaxResult.error("提交文件失败");
         }
         return toAjax(siegeSchemeService.insertSiegeScheme(sieheSchemePo));
     }

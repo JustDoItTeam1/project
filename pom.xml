@@ -195,6 +195,12 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.github.shalousun</groupId>
+			<artifactId>common-util</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
 
 	</dependencies>
     <!--jar包依赖-->

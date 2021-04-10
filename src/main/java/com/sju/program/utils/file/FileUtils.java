@@ -1,12 +1,18 @@
 package com.sju.program.utils.file;
 
+import com.power.common.util.FileUtil;
+import com.sju.program.constant.Constants;
+import com.sju.program.domain.SiegeScheme;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * 文件处理工具类
- * 
+ *
  * @author ruoyi
  */
 public class FileUtils extends org.apache.commons.io.FileUtils
@@ -15,7 +21,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 
     /**
      * 输出指定文件的byte数组
-     * 
+     *
      * @param filePath 文件路径
      * @param os 输出流
      * @return
@@ -71,7 +77,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 
     /**
      * 删除文件
-     * 
+     *
      * @param filePath 文件
      * @return
      */
@@ -89,8 +95,33 @@ public class FileUtils extends org.apache.commons.io.FileUtils
     }
 
     /**
+     * 拷贝文件
+     */
+    public static boolean copyFile(List<SiegeScheme> siegeSchemeList){
+        for(SiegeScheme siegeScheme:siegeSchemeList) {
+            String fileName=siegeScheme.getSsFilePath();
+            try {
+                File source = new File(Constants.WINDOWS_FILE_TEMPORARY_PATH + fileName);
+                String[] load=fileName.split("/");
+                String s=load[0]+"/"+load[1]+"/"+load[2];
+                File target = new File(Constants.WINDOWS_FILE_PATH+s);
+                System.out.println(target);
+                if (!target.exists()){
+                    target.mkdirs();
+                }
+                File endFile=new File(target+File.separator+source.getName());
+                System.out.println("xxxx: "+source.renameTo(endFile));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 文件名称验证
-     * 
+     *
      * @param filename 文件名称
      * @return true 正常 false 非法
      */
@@ -101,7 +132,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 
     /**
      * 下载文件名重新编码
-     * 
+     *
      * @param request 请求对象
      * @param fileName 文件名
      * @return 编码后的文件名
