@@ -51,3 +51,12 @@ export function exportAdmin(query) {
     params: query
   })
 }
+
+//修改密码
+export function updatePassword(data) {
+  return request({
+    url: '/system/user/profile/updatePwd',
+    method: 'put',
+    params: data
+  })
+}

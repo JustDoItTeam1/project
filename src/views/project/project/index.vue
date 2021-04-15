@@ -374,6 +374,7 @@
 // 获取子组件ploygon传来的值
       myf(ms) {
         this.form.projectLongLat=ms;
+        this.pointVisible=false;
         // console.log(this.form.ploygon);
       },
 // 地图显示项目位置子组件

@@ -7,7 +7,7 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
-        
+
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -26,7 +26,11 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
+<!--          <img :src="avatar" class="user-avatar">-->
+<!--          <el-input :label="username" v-model="username"></el-input>-->
+          <el-form>
+            <el-form-item :label=username ></el-form-item>
+          </el-form>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -54,6 +58,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+import Cookies from "js-cookie";
 
 export default {
   components: {
@@ -65,6 +70,12 @@ export default {
     RuoYiGit,
     RuoYiDoc
   },
+  data(){
+    return{
+      username:null
+    }
+
+      },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -82,6 +93,9 @@ export default {
         })
       }
     }
+  },
+  mounted() {
+    this.username = Cookies.get("username");
   },
   methods: {
     toggleSideBar() {

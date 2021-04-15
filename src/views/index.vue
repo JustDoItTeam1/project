@@ -111,7 +111,7 @@
           <el-button
             size="samll"
             type="text"
-            @click="handleClick(o)"
+            @click="handleClickP(o)"
 
           > {{o.projectName}}</el-button>
         </div>
@@ -228,7 +228,7 @@
           <el-button
             size="samll"
             type="text"
-            @click="handleClick(o)"
+            @click="handleClickP(o)"
 
           > {{o.projectName}}</el-button>
         </div>
@@ -336,8 +336,9 @@
     <el-dialog title='标牌信息详情' :visible.sync="signV" width="500px" :before-close="signClose" append-to-body>
       <el-form ref="projectForm" :model="signListOne"  label-width="120px">
         <el-form-item label="标牌名称"  >
-          <el-input v-model="signListOne.name" placeholder="请输入标牌名称"/>
-
+          <el-select v-model="signListOne.name" placeholder="请输入标牌名称" clearable >
+           <el-option v-for="item in signList"  :value="item.name" :label="item.name">{{item.name}}</el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="标识码" prop="projectName" v-if="delSignBut">
           <el-input v-model="signListOne.id" placeholder="请输入标识码" />
@@ -647,7 +648,7 @@
 
 <script>
   import {addEnclosure} from "../api/enclosure/enclosure";
-  import {getMapSign,delMapSign,addMapSign,MaplistSign} from "../api/sign/sign";
+  import {getMapSign,delMapSign,addMapSign,MaplistSign,listSign} from "../api/sign/sign";
   import {getProject,listProject,updateProject,MaplistProject} from "../api/project/project";
 import {getInfo} from "../api/login";
   import {listBuilder,getBuilder} from "@/api/account/builder";
@@ -721,6 +722,8 @@ export default {
 
       // 施工项目表格数据
       projectList: [],
+      // 施工项目表格数据
+      signList: [],
 
       ploy1:[],
       ploy2:[],
@@ -850,11 +853,14 @@ export default {
       epolygon:"",
       //是否显示ploygon
       pointVisible2:false,
+
+      geocoder:null,
     };
   },
   created() {
     this.getbuilder();
     this.getproject();
+    this.getSignList();
     getInfo().then(response => {
       if(response.user.authenticate == 4) {
         this.authenticate=4;
@@ -981,66 +987,67 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.ssId != null) {
-            updateEnclosure(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              }
-            });
-          } else {
-            console.log(this.addS);
-            addEnclosure(this.addS).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-                //清除
-                this.addS={
-                  ssProjectId: null,
-                  //builderList: null,
-                  stage:[
-                    {
-                      ssStatus: null,
-                      ssLane: null,
-                      ssStage: 1,
-                      ssStartTime: null,
-                      ssEndTime: null,
-                      ssRange: null,
-                      ssProperties: null,
-                      show:true,
-                    },
-                    {
-                      ssStatus: null,
-                      ssLane: null,
-                      ssStage: 2,
-                      ssStartTime: null,
-                      ssEndTime: null,
-                      ssRange: null,
-                      ssProperties: null,
-                      show:false,
-                    },
-                    {
-                      ssStatus: null,
-                      ssLane: null,
-                      ssStage: 3,
-                      ssStartTime: null,
-                      ssEndTime: null,
-                      ssRange: null,
-                      ssProperties: null,
-                      show:false,
-                    }],
-                }
-                this.dynamicTags=['阶段1', '阶段2', '阶段3'];
+       this.$refs["form"].validate(valid => {
+         if (valid) {
+           //     if (this.form.ssId != null) {
+           //       updateEnclosure(this.form).then(response => {
+           //         if (response.code === 200) {
+           //           this.msgSuccess("修改成功");
+           //           this.open = false;
+           //           this.getList();
+           //         }
+           //       });
+           //     } else {
+           console.log(this.addS);
+           addEnclosure(this.addS).then(response => {
+             if (response.code === 200) {
+               this.msgSuccess("新增成功");
+               this.open = false;
+               this.getList();
+               //清除
+               this.addS={
+                 ssProjectId: null,
+                 //builderList: null,
+                 stage:[
+                   {
+                     ssStatus: null,
+                     ssLane: null,
+                     ssStage: 1,
+                     ssStartTime: null,
+                     ssEndTime: null,
+                     ssRange: null,
+                     ssProperties: null,
+                     show:true,
+                   },
+                   {
+                     ssStatus: null,
+                     ssLane: null,
+                     ssStage: 2,
+                     ssStartTime: null,
+                     ssEndTime: null,
+                     ssRange: null,
+                     ssProperties: null,
+                     show:false,
+                   },
+                   {
+                     ssStatus: null,
+                     ssLane: null,
+                     ssStage: 3,
+                     ssStartTime: null,
+                     ssEndTime: null,
+                     ssRange: null,
+                     ssProperties: null,
+                     show:false,
+                   }],
+               }
+               this.dynamicTags=['阶段1', '阶段2', '阶段3'];
 
-              }
-            });
-          }
-        }
-      });
+             }
+           });
+         }
+       //}
+        //}
+    });
     },
     cancelseige(){
       this.open = false;
@@ -1170,7 +1177,7 @@ export default {
         //console.log(this.builderList[i].name)
         //console.log(this.projectBuilderName)
         if(this.builderList[i].name==this.projectListOne.projectBuilderName){
-          this.addS.ssBuilderId=this.builderList[i].name;
+          this.addS.ssBuilderId=this.builderList[i].id;
           //console.log("yicivi")
         }
 
@@ -1188,6 +1195,19 @@ export default {
         }
       });
     },
+
+    /** 查询标牌列表 ！！！！！！！*/
+    getSignList() {
+      // this.projectList=[{name:"校园路翻新",id:"校园路翻新"},{name:"犀安路翻新",id:"犀安路翻新"},];
+      // console.log(this.builderList)
+      listSign().then(response => {
+        //this.projectList=[{name:"暂无",id:0}];
+        for(let i of response.rows){
+          this.signList.push({name:i.name});
+        }
+      });
+    },
+
 
      // / ** 点击搜索结果查看详情操作 */
     handleClickSign(o){
@@ -1391,16 +1411,20 @@ export default {
     },
 
     /** 点击搜索结果查看详情操作 */
-    handleClick(o){
+    handleClickP(o){
+
 
       console.log(o)
+      this.projectListOne=o;
+      this.searchIdSeige();
       this.vformVisible=true;
       this.projectListOne= o;
       //console.log(this.projectListOne);
       this.maps.setCenter(this.projectListOne.marker.getPosition());
       this.maps.setZoom(17);
+      //this.searchIdSeige();
       // this.siegeV = true;
-      //
+      //is
       // //将object转化为array
       // var myArray=new Array()
       // myArray.push(o);
@@ -1963,11 +1987,19 @@ export default {
         //   new AMap.TileLayer.RoadNet()
         // ]
       })
+
+     this.geocoder = new AMap.Geocoder({
+        // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+        city: '028'
+      })
+
       var that=this;
+
 
 
       this.maps.on('click', function(e) {
 
+        console.log(e)
         if(that.markerClick==true){
           console.log(e.lnglat.getLng() + ',' + e.lnglat.getLat());
           var pt=new AMap.LngLat(e.lnglat.getLng(),e.lnglat.getLat())
@@ -1978,14 +2010,24 @@ export default {
           that.maps.add(that.markerNew);
 
 
+
           setTimeout(function(){
             that.signListOneRes();
             that.signV=true;
+            that.geocoder.getAddress(pt, function(status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                that.signListOne.roadsection=result.regeocode.addressComponent.street;
+                that.signListOne.detailedadd=result.regeocode.addressComponent.street;
+              }
+            })
             that.signListOne.latitude=e.lnglat.getLat();
             that.signListOne.longitude=e.lnglat.getLng();
+
             that.addSignBut=true;
             that.delSignBut=false;
             that.markerClick=false;
+
             }, 1000);
 
         }
@@ -2103,7 +2145,7 @@ export default {
      searchIdSeige:function () {
 
       getIdEnclosure(this.projectListOne.projectId).then(response => {
-
+        //console.log(this.projectListOne)
 
         if (response.code === 200) {
 

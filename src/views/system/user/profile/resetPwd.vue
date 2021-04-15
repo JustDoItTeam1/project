@@ -18,6 +18,7 @@
 
 <script>
 import { updateUserPwd } from "@/api/system/user";
+import {updatePassword} from "../../../../api/account/admin";
 
 export default {
   data() {
@@ -34,6 +35,10 @@ export default {
         oldPassword: undefined,
         newPassword: undefined,
         confirmPassword: undefined
+      },
+      pdata:{
+        oldPassword: undefined,
+        newPassword: undefined,
       },
       // 表单校验
       rules: {
@@ -55,7 +60,16 @@ export default {
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          updateUserPwd(this.user.oldPassword, this.user.newPassword).then(
+          // updateUserPwd(this.user.oldPassword, this.user.newPassword).then(
+          //   response => {
+          //     if (response.code === 200) {
+          //       this.msgSuccess("修改成功");
+          //     }
+          //   }
+          // );
+          this.pdata.newPassword=this.user.newPassword;
+          this.pdata.oldPassword=this.user.oldPassword;
+          updatePassword(this.pdata).then(
             response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
