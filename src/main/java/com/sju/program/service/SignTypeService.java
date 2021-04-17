@@ -21,4 +21,6 @@ public interface SignTypeService {
 	int updateSignType(SignType signType);
 
 	int deleteSignType(Long[] id) throws Exception;
+
+	List<SignType> selectSignTypeByName(String name);
 }

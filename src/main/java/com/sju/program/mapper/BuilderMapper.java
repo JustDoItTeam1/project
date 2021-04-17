@@ -2,18 +2,19 @@ package com.sju.program.mapper;
 
 import java.util.List;
 import com.sju.program.domain.Builder;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 施工单位Mapper接口
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
-public interface BuilderMapper 
+public interface BuilderMapper
 {
     /**
      * 查询施工单位
-     * 
+     *
      * @param builderId 施工单位ID
      * @return 施工单位
      */
@@ -34,7 +35,7 @@ public interface BuilderMapper
 
     /**
      * 查询施工单位列表
-     * 
+     *
      * @param builder 施工单位
      * @return 施工单位集合
      */
@@ -44,7 +45,7 @@ public interface BuilderMapper
 
     /**
      * 新增施工单位
-     * 
+     *
      * @param builder 施工单位
      * @return 结果
      */
@@ -52,7 +53,7 @@ public interface BuilderMapper
 
     /**
      * 修改施工单位
-     * 
+     *
      * @param builder 施工单位
      * @return 结果
      */
@@ -60,7 +61,7 @@ public interface BuilderMapper
 
     /**
      * 删除施工单位
-     * 
+     *
      * @param builderId 施工单位ID
      * @return 结果
      */
@@ -68,7 +69,7 @@ public interface BuilderMapper
 
     /**
      * 批量删除施工单位
-     * 
+     *
      * @param builderIds 需要删除的数据ID
      * @return 结果
      */
@@ -77,4 +78,6 @@ public interface BuilderMapper
     public int saveAllBuilder(List<Builder> list);
 
     public int checkUserNameUnique(String builderName);
+
+    List<Builder> selectBuilderBybuilderNameAndUseranme(@Param("builderName") String builderName, @Param("useranme") String useranme);
 }

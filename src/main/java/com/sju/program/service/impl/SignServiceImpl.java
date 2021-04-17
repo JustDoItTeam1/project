@@ -114,4 +114,9 @@ public class SignServiceImpl implements SignService {
 	public List<SignInfoVo> getSignInfoByBuilderId(Long id) {
 		return signInfoMapper.getSignInfoByBuilderId(id);
 	}
+
+	@Override
+	public List<Sign> selectSignByNameAndTypeName(String name, String typeName) {
+		return signMapper.selectSignByNameAndTypeName(name,typeName);
+	}
 }

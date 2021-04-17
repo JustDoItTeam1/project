@@ -37,4 +37,6 @@ public interface SignService {
 	List<SignInfoVo> selectSignInfoByName(List<SignInfoVo> list,String s);
 
 	List<SignInfoVo> getSignInfoByBuilderId(Long id);
+
+	List<Sign> selectSignByNameAndTypeName(String name,String typeName);
 }

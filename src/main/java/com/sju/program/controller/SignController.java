@@ -136,4 +136,11 @@ public class SignController extends BaseController{
 		}
 		return getDataTable(result);
 	}
+
+	@ApiOperation("地图范围查询标牌")
+	@GetMapping("/fuzzy")
+	public TableDataInfo search(@RequestParam("name") String name,@RequestParam("TypeName") String typeName){
+		startPage();
+		return getDataTable(service.selectSignByNameAndTypeName(name,typeName));
+	}
 }

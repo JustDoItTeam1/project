@@ -51,6 +51,8 @@ public interface ISiegeSchemeService
 
     List<SiegeScheme> selectSiegeSchemeByFlag(List<SiegeScheme> list,String flag);
 
+    List<SieheSchemeParentVo> selectSiegeSchemeByprojectNameAndbuildName(BaseUser user,String projectName,String builderName);
+
 
 
 

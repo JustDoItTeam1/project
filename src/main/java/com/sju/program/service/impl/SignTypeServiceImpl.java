@@ -49,4 +49,9 @@ public class SignTypeServiceImpl implements SignTypeService {
 		}
 
 	}
+
+	@Override
+	public List<SignType> selectSignTypeByName(String name) {
+		return signTypeMapper.selectSignTypeByName(name);
+	}
 }

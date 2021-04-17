@@ -52,4 +52,11 @@ public class SignTypeController extends BaseController{
 		}
 		return AjaxResult.success(signTypeService.updateSignType(signType));
 	}
+	@ApiOperation(value = "模糊查询")
+	@GetMapping()
+	public TableDataInfo search(@RequestParam("name") String name){
+		startPage();
+		return getDataTable(signTypeService.selectSignTypeByName(name));
+	}
+
 }

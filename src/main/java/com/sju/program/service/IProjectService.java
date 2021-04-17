@@ -2,6 +2,7 @@ package com.sju.program.service;
 
 import java.util.List;
 import com.sju.program.domain.Project;
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.vo.ProjectVo;
 import io.swagger.models.auth.In;
 
@@ -82,6 +83,10 @@ public interface IProjectService
     String unique(String name);
 
     Project selectProjectByProjectName(String name);
+
+    List<Project> selectProjectByProjectNameAndProjectMangerAndBuilderName(BaseUser user,String projectName,String builderManger,String builderName);
+
+    List<String> selectprojectSubmitprocess(Long id);
 
 
 }

@@ -33,6 +33,7 @@ public class ReminderProgress {
 		NoticeToBuilder noticeToBuilder=new NoticeToBuilder();
 		Set<Integer> set=new HashSet<>();
 		List<Integer> list=projectService.selectProjectProcessByTime1();
+		System.out.println(list);
 		if (StringUtils.isNotEmpty(list)){
 			int result=projectService.updateSubmiteprocessFlag(list);
 			System.out.println(result);

@@ -113,4 +113,9 @@ public class BuilderServiceImpl implements IBuilderService {
             return UserConstants.UNIQUE;
         }
     }
+
+    @Override
+    public List<Builder> selectBuilderBybuilderNameAndUseranme(String builderName, String useranme) {
+        return builderMapper.selectBuilderBybuilderNameAndUseranme(builderName,useranme);
+    }
 }

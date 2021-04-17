@@ -106,6 +106,18 @@ public class SiegeSchemeServiceImpl implements ISiegeSchemeService
             return UserConstants.UNIQUE;
     }
 
+    @Override
+    public List<SieheSchemeParentVo> selectSiegeSchemeByprojectNameAndbuildName(BaseUser user, String projectName, String builderName) {
+        List<SiegeScheme> list=new ArrayList<>();
+        if (user.getAuthenticate()==4){
+            list=siegeSchemeMapper.selectSiegeSchemeByprojectNameAndbuildName(projectName,builderName,user.getId());
+        }
+        else{
+            list=siegeSchemeMapper.selectSiegeSchemeByprojectNameAndbuildName02(projectName,builderName);
+        }
+        return buildSiegeScheme(list);
+    }
+
     /**
      * 新增围蔽方案
      *

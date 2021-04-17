@@ -102,6 +102,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
+    <select id="selectProjectByProjectNameAndProjectMangerAndBuilderName" resultMap="ProjectResult">
+        select *
+        from project p
+        where p.project_builder_id=#{id} AND p.project_delete_flag!='del'
+        <if test="builderName!=null">AND p.project_builder_name LIKE CONCAT('%',#{builderName},'%')</if>
+        <if test="projectName!=null">AND p.project_name LIKE CONCAT('%',#{projectName},'%')</if>
+        <if test="builderManger!=null">AND p.project_manger LIKE CONCAT('%',#{builderManger},'%')</if>
+
+    </select>
+    <select id="selectProjectByProjectNameAndProjectMangerAndBuilderName02" resultMap="ProjectResult">
+        select *
+        from project p
+        where p.project_delete_flag!='del'
+        <if test="builderName!=null">AND p.project_builder_name LIKE CONCAT('%',#{builderName},'%')</if>
+        <if test="projectName!=null">AND p.project_name LIKE CONCAT('%',#{projectName},'%')</if>
+        <if test="builderManger!=null">AND p.project_manger LIKE CONCAT('%',#{builderManger},'%')</if>
+
+    </select>
+
+    <select id="selectprojectSubmitprocess" resultType="string">
+        select p.project_name
+        from project p
+        where p.project_submitprocess_flag='false' AND p.project_builder_id=#{id}
+    </select>
+
+
 
 
     <select id="searchProjectByManager" parameterType="String" resultMap="ProjectResult">

@@ -3,24 +3,19 @@ package com.sju.program.controller;
 import java.util.List;
 
 import com.sju.program.domain.SiegeScheme;
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.model.LoginUser;
 import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.domain.vo.ProjectProcessVo;
 import com.sju.program.service.login.TokenService;
 import com.sju.program.utils.ServletUtils;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.enums.BusinessType;
@@ -119,10 +114,11 @@ public class ProjectProcessController extends BaseController
         return toAjax(projectProcessService.deleteProjectProcessByIds(ppIds));
     }
 
-    @GetMapping("/get")
-    public TableDataInfo get(){
-        //List<NoticeToBuilder> list=projectProcessService.selectProjectProcessByTime();
-        //return getDataTable(list);
-        return null;
+    @GetMapping("")
+    public TableDataInfo search(@RequestParam("projectName") String projectName){
+        startPage();
+        LoginUser loginUser=tokenService.getLoginUser(ServletUtils.getRequest());
+        BaseUser baseUser=(BaseUser)loginUser.getUser();
+        return getDataTable(projectProcessService.selectProjectProcessByProjectName(baseUser,projectName));
     }
 }

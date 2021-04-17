@@ -69,4 +69,11 @@
     from sign_type
     where name = #{name,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectSignTypeByName" resultMap="BaseResultMap">
+    select *
+    from sign_type st
+    where
+      st.`name` LIKE CONCAT('%',#{name},'%')
+  </select>
 </mapper>

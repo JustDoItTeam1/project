@@ -97,4 +97,12 @@
   <select id="getSignById" parameterType="Long" resultMap="BaseResultMap">
     select * from sign where sign_id=#{id}
   </select>
+
+  <select id="selectSignByNameAndTypeName" resultMap="BaseResultMap">
+    select *
+    from sign s
+    where
+    <if test="name!=null">s.`name` LIKE CONCAT('%',#{name},'%')</if>
+    <if test="typeName!=null">AND s.type LIKE CONCAT('%',#{typeName},'%')</if>
+  </select>
 </mapper>

@@ -22,4 +22,6 @@ public interface SignTypeMapper {
     int deleteById(Long[] id);
 
     SignType getSignTypeByName(String name);
+
+    List<SignType> selectSignTypeByName(String name);
 }

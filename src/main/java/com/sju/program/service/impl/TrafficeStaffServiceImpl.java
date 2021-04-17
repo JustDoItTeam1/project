@@ -118,4 +118,9 @@ public class TrafficeStaffServiceImpl implements ITrafficeStaffService
     public int save(List<TrafficeStaff> trafficeStaffs) {
         return trafficeStaffMapper.saveTrafficeStaff(trafficeStaffs);
     }
+
+    @Override
+    public List<TrafficeStaff> selectTrafficeStaffByTrafficName(String name) {
+        return trafficeStaffMapper.selectTrafficeStaffByTrafficName(name);
+    }
 }

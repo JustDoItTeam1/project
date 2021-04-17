@@ -1,6 +1,7 @@
 package com.sju.program.mapper.sign;
 
 import com.sju.program.domain.sign.Sign;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface SignMapper {
     int deleteSignById(Long[] id);
 
     Sign getSignById(Long id);
+
+    List<Sign> selectSignByNameAndTypeName(@Param("name") String name,@Param("typeName") String typeName);
 }

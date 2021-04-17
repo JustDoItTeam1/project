@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
@@ -176,5 +177,20 @@ public class SiegeSchemeController extends BaseController
             return toAjax(siegeSchemeService.nopassSiegeSchemeById(projectId,trafficId,suggestion));
         }
         return toAjax(siegeSchemeService.passSiegeSchemeByIds(projectId,trafficId));
+    }
+
+    /*
+    模糊搜索围蔽方案
+     */
+    @ApiOperation(value ="模糊搜索围蔽方案" )
+    //@PreAuthorize()
+    @GetMapping()
+    public TableDataInfo search(@RequestParam(name = "projectName") String projectName,@RequestParam(name="builderName") String buildName){
+        startPage();
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
+        System.out.println(baseUser);
+        System.out.println(baseUser.getAuthenticate());
+        return getDataTable(siegeSchemeService.selectSiegeSchemeByprojectNameAndbuildName(baseUser,projectName,buildName));
     }
 }

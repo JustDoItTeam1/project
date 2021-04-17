@@ -3,6 +3,7 @@ package com.sju.program.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.vo.ProjectVo;
 import com.sju.program.domain.vo.SignInfoVo;
 import com.sju.program.mapper.sign.SignInfoMapper;
@@ -159,5 +160,21 @@ public class ProjectServiceImpl implements IProjectService
     @Override
     public Project selectProjectByProjectName(String name) {
         return projectMapper.selectProjectByProjectName(name);
+    }
+
+    @Override
+    public List<Project> selectProjectByProjectNameAndProjectMangerAndBuilderName(BaseUser user, String projectName, String builderManger, String builderName) {
+        List<Project> list=null;
+        if (user.getAuthenticate()==4){
+            list=projectMapper.selectProjectByProjectNameAndProjectMangerAndBuilderName(projectName,builderManger,builderName,user.getId());
+        }else {
+            list=projectMapper.selectProjectByProjectNameAndProjectMangerAndBuilderName02(projectName,builderManger,builderName);
+        }
+        return list;
+    }
+
+    @Override
+    public List<String> selectprojectSubmitprocess(Long id) {
+        return projectMapper.selectprojectSubmitprocess(id);
     }
 }

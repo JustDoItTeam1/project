@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 交管人员Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -149,5 +149,12 @@ public class TrafficeStaffController extends BaseController
     public AjaxResult upload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), TrafficeStaff.class, new TrafficStaffListener(trafficeStaffService)).sheet().doRead();
         return AjaxResult.success();
+    }
+
+    @ApiOperation("模糊查询")
+    @GetMapping()
+    public TableDataInfo search(@RequestParam("trafficName") String trafficName){
+        startPage();
+        return getDataTable(trafficeStaffService.selectTrafficeStaffByTrafficName(trafficName));
     }
 }

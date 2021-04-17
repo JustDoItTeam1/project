@@ -195,4 +195,28 @@ public class ProjectController extends BaseController {
         }
         return AjaxResult.success(result);
     }
+
+    /**
+     * 模糊查询项目列表
+     */
+    @ApiOperation("模糊查询项目列表")
+    @GetMapping("/fuzzyQuery")
+    public TableDataInfo search(@RequestParam("projectName") String projectName,@RequestParam("projectManger") String projectManger,@RequestParam("builderName") String builderName){
+        startPage();
+        LoginUser loginUser=tokenService.getLoginUser(ServletUtils.getRequest());
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
+        return getDataTable(projectService.selectProjectByProjectNameAndProjectMangerAndBuilderName(baseUser,projectName,projectManger,builderName));
+    }
+
+    @ApiOperation("项目未按时提交进度信息提醒")
+    @GetMapping("/reminder")
+    public AjaxResult reminder(){
+        LoginUser loginUser=tokenService.getLoginUser(ServletUtils.getRequest());
+        BaseUser baseUser=(BaseUser) loginUser.getUser();
+        List<String> list=null;
+        if (baseUser.getAuthenticate()==4){
+            list=projectService.selectprojectSubmitprocess(baseUser.getId());
+        }
+        return AjaxResult.success(list);
+    }
 }

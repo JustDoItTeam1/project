@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sju.program.mapper.TrafficeStaffMapper">
-    
+
     <resultMap type="TrafficeStaff" id="TrafficeStaffResult">
         <result property="trafficId"    column="traffic_id"    />
         <result property="trafficName"    column="traffic_name"    />
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTrafficeStaffVo"></include>
         WHERE traffic_delete_flag !="del"
     </select>
-    
+
     <select id="selectTrafficeStaffById" parameterType="Long" resultMap="TrafficeStaffResult">
         <include refid="selectTrafficeStaffVo"/>
         where traffic_id = #{trafficId} AND traffic_delete_flag !="del"
@@ -38,7 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="checkUserNameUnique" parameterType="String" resultType="int">
         SELECT COUNT(1) FROM traffice_staff WHERE traffic_name=#{name}
     </select>
-        
+
+    <select id="selectTrafficeStaffByTrafficName" resultMap="TrafficeStaffResult">
+        select *
+        from traffice_staff ts
+        where ts.traffic_delete_flag!='del'
+AND ts.traffic_name LIKE CONCAT('%',#{name},'%')
+    </select>
+
     <insert id="insertTrafficeStaff" parameterType="TrafficeStaff" useGeneratedKeys="true" keyProperty="trafficId">
         insert into traffice_staff
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -57,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <insert id="saveTrafficeStaff" parameterType="TrafficeStaff">
         INSERT INTO traffice_staff (traffic_name, traffic_password, traffic_delete_flag)
-        VALUES 
+        VALUES
         <foreach collection="list" item="item" separator="," >
             (
             #{item.trafficName},#{item.trafficPassword},"live"
@@ -86,5 +93,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{trafficId}
         </foreach>
     </update>
-    
+
 </mapper>

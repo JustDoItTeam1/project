@@ -54,6 +54,10 @@ public interface SiegeSchemeMapper
 
     int nopassSiegeSchemeById(@Param("id")Long id,@Param("trafficId")Long trafficId,@Param("suggestion")String suggestion);
 
+    List<SiegeScheme> selectSiegeSchemeByprojectNameAndbuildName(@Param("projectName") String projectName,@Param("builderName") String builderName,@Param("id") Long id);
+
+    List<SiegeScheme> selectSiegeSchemeByprojectNameAndbuildName02(@Param("projectName") String projectName,@Param("builderName") String builderName);
+
     String getSsVerifyFlag(Long id);
 
 

@@ -3,6 +3,7 @@ package com.sju.program.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sju.program.domain.model.BaseUser;
 import com.sju.program.domain.vo.NoticeToBuilder;
 import com.sju.program.domain.vo.ProjectProcessVo;
 import com.sju.program.mapper.ProjectMapper;
@@ -14,12 +15,12 @@ import com.sju.program.service.IProjectProcessService;
 
 /**
  * 施工进度Service业务层处理
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
 @Service
-public class ProjectProcessServiceImpl implements IProjectProcessService 
+public class ProjectProcessServiceImpl implements IProjectProcessService
 {
     @Autowired
     private ProjectProcessMapper projectProcessMapper;
@@ -29,7 +30,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 查询施工进度
-     * 
+     *
      * @param ppId 施工进度ID
      * @return 施工进度
      */
@@ -59,7 +60,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 查询施工进度列表
-     * 
+     *
      * @param projectProcess 施工进度
      * @return 施工进度
      */
@@ -81,7 +82,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 新增施工进度
-     * 
+     *
      * @param projectProcess 施工进度
      * @return 结果
      */
@@ -93,7 +94,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 修改施工进度
-     * 
+     *
      * @param projectProcess 施工进度
      * @return 结果
      */
@@ -105,7 +106,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 批量删除施工进度
-     * 
+     *
      * @param ppIds 需要删除的施工进度ID
      * @return 结果
      */
@@ -117,7 +118,7 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
 
     /**
      * 删除施工进度信息
-     * 
+     *
      * @param ppId 施工进度ID
      * @return 结果
      */
@@ -130,5 +131,16 @@ public class ProjectProcessServiceImpl implements IProjectProcessService
     @Override
     public List<NoticeToBuilder> selectProjectProcessByTime() {
         return projectProcessMapper.selectProjectProcessByTime();
+    }
+
+    @Override
+    public List<ProjectProcessVo> selectProjectProcessByProjectName(BaseUser user, String projectName) {
+        List<ProjectProcess> list=null;
+        if (user.getAuthenticate()==4){
+            list=projectProcessMapper.selectProjectProcessByProjectName(user.getId(),projectName);
+        }else {
+            list=projectProcessMapper.selectProjectProcessByProjectName02(projectName);
+        }
+        return projectProcessVoList(list);
     }
 }

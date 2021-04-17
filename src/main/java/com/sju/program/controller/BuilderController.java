@@ -16,14 +16,7 @@ import com.sju.program.utils.SecurityUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.sju.program.annotation.Log;
 import com.sju.program.message.AjaxResult;
 import com.sju.program.enums.BusinessType;
@@ -36,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 施工单位Controller
- * 
+ *
  * @author JustDoItTeam
  * @date 2020-11-03
  */
@@ -151,5 +144,12 @@ BuilderController extends BaseController
     public AjaxResult upload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), Builder.class, new BuilderListener(builderService)).sheet().doRead();
         return AjaxResult.success();
+    }
+
+    @ApiOperation("模糊查询")
+    @GetMapping()
+    public TableDataInfo search(@RequestParam("builderName") String builderName,@RequestParam("userName") String useranme ){
+        startPage();
+        return getDataTable(builderService.selectBuilderBybuilderNameAndUseranme(builderName,useranme));
     }
 }

@@ -3,6 +3,7 @@ package com.sju.program.mapper;
 import java.util.List;
 
 import com.sju.program.domain.Project;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
 
 /**
@@ -43,6 +44,11 @@ public interface ProjectMapper
     String unique(String name);
 
     Project selectProjectByProjectName(String name);
+
+    List<Project> selectProjectByProjectNameAndProjectMangerAndBuilderName(@Param("projectName") String projectName, @Param("builderManger") String builderManger,@Param("builderName") String builderName, @Param("id") Long id);
+    List<Project> selectProjectByProjectNameAndProjectMangerAndBuilderName02(@Param("projectName") String projectName, @Param("builderManger") String builderManger,@Param("builderName") String builderName);
+
+    List<String> selectprojectSubmitprocess(Long id);
 
 
 

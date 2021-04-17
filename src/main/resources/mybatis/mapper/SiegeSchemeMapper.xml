@@ -141,6 +141,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select ss_verify_flag from siege_scheme where ss_project_id=#{id} limit 1
     </select>
 
+    <select id="selectSiegeSchemeByprojectNameAndbuildName" resultMap="SiegeSchemeResult">
+        select *
+        from siege_scheme ss
+                 left JOIN project  p ON p.project_id=ss.ss_project_id
+                 LEFT JOIN builder b ON b.builder_id=ss.ss_builder_id
+        where ss.ss_builder_id=#{id} AND ss.ss_delete_flag!='del'
+        <if test="builderName !=null">AND b.builder_username LIKE CONCAT('%',#{builderName},'%')</if>
+        <if test="projectName !=null">AND p.project_name LIKE CONCAT('%',#{projectName},'%') </if>
+    </select>
+
+    <select id="selectSiegeSchemeByprojectNameAndbuildName02" resultMap="SiegeSchemeResult">
+        select *
+        from siege_scheme ss
+        left JOIN project  p ON p.project_id=ss.ss_project_id
+        LEFT JOIN builder b ON b.builder_id=ss.ss_builder_id
+        where ss.ss_delete_flag!='del'
+        <if test="builderName !=null">AND b.builder_username LIKE CONCAT('%',#{builderName},'%')</if>
+        <if test="projectName !=null">AND p.project_name LIKE CONCAT('%',#{projectName},'%') </if>
+    </select>
+
     <update id="updateSiegeScheme" parameterType="SiegeScheme">
         update siege_scheme
         <trim prefix="SET" suffixOverrides=",">
