@@ -258,6 +258,7 @@ export default {
               }
             });
           } else {
+            this.form.
             addProcess(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");

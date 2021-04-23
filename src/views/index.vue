@@ -527,7 +527,14 @@
     </el-dialog>
 
     <!--新增-->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig">
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="600px"
+      append-to-body
+      @close="cancelseige"
+      @opened="opendig"
+     >
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-form-item label="施工项目名称" prop="ssProjectName">
           <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
@@ -608,6 +615,7 @@
 
           <el-form-item label="附件上传" >
             <el-upload
+              ref="upload"
               class="upload-demo"
               action="http://localhost/dev-api/common/upload/"
 
@@ -1049,8 +1057,15 @@ export default {
         //}
     });
     },
+
+
+
     cancelseige(){
+      //console.log('11111')
       this.open = false;
+      this.fileList=[];
+
+
       //清除
       this.addS={
         ssProjectId: null,
@@ -1065,6 +1080,7 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:true,
+            ssFilePath:null,
           },
           {
             ssStatus: null,
@@ -1075,6 +1091,7 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:false,
+            ssFilePath:null,
           },
           {
             ssStatus: null,
@@ -1085,9 +1102,13 @@ export default {
             ssRange: null,
             ssProperties: null,
             show:false,
+            ssFilePath:null,
           }],
       }
+      console.log(this.addS)
       this.dynamicTags=['阶段1', '阶段2', '阶段3'];
+      //this.$refs['upload'].clearFiles();
+
     },
 
     handleInputConfirm() {

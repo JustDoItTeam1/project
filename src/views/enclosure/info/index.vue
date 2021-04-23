@@ -44,7 +44,7 @@
         </template>
       </el-table-column>
       <el-table-column label="整改需求" align="center" prop="riRequirements" />
-<!--      <el-table-column label="现场照片地址" align="center" prop="riPhotoPath" />-->
+      <el-table-column label="提交人员" align="center" prop="riPoliceName" />
       <el-table-column label="整改状态" align="center" prop="riStatus" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -163,6 +163,12 @@ export default {
     this.getList();
   },
   methods: {
+    handleMapview(e){
+      //console.log(e.riPhotoPath);
+      window.location.href= "http://localhost/dev-api/common/download?fileName=" + encodeURI(e.riPhotoPath);
+
+    },
+
     /** 查询整改信息列表 */
     getList() {
       this.loading = true;

@@ -152,13 +152,14 @@
 
     <!-- 添加施工单位用户对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户账号" prop="builderUsername">
-          <el-input v-model="form.builderUsername" placeholder="请输入用户账号" />
-        </el-form-item>
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="施工单位名称" prop="builderName">
           <el-input v-model="form.builderName" placeholder="请输入施工单位名称" />
         </el-form-item>
+        <el-form-item label="账号" prop="builderUsername">
+          <el-input v-model="form.builderUsername" placeholder="请输入用户账号" />
+        </el-form-item>
+
         <el-form-item label="密码" prop="builderPassword">
           <el-input v-model="form.builderPassword" placeholder="请输入密码" show-password />
         </el-form-item>

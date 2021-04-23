@@ -201,7 +201,7 @@
         </template>
       </el-table-column>
       <el-table-column label="围蔽性质" align="center" prop="ssProperties" width="120" />
-      <el-table-column label="围蔽区域(地图)" align="center" prop="ssRange" :show-overflow-tooltip="true" width="200"/>
+      <el-table-column label="修改建议" align="center" prop="ssSuggessions" :show-overflow-tooltip="true" width="200"/>
 <!--      <el-table-column label="查看围蔽区域" align="center" class-name="small-padding fixed-width" width="150">-->
 <!--        <template slot-scope="scope" >-->
 <!--          <el-button size="mini"-->
@@ -482,17 +482,18 @@
 <!--      </div>-->
 <!--    </el-dialog>-->
 <!--新增-->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig">
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body @opened="opendig" @close="cancel">
+      <el-form ref="form" :model="form" :rules="rules" :inline="true"  label-width="110px">
         <el-form-item label="施工项目名称" prop="ssProjectName">
-          <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" >
+          <el-select v-model="addS.ssProjectId" placeholder="请选择项目名称" clearable size="small" @input="projectChange" style="width: 150px">
             <el-option v-for="item in projectList"  :value="item.id" :label="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="施工单位名称" prop="ssBuilderId">
-          <el-select v-model="addS.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" >
-            <el-option v-for="item in builderList"  :value="item.id" :label="item.name">{{ item.name }}</el-option>
+          <el-select v-model="addS.ssBuilderId" placeholder="请选择施工单位名称" clearable size="small" style="width: 150px">
+            <el-option v-for="item in builderList"  :value="item.id" :label="item.name">{{ addS.ssBuilderId }}</el-option>
           </el-select>
+
         </el-form-item>
 
         <el-tag
@@ -505,6 +506,7 @@
           @click="handleClick(tag)">
           {{tag}}
         </el-tag>
+
         <el-input
           class="input-new-tag"
           v-if="inputVisible"
@@ -517,26 +519,32 @@
         </el-input>
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+围蔽阶段</el-button>
 
-       <div  v-for="stagenum in addS.stage" v-show="stagenum.show" >
+       <div  v-for="stagenum in addS.stage" v-show="stagenum.show" style="position: relative;top:25px;">
         <el-form-item label="围蔽阶段" prop="ssStage">
-          <el-select v-model="stagenum.ssStage" placeholder="请选择围蔽阶段">
-            <el-option label="1" value="1" />
-            <el-option label="2" value="2" />
-            <el-option label="3" value="3" />
-            <el-option label="4" value="4" />
-            <el-option label="5" value="5" />
-            <el-option label="6" value="6" />
-          </el-select>
+          <el-input v-model="stagenum.ssStage" placeholder="请选择围蔽阶段" style="width: 150px" />
+<!--            <el-option label="1" value="1" />-->
+<!--            <el-option label="2" value="2" />-->
+<!--            <el-option label="3" value="3" />-->
+<!--            <el-option label="4" value="4" />-->
+<!--            <el-option label="5" value="5" />-->
+<!--            <el-option label="6" value="6" />-->
+<!--          </el-input>-->
         </el-form-item>
         <el-form-item label="围蔽状态" prop="ssStatus">
-          <el-input v-model="stagenum.ssStatus" placeholder="请输入围蔽状态" />
+          <el-input v-model="stagenum.ssStatus" placeholder="请输入围蔽状态" style="width: 150px"/>
         </el-form-item>
         <el-form-item label="围蔽车道" prop="ssLane">
-          <el-input v-model="stagenum.ssLane" placeholder="请输入围蔽车道" />
+          <el-input v-model="stagenum.ssLane" placeholder="请输入围蔽车道" style="width: 150px"/>
         </el-form-item>
+         <el-form-item label="围蔽性质" prop="ssProperties">
+           <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质" style="width: 150px">
+             <el-option label="全封闭" value="全封闭" />
+             <el-option label="半封闭" value="半封闭" />
+           </el-select>
+         </el-form-item>
 
         <el-form-item label="开始时间" prop="ssStartTime">
-          <el-date-picker clearable size="small" style="width: 200px"
+          <el-date-picker clearable size="small" style="width: 150px"
                           v-model="stagenum.ssStartTime"
                           type="date"
                           value-format="yyyy-MM-dd"
@@ -544,7 +552,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="ssEndTime">
-          <el-date-picker clearable size="small" style="width: 200px"
+          <el-date-picker clearable size="small" style="width: 150px"
                           v-model="stagenum.ssEndTime"
                           type="date"
                           value-format="yyyy-MM-dd"
@@ -554,20 +562,16 @@
 <!--        <el-form-item label="围蔽区域(地图)" prop="ssRange">-->
 <!--          <el-input v-model="form.ssRange" placeholder="请输入围蔽区域(地图)" />-->
 <!--        </el-form-item>-->
-         <el-form-item label="围蔽性质" prop="ssProperties">
-           <el-select v-model="stagenum.ssProperties" placeholder="请选择围蔽性质">
-             <el-option label="全封闭" value="全封闭" />
-             <el-option label="半封闭" value="半封闭" />
-           </el-select>
-         </el-form-item>
+
 
          <el-form-item label="附件上传" >
            <el-upload
              class="upload-demo"
              action="http://localhost/dev-api/common/upload/"
-
+             :before-remove="beforeRemove"
              multiple
              :limit="1"
+             :on-exceed="handleExceed"
              :on-success="myUpload"
              :file-list="fileList">
              <el-button size="small" type="primary"  v-model="filen" >点击上传</el-button>
@@ -575,15 +579,17 @@
            </el-upload>
          </el-form-item>
 
+
+
         <el-form-item label="围蔽区域(地图)" prop="ssRange">
-          <el-input v-model="stagenum.ssRange" placeholder="请选择围蔽区域(地图)" />
+          <el-input v-model="stagenum.ssRange" placeholder="请在地图中选择围蔽区域" />
           <el-button @click="mapshow" type="primary" plain>选择围蔽区域</el-button>
 
         </el-form-item>
 
 
 </div>
-        <div id="container" style="width: 95%;height:210px;position:relative ">
+        <div id="container" style="width: 100%;height:210px;position:relative;top:30px">
 
         </div>
 
@@ -625,7 +631,7 @@
 import { getlistEnclosure,listEnclosure, getEnclosure, delEnclosure, addEnclosure, updateEnclosure, exportEnclosure } from "@/api/enclosure/enclosure";
 import mapView from "../../map/components/mapView";
 import {listBuilder,getBuilder} from "@/api/account/builder";
-import {listProject} from "@/api/project/project";
+import {getProject,listProject} from "@/api/project/project";
 import {downloadEnclosure, reviewEnclosure,} from "../../../api/enclosure/enclosure";
 import Ploygon from "../../test/components/Ploygon";
 import {uploadMy} from "../../../api/enclosure/scheme";
@@ -674,7 +680,7 @@ export default {
         ssBuilderName:null,
         ssProjectName:null,
       },
-
+      builder_name:[],
       // 围蔽信息表格数据
       schemeList: [],
       schemeList1: [],
@@ -728,7 +734,7 @@ export default {
       inputValue: '',
       addS:{
         ssProjectId: null,
-        //builderList: null,
+        ssBuilderId: null,
         stage:[
           {
             ssStatus: null,
@@ -821,6 +827,8 @@ export default {
       filen:null,
       fileList:[],
 
+      selectClick:0,
+
     };
   },
   created() {
@@ -863,9 +871,48 @@ export default {
         //console.log(newVal);
       }
 
-}
+},
+    // pointVisible2(newVal) {
+    //
+    // }
+
   },
   methods: {
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+
+    projectChange(){
+      //console.log(this.addS.ssProjectId);
+      //this.addS.ssBuilderId=null;
+      // if(this.selectClick==0){
+      //   this.addS.ssBuilderId=1;
+      console.log("select-")
+      // }
+      console.log(this.addS.ssBuilderId);
+
+      if(this.addS.ssProjectId!=0){
+
+        getProject(this.addS.ssProjectId).then(response => {
+          console.log(response.data.projectBuilderId);
+          // this.selectClick=response.data.projectBuilderId;
+          // this.addS.ssBuilderId=this.selectClick;
+          this.addS.ssBuilderId=response.data.projectBuilderId;
+          console.log(response.data.projectBuilderName);
+          console.log(this.addS.ssBuilderId);
+
+        })
+      }
+      else{
+        this.addS.ssBuilderId=null;
+      }
+
+
+    },
+
     myUpload(response, file, fileList){
       console.log(response);
       this.addS.stage[this.a].ssFilePath=response.fileName;
@@ -1340,6 +1387,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.fileList=[];
       //清除
       this.addS={
         ssProjectId: null,
