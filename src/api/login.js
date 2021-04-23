@@ -52,6 +52,13 @@ export function logout() {
   })
 }
 
+//项目未按时提交进度信息提醒
+export function getProcessRemind() {
+  return request({
+    url: '/program/project/reminder',
+    method: 'get'
+  })
+}
 // // 获取验证码
 // export function getCodeImg() {
 //   return request({

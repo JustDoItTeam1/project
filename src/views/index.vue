@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div >
 
-  <div id="container" style="width: 100%;height: 670px;position:relative "   >
+  <div id="container" style="width: 100%;height: 800px">
   </div>
 <!--  <el-dialog   :visible.sync="vformVisible" append-to-body>-->
 <!--    <detailForm  ref="detailfrom" :msg="nomsg"></detailForm>-->
@@ -655,6 +655,7 @@
 </template>
 
 <script>
+  import {getProcessRemind} from "../api/login";
   import {addEnclosure} from "../api/enclosure/enclosure";
   import {getMapSign,delMapSign,addMapSign,MaplistSign,listSign} from "../api/sign/sign";
   import {getProject,listProject,updateProject,MaplistProject} from "../api/project/project";
@@ -875,6 +876,18 @@ export default {
         this.addSignV = false;
       }
     })
+    // getProcessRemind().then(response => {
+    //  if(response.data){
+    //    this.$notify({
+    //      title: '提示',
+    //      message: '请填写施工项目：\r'+response.data+'的施工进度',
+    //      duration: 0
+    //    });
+    //    console.log(response);
+    //  }
+    //
+    //
+    //   })
   },
   // watch:{
   //   mouseTool(newval){

@@ -77,6 +77,7 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import {getProcessRemind} from "../api/login";
 
 export default {
   name: "Login",
@@ -161,6 +162,19 @@ export default {
             .dispatch("Login", this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || "/" });
+              //
+              getProcessRemind().then(response => {
+                if(response.data){
+                  this.$notify({
+                    title: '提示',
+                    message: '请填写施工项目：\r'+response.data+'的施工进度',
+                    duration: 0
+                  });
+                  console.log(response);
+                }
+
+
+              })
             })
             .catch(() => {
               this.loading = false;
