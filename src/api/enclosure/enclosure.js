@@ -7,6 +7,16 @@ export function getlistEnclosure(query) {
     method: 'get',
   })
 }
+
+// 模糊搜索围蔽方案
+export function fuzzyListEnclosure(query) {
+  return request({
+    url: '/program/scheme',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询围蔽信息列表
 export function listEnclosure(query) {
   return request({

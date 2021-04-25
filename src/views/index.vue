@@ -876,6 +876,17 @@ export default {
         this.addSignV = false;
       }
     })
+    getProcessRemind().then(response => {
+      if(response.data){
+        this.$notify({
+          title: '提示',
+          message: '请填写施工项目：\r\n'+response.data+'的施工进度',
+          type: 'warning',
+          duration: 0
+        });
+        //console.log(response);
+      }
+    })
     // getProcessRemind().then(response => {
     //  if(response.data){
     //    this.$notify({

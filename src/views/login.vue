@@ -167,14 +167,14 @@ export default {
                 if(response.data){
                   this.$notify({
                     title: '提示',
-                    message: '请填写施工项目：\r'+response.data+'的施工进度',
+                    message: '请填写施工项目：'+'\n'+response.data+'的施工进度',
+                    type: 'warning',
                     duration: 0
                   });
-                  console.log(response);
+                  //console.log(response);
                 }
-
-
               })
+
             })
             .catch(() => {
               this.loading = false;
